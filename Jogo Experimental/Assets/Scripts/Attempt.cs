@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Attempt : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class Attempt : MonoBehaviour
 
     public bool isChosen; //verifica se uma escolha foi feita
     public bool activeChoice = false; //permitido escolher?
-    public float choiceTime = 5f; // tempo para escolher
     public int imediateDamage = 10; // muda a cada fase
     public int delayedDamage = 100; // constante
     public int waitTime = 7; // alterado de acordo com escolhas em blocos
@@ -32,9 +32,17 @@ public class Attempt : MonoBehaviour
     public static event ResultadoFinalizado OnResultadoFinalizado;
     public bool resultadoFinalizado = false;
 
-    //Outros
+    //Botões
+     [SerializeField] Button agoraBtn;
+     [SerializeField] Button depoisBtn;
 
-   
+
+     void Start () {
+          agoraBtn.gameObject.SetActive(false);
+          depoisBtn.gameObject.SetActive(false);
+
+     }
+
     void Update()          
      {
           
@@ -45,8 +53,42 @@ public class Attempt : MonoBehaviour
                     OnResultadoFinalizado();
                }
           }
+
+          if (activeChoice == false) {
+               //desativa os botões
+               agoraBtn.gameObject.SetActive(false);
+               depoisBtn.gameObject.SetActive(false);
+          }
+          else if (activeChoice == true && attemptNumber == 1) {
+               // ativa só o botão imediato
+               agoraBtn.gameObject.SetActive(true);
+               depoisBtn.gameObject.SetActive(true);
+
+               agoraBtn.interactable = true;
+               depoisBtn.interactable = false;
+
+          }
+          else if (activeChoice == true && attemptNumber == 2) {
+               // ativa só botão atrasado
+               agoraBtn.gameObject.SetActive(true);
+               depoisBtn.gameObject.SetActive(true);
+
+               agoraBtn.interactable = false;
+               depoisBtn.interactable = true;
+          }
+          else if (activeChoice == true && attemptNumber > 2) {
+               //ativa ambos os botões
+
+               agoraBtn.gameObject.SetActive(true);
+               depoisBtn.gameObject.SetActive(true);
+
+               agoraBtn.interactable = true;
+               depoisBtn.interactable = true;
+          }
+
           
 
+          /*
           if (activeChoice == true) {
                if (attemptNumber == 0) {
                     //selecaoAtual = ChoiceSelector.Waiting;
@@ -89,10 +131,30 @@ public class Attempt : MonoBehaviour
                     }
                }
                
-          }  
-     }    
+          }
+          */
+     }
 
-    public IEnumerator TimeForChoiceCoroutine()
+     public void escolhaImediataBtn () {
+          // Escolha imediata
+          selecaoAtual = ChoiceSelector.Imediata;
+          isChosen = true; // informa que foi escolhido                    
+          activeChoice = false; // desativa a permissão pra escolher
+          resultadoFinalizado = true;
+          // Debug.Log("Opção imediata foi escolhida. Causou " + imediateDamage + " de dano.");
+     }
+
+     public void escolhaAtrasadaBtn () {
+          // Escolha atrasada
+          selecaoAtual = ChoiceSelector.Atrasada;
+          isChosen = true;
+          activeChoice = false; // desativa a permissão pra escolher
+          resultadoFinalizado = true;
+          // Debug.Log("Opção atrasada foi escolhida. Causou " + delayedDamage + " de dano.");
+     }
+
+
+    public IEnumerator TimeForChoiceCoroutine(float choiceTime)
     {
           // Espera o tempo determinado por choiceTime
           yield return new WaitForSeconds(choiceTime);

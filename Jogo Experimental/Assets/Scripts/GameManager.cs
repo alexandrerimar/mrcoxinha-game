@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     // Variáveis de "Tentativas"
     public float deltaTInicial = 8.0f; // O primeiro deltaT de cada sessão
     public float IET; // Tempo de espera entre tentativas
-    public int timeForChoice = 5; //Tempo para fazer a escolha
+    public float timeForChoice = 5.0f; //Tempo para fazer a escolha
     [SerializeField] int TTotalDaTentativa = 30; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT)
     public Attempt.ChoiceSelector selectedChoice;
 
@@ -210,20 +210,14 @@ public class GameManager : MonoBehaviour
         // Inicia a tentativa atual 
         attemptScript.isChosen = false;
         currentAttempt = attempt;
+
         Debug.Log("Iniciando tentativa " + currentAttempt);
 
-        if (currentAttempt == 1) {
-            attemptScript.attemptNumber = 1;
-        }
-        else if (currentAttempt == 2) {
-            attemptScript.attemptNumber = 2;
-        }
-        else {
-            attemptScript.attemptNumber = 0;
-        }
-        
+        attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt        
+
         attemptScript.activeChoice = true; // Permite fazer uma escolha         
         attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita
+
               
         // Spawna o inimigo no início da tentativa
         spawnDistance = SetDistance();
@@ -233,7 +227,7 @@ public class GameManager : MonoBehaviour
         // Verifica se a escolha foi feita antes do tempo especificado
         if (!attemptScript.isChosen)
         {
-            tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutine());
+            tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutine(timeForChoice));
         }
         
         // Chama a função 'ComputarEscolha' quando o resultado for finalizado
