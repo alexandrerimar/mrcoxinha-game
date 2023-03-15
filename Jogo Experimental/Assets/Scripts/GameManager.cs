@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
 
     // Variáveis de "Bloco"
     public float deltaT; // Tempo entre escolha e consequência
-    [SerializeField] float deltaTSuperior = 25.0f;
+    [SerializeField] float deltaTSuperior = 15.0f;
     [SerializeField] float deltaTInferior = 1.0f;
     public int totalDaEscolha; //soma das ultimas 4 tentativas do bloco
     List<float> lastThreeBlocks = new List<float>();
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
     //public int totalDeBlocos;
 
     // Variáveis de "Tentativas"
-    public float deltaTInicial = 7.0f; // O primeiro deltaT de cada sessão
+    public float deltaTInicial = 8.0f; // O primeiro deltaT de cada sessão
     public float IET; // Tempo de espera entre tentativas
     public int timeForChoice = 5; //Tempo para fazer a escolha
     [SerializeField] int TTotalDaTentativa = 30; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT)
@@ -212,6 +212,16 @@ public class GameManager : MonoBehaviour
         currentAttempt = attempt;
         Debug.Log("Iniciando tentativa " + currentAttempt);
 
+        if (currentAttempt == 1) {
+            attemptScript.attemptNumber = 1;
+        }
+        else if (currentAttempt == 2) {
+            attemptScript.attemptNumber = 2;
+        }
+        else {
+            attemptScript.attemptNumber = 0;
+        }
+        
         attemptScript.activeChoice = true; // Permite fazer uma escolha         
         attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita
               
@@ -458,10 +468,7 @@ public class GameManager : MonoBehaviour
             
             ponto = media;
             return ponto;
-        }
-
-        Debug.Log("Ponto de Indiferença é " + ponto);
-        
+        }        
     }
 
     
