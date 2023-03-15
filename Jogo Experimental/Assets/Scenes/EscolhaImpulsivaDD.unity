@@ -5207,9 +5207,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isChosen: 0
   activeChoice: 0
-  imediateDamage: 10
-  delayedDamage: 100
-  waitTime: 7
   attemptNumber: 0
   selecaoAtual: 2
   resultadoFinalizado: 0
@@ -9198,7 +9195,7 @@ MonoBehaviour:
   Enemy: {fileID: 958186312}
   currentSession: 1
   currentBlock: 1
-  currentAttempt: 4
+  currentAttempt: 1
   totalSessions: 5
   totalBlocks: 4
   totalAttempts: 6
@@ -9211,7 +9208,7 @@ MonoBehaviour:
   deltaTInicial: 7
   IET: 2
   timeForChoice: 60
-  TTotalDaTentativa: 30
+  TTotalDaTentativa: 18
   selectedChoice: 0
   damageTextPrefab: {fileID: 311326045153329037, guid: 5510681d63424654693ec9d61d018b35, type: 3}
   camera: {fileID: 548996590}
@@ -10348,7 +10345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -10362,7 +10359,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.9607844, g: 0.04705883, b: 0, a: 1}
     m_DisabledColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
+    m_FadeDuration: 0.2
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}
@@ -10672,7 +10669,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -10686,7 +10683,7 @@ MonoBehaviour:
     m_SelectedColor: {r: 0.9607844, g: 0.04705883, b: 0, a: 1}
     m_DisabledColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
     m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
+    m_FadeDuration: 0.2
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 0}

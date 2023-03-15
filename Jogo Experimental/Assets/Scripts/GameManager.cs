@@ -213,16 +213,16 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Iniciando tentativa " + currentAttempt);
 
-        attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt        
-
-        attemptScript.activeChoice = true; // Permite fazer uma escolha         
-        attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita
-
-              
         // Spawna o inimigo no início da tentativa
         spawnDistance = SetDistance();
         SpawnEnemy(spawnDistance);      
         Enemy.transform.LookAt(Player.transform); 
+
+        attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt        
+
+        attemptScript.activeChoice = true; // Permite fazer uma escolha         
+        attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita             
+        
 
         // Verifica se a escolha foi feita antes do tempo especificado
         if (!attemptScript.isChosen)
