@@ -5193,6 +5193,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTarget: {fileID: 958186312}
   lockOn: 1
+  turnSpeed: 0.01
+  mainCamera: {fileID: 548996590}
 --- !u!114 &1041392812
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9190,8 +9192,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputManager: {fileID: 2034844641}
   Player: {fileID: 1041392802}
-  globalMaxDistance: 10
-  globalMinDistance: 3
+  globalMaxDistance: 4
+  globalMinDistance: 2
   Enemy: {fileID: 958186312}
   currentSession: 1
   currentBlock: 1
@@ -9208,7 +9210,7 @@ MonoBehaviour:
   deltaTInicial: 7
   IET: 2
   timeForChoice: 60
-  TTotalDaTentativa: 30
+  TTotalDaTentativa: 10
   selectedChoice: 0
   damageTextPrefab: {fileID: 311326045153329037, guid: 5510681d63424654693ec9d61d018b35, type: 3}
   camera: {fileID: 548996590}
