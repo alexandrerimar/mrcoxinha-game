@@ -2238,6 +2238,7 @@ GameObject:
   - component: {fileID: 548996593}
   - component: {fileID: 548996592}
   - component: {fileID: 548996596}
+  - component: {fileID: 548996597}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -2329,6 +2330,25 @@ MonoBehaviour:
   sensitivityVert: 9
   minimumVert: -25
   maximumVert: 25
+--- !u!114 &548996597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548996590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fdc28df799c14a4da026ae2c19cefc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTarget: {fileID: 958186312}
+  lockOn: 1
+  targetPos: {x: 0, y: 0, z: 0}
+  rotGoal: {x: 0, y: 0, z: 0, w: 0}
+  rotationTime: 0.75
+  player: {fileID: 1041392802}
+  playerScript: {fileID: 0}
 --- !u!1001 &573141863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5194,7 +5214,7 @@ MonoBehaviour:
   currentTarget: {fileID: 958186312}
   lockOn: 1
   rotationTime: 0.75
-  mainCamera: {fileID: 548996590}
+  mainCamera: {fileID: 0}
 --- !u!114 &1041392812
 MonoBehaviour:
   m_ObjectHideFlags: 0
