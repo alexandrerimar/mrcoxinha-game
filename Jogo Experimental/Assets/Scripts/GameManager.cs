@@ -7,8 +7,14 @@ using TMPro;
 /*
 PRÓXIMOS PASSOS
 Agora:
-1. Bug: os botões estão aparecendo sem que o inimigo apareça. Não sei se o tempo do inimigo aparecer tá errado, ou se ele simplesmente não aparece mesmo. Talvez o inimigo esteja sendo destruído antes da escolha. 
--- solução: usar on event para determinar quando o player está a mais de 3 metros e o inimigo pode spawnar https://www.youtube.com/watch?v=k4JlFxPcqlg
+1. Organizar os tempos
+1.1. Botões aparecem só quando inimigo está na mira.
+2. Colocar identificador do player nos arquivos
+3. Organizar tempo de aparecimento do dano e do "não escolheu"
+4. Organizar animação de morte do inimigo
+
+Importante:
+1. Função para inimigo aparecer só quando personagem anda? Pois o player pode ficar só parado.
 
 Depois
 1. Criar animação do tiro.

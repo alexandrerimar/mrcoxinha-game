@@ -35,7 +35,6 @@ public class LockOnTarget : MonoBehaviour
             float speed = angle / rotationTime;
             float speedForCamera = angleFromCamera / rotationTime;
 
-
             // Determina quais eixos vão rotacionas (personagem)
             Vector3 newRotGoal = new Vector3(transform.rotation.x, rotGoal.y, transform.rotation.z);
             Quaternion newQuaternion = new Quaternion(newRotGoal.x, newRotGoal.y, newRotGoal.z, rotGoal.w);            
@@ -50,6 +49,7 @@ public class LockOnTarget : MonoBehaviour
             
             // Rotaciona câmera
             mainCamera.transform.rotation = Quaternion.RotateTowards(mainCamera.transform.rotation, newQuaternionCamera, speedForCamera * Time.deltaTime);
+
 
                     
         }
@@ -67,51 +67,11 @@ public class LockOnTarget : MonoBehaviour
         Quaternion rotGoal = Quaternion.LookRotation(targetPos);
         return(rotGoal);
     }
-    
-    
-    public void SetTarget(GameObject target)
-    {
-        currentTarget = target;
-    }
-    
+  
 
     public void LockOn()
     {
         lockOn = !lockOn;
     }
 
-}    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    void Update()
-    {
-        if (currentTarget != null && currentTarget.activeSelf == true && lockOn)
-        {
-            // Desativa o movimento do personagem
-            GetComponent<FPSInput>().enabled = false;
-            GetComponentInChildren<MouseLook>().enabled = false;
-
-            // Fixa a mira no alvo
-            targetPos = currentTarget.transform.position;
-            targetPos.y = transform.position.y;
-            transform.LookAt(targetPos);
-            transform.GetChild(0).transform.LookAt(targetPos);
-        }
-        else
-        {
-            // Ativa o movimento do personagem
-            GetComponent<FPSInput>().enabled = true;
-            GetComponentInChildren<MouseLook>().enabled = true;
-        }
-    }
-
-    
-    
-    */
-
+} 

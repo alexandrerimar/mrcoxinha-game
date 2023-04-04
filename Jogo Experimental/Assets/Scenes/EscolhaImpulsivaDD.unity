@@ -2327,8 +2327,8 @@ MonoBehaviour:
   axes: 2
   sensitivityHor: 9
   sensitivityVert: 9
-  minimumVert: -45
-  maximumVert: 45
+  minimumVert: -25
+  maximumVert: 25
 --- !u!1001 &573141863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5193,7 +5193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTarget: {fileID: 958186312}
   lockOn: 1
-  rotationTime: 0.6
+  rotationTime: 0.75
   mainCamera: {fileID: 548996590}
 --- !u!114 &1041392812
 MonoBehaviour:
