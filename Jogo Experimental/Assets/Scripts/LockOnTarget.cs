@@ -7,24 +7,33 @@ public class LockOnTarget : MonoBehaviour
     public GameObject currentTarget;
     public bool lockOn;
     private Vector3 targetPos;
-    [SerializeField] float turnSpeed = 0.10f;
+    private Vector3 targetPosFromCamera;
     Quaternion rotGoal;
+    Quaternion rotGoalFromCamera;
+    [SerializeField] float rotationTime = 0.75f;
     [SerializeField] private GameObject mainCamera;
 
-    void Start() {
-        //mainCamera = GetComponentInChildren<Camera>();
-    }
 
     void Update() {
         if (currentTarget !=null && currentTarget.activeSelf == true && lockOn){
             // Desativa o movimento do personagem
             mainCamera.GetComponent<MouseLook>().enabled = false;
             GetComponent<MouseLook>().enabled = false;
-            GetComponent<FPSInput>().enabled = false;            
+            GetComponent<FPSInput>().enabled = false; 
+          
 
             // Pega a posição do inimigo
             targetPos = (currentTarget.transform.position - transform.position).normalized;
+            targetPosFromCamera = (currentTarget.transform.position - mainCamera.transform.position).normalized;
             rotGoal = Quaternion.LookRotation(targetPos);
+            rotGoalFromCamera = Quaternion.LookRotation(targetPosFromCamera);
+
+            // Calcula a velocidade de rotação
+            float angle = Quaternion.Angle(transform.rotation, rotGoal);
+            float angleFromCamera = Quaternion.Angle(mainCamera.transform.rotation, rotGoalFromCamera);
+            
+            float speed = angle / rotationTime;
+            float speedForCamera = angleFromCamera / rotationTime;
 
 
             // Determina quais eixos vão rotacionas (personagem)
@@ -37,10 +46,10 @@ public class LockOnTarget : MonoBehaviour
             
 
             // Rotaciona personagem
-            transform.rotation = Quaternion.Slerp(transform.rotation, newQuaternion, turnSpeed);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, newQuaternion, speed * Time.deltaTime);
             
             // Rotaciona câmera
-            mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation, newQuaternionCamera, turnSpeed);
+            mainCamera.transform.rotation = Quaternion.RotateTowards(mainCamera.transform.rotation, newQuaternionCamera, speedForCamera * Time.deltaTime);
 
                     
         }
@@ -55,7 +64,7 @@ public class LockOnTarget : MonoBehaviour
     Quaternion GetRotationGoal(Vector3 originPosition) {
         // Pega a posição do inimigo
         targetPos = (currentTarget.transform.position - originPosition).normalized;
-        rotGoal = Quaternion.LookRotation(targetPos);
+        Quaternion rotGoal = Quaternion.LookRotation(targetPos);
         return(rotGoal);
     }
     

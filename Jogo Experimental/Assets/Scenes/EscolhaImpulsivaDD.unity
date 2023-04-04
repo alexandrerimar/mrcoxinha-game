@@ -5193,7 +5193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTarget: {fileID: 958186312}
   lockOn: 1
-  turnSpeed: 0.01
+  rotationTime: 0.6
   mainCamera: {fileID: 548996590}
 --- !u!114 &1041392812
 MonoBehaviour:
@@ -9192,8 +9192,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InputManager: {fileID: 2034844641}
   Player: {fileID: 1041392802}
-  globalMaxDistance: 4
-  globalMinDistance: 2
+  globalMaxDistance: 10
+  globalMinDistance: 3
   Enemy: {fileID: 958186312}
   currentSession: 1
   currentBlock: 1
