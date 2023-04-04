@@ -7,7 +7,8 @@ using TMPro;
 /*
 PRÓXIMOS PASSOS
 Agora:
-1. Organizar as tentativas forçadas. 
+1. Bug: os botões estão aparecendo sem que o inimigo apareça. Não sei se o tempo do inimigo aparecer tá errado, ou se ele simplesmente não aparece mesmo. Talvez o inimigo esteja sendo destruído antes da escolha. 
+-- solução: usar on event para determinar quando o player está a mais de 3 metros e o inimigo pode spawnar https://www.youtube.com/watch?v=k4JlFxPcqlg
 
 Depois
 1. Criar animação do tiro.
@@ -68,8 +69,7 @@ public class GameManager : MonoBehaviour
     public string textToDisplay; 
 
 
-    void Start()
-    {
+    void Start() {
         attemptScript = Player.GetComponent<Attempt>();
         animationScript = GetComponent<AnimationScript>();
         inputHandler = InputManager.GetComponent<InputHandler>();
@@ -78,25 +78,22 @@ public class GameManager : MonoBehaviour
 
         // Desativa o inimigo no início da sessão
         Enemy.SetActive(false);
+        spawnDistance = SetDistance();
         
         // Inicia a primeira sessão, bloco e tentativa
         StartSession(currentSession);
         StartBlock(currentBlock);
         StartAttempt(currentAttempt);
-    }
+
+        
+    }  
 
     void Update() {
-        // Spawna o inimigo com coroutine
-        //spawnDistance = SetDistance();
-        //StartCoroutine(SpawnEnemy(spawnDistance));      
-        //Enemy.transform.LookAt(Player.transform); 
+        spawnDistance = SetDistance();
     }
-    
 
-    //funções para spawn
-
-    public void SpawnEnemy (float distance)
-    {
+    // Funções para spawn
+    public void SpawnEnemy (float distance) {
         // Spawn sem coroutine
         if (Enemy.activeSelf == false) {
             Vector3 playerPos = Player.transform.position;
@@ -107,22 +104,21 @@ public class GameManager : MonoBehaviour
 
             spawnPos.y = -1; 
             Enemy.transform.position = spawnPos;
-
+            
             if (spawnDistance != 0) {
-                Enemy.SetActive(true);                
+                Enemy.SetActive(true);                  
             }
         }
     }
 
-    public void KillEnemy ()
-    {
+    public void KillEnemy () {
         // Remove o inimigo de cena
         if (Enemy.activeSelf == true) {
            Enemy.SetActive(false);
         }
     }
 
-
+/*
     IEnumerator SpawnEnemyREF (float distance) {     
         // Função que spawna usando corroutine (só referência)
 
@@ -144,6 +140,7 @@ public class GameManager : MonoBehaviour
             }
         }
    }
+*/
    
     public float SetDistance () {
         // determina a distância em que o inimigo aparecerá
@@ -161,7 +158,7 @@ public class GameManager : MonoBehaviour
         float distance = Random.Range(minDistance, maxDistance);
 
        if (distance <= globalMinDistance) {
-            distance = 0;
+            distance = -globalMinDistance;
         }
         return distance;
     }  
@@ -204,22 +201,21 @@ public class GameManager : MonoBehaviour
 
 
 
-    public void StartAttempt(int attempt)
-    {
-
+    public void StartAttempt(int attempt){
         // Inicia a tentativa atual 
         attemptScript.isChosen = false;
         currentAttempt = attempt;
-
         Debug.Log("Iniciando tentativa " + currentAttempt);
 
         // Spawna o inimigo no início da tentativa
-        spawnDistance = SetDistance();
         SpawnEnemy(spawnDistance);      
-        Enemy.transform.LookAt(Player.transform); 
+        Enemy.transform.LookAt(Player.transform);
 
-        attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt        
 
+        attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt       
+
+        
+        
         attemptScript.activeChoice = true; // Permite fazer uma escolha         
         attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita             
         
@@ -232,7 +228,6 @@ public class GameManager : MonoBehaviour
         
         // Chama a função 'ComputarEscolha' quando o resultado for finalizado
         Attempt.OnResultadoFinalizado += ComputarEscolha;
-
     }
         
     public void ComputarEscolha()

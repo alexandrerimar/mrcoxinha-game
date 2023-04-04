@@ -43,7 +43,7 @@ public class SceneController : MonoBehaviour
             Enemy.transform.position = spawnPos;         
           
             if (spawnDistance != 0) {
-                yield return new WaitForSeconds(1); //tempo entre apresentações
+                //yield return new WaitForSeconds(1); //tempo entre apresentações
                 Enemy.SetActive(true);
                 yield return new WaitForSeconds(10); //tempo que o inimigo aparece
                 Enemy.SetActive(false);

@@ -9208,7 +9208,7 @@ MonoBehaviour:
   deltaTInicial: 7
   IET: 2
   timeForChoice: 60
-  TTotalDaTentativa: 18
+  TTotalDaTentativa: 30
   selectedChoice: 0
   damageTextPrefab: {fileID: 311326045153329037, guid: 5510681d63424654693ec9d61d018b35, type: 3}
   camera: {fileID: 548996590}
