@@ -4,6 +4,9 @@ using UnityEngine;
 using System.Linq;
 
 public class InputHandler : MonoBehaviour {
+    // Player ID
+    [SerializeField] string playerIDInput;
+    
     // Variáveis de Tentativa
     [SerializeField] int[] etapaAtualInput;    
     [SerializeField] string danoEscolhidoInput;
@@ -22,13 +25,19 @@ public class InputHandler : MonoBehaviour {
     [SerializeField] float pontoDeIndiferencaInput;
 
     [SerializeField] GameObject controller;
+    [SerializeField] GameObject mainMenu;
     private GameManager gameManager;
 
     List<InputEntry> entries = new List<InputEntry> ();
     List<BlocoEntry> blocoEntries = new List<BlocoEntry> ();
     List<SessionEntry> sessionEntries = new List<SessionEntry> ();
 
-    private void Start () {
+    void Awake() {
+        playerIDInput = MainMenu.playerIDCrossScene; // Pega o ID do usuário no menu principal
+        Debug.Log("Player Input passou: " + playerIDInput);
+    }
+    
+    void Start () {
         gameManager = controller.GetComponent<GameManager>();
         entries = FileHandler.ReadListFromJSON<InputEntry> (filename);
         blocoEntries = FileHandler.ReadListFromJSON<BlocoEntry> (filenameBloco);
@@ -61,7 +70,7 @@ public class InputHandler : MonoBehaviour {
         GetData();
         string time;        
         time = System.DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
-        entries.Add (new InputEntry (etapaAtualInput, danoEscolhidoInput, deltaTAtualInput, time));
+        entries.Add (new InputEntry (etapaAtualInput, danoEscolhidoInput, deltaTAtualInput, time, playerIDInput));
         FileHandler.SaveToJSON<InputEntry>(entries, filename);        
     }
 
@@ -70,7 +79,7 @@ public class InputHandler : MonoBehaviour {
         GetDataBloco();
         string time;
         time = System.DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
-        blocoEntries.Add (new BlocoEntry (etapaAtualDeBlocoInput[0], etapaAtualDeBlocoInput[1], resultadoDoBlocoInput, deltaTDoBlocoInput, time));
+        blocoEntries.Add (new BlocoEntry (etapaAtualDeBlocoInput[0], etapaAtualDeBlocoInput[1], resultadoDoBlocoInput, deltaTDoBlocoInput, time, playerIDInput));
         FileHandler.SaveToJSON<BlocoEntry>(blocoEntries, filenameBloco);
     }
 
@@ -79,7 +88,7 @@ public class InputHandler : MonoBehaviour {
         GetDataSession();
         string time;
         time = System.DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
-        sessionEntries.Add (new SessionEntry (etapaAtualDeSessaoInput, pontoDeIndiferencaInput, time));
+        sessionEntries.Add (new SessionEntry (etapaAtualDeSessaoInput, pontoDeIndiferencaInput, time, playerIDInput));
         FileHandler.SaveToJSON<SessionEntry>(sessionEntries, filenameSession);
     }
 

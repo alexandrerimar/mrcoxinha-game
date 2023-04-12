@@ -5193,7 +5193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTarget: {fileID: 958186312}
   lockOn: 1
-  rotationTime: 0.1
+  rotationTime: 0.75
   mainCamera: {fileID: 548996590}
 --- !u!114 &1041392812
 MonoBehaviour:
