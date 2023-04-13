@@ -34,19 +34,24 @@ public class Attempt : MonoBehaviour
      [SerializeField] Button agoraBtn;
      [SerializeField] Button depoisBtn;
 
+     //Referência a Game Manager
+     [SerializeField] GameObject enemy;
+     private bool isEnemyActive;
+
 
      void Start () {
+
           agoraBtn.gameObject.SetActive(false);
           depoisBtn.gameObject.SetActive(false);
-
      }
 
     void Update()          
      {   
+          isEnemyActive = enemy.activeSelf;
+
           if (resultadoFinalizado == true)
           {
-               if (OnResultadoFinalizado != null)
-               {
+               if (OnResultadoFinalizado != null) {
                     OnResultadoFinalizado();
                }
           }
@@ -56,32 +61,32 @@ public class Attempt : MonoBehaviour
                agoraBtn.gameObject.SetActive(false);
                depoisBtn.gameObject.SetActive(false);
           }
-          else if (activeChoice == true && attemptNumber == 1) {
-               // ativa só o botão imediato
-               agoraBtn.gameObject.SetActive(true);
-               depoisBtn.gameObject.SetActive(true);
+          else if (isEnemyActive == true) {
+               if (activeChoice == true && attemptNumber == 1) {
+                    // ativa só o botão imediato
+                    agoraBtn.gameObject.SetActive(true);
+                    depoisBtn.gameObject.SetActive(true);
 
-               agoraBtn.interactable = true;
-               depoisBtn.interactable = false;
+                    agoraBtn.interactable = true;
+                    depoisBtn.interactable = false;
+               }
+               else if (activeChoice == true && attemptNumber == 2) {
+                    // ativa só botão atrasado
+                    agoraBtn.gameObject.SetActive(true);
+                    depoisBtn.gameObject.SetActive(true);
 
-          }
-          else if (activeChoice == true && attemptNumber == 2) {
-               // ativa só botão atrasado
-               agoraBtn.gameObject.SetActive(true);
-               depoisBtn.gameObject.SetActive(true);
+                    agoraBtn.interactable = false;
+                    depoisBtn.interactable = true;
+               }
+               else if (activeChoice == true && attemptNumber > 2) {
+                    //ativa ambos os botões
+                    agoraBtn.gameObject.SetActive(true);
+                    depoisBtn.gameObject.SetActive(true);
 
-               agoraBtn.interactable = false;
-               depoisBtn.interactable = true;
-          }
-          else if (activeChoice == true && attemptNumber > 2) {
-               //ativa ambos os botões
-
-               agoraBtn.gameObject.SetActive(true);
-               depoisBtn.gameObject.SetActive(true);
-
-               agoraBtn.interactable = true;
-               depoisBtn.interactable = true;
-          }
+                    agoraBtn.interactable = true;
+                    depoisBtn.interactable = true;
+               }
+          }      
      }
 
      public void escolhaImediataBtn () {

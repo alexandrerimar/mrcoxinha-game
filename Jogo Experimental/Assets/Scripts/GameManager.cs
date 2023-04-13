@@ -8,8 +8,8 @@ using TMPro;
 PRÓXIMOS PASSOS
 Agora:
 -1. Organizar os tempos
-1.1. Botões aparecem só quando inimigo está na mira.
-2. Colocar identificador do player nos arquivos
+[feito] 1.1. Botões aparecem só quando inimigo está na mira.
+[feito] 2. Colocar identificador do player nos arquivos
 3. Organizar tempo de aparecimento do dano e do "não escolheu"
 4. Organizar animação de morte do inimigo
 
@@ -37,6 +37,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] float globalMaxDistance, globalMinDistance;
     public GameObject Enemy;
     private float spawnDistance;
+
+    //Tempo de espera inicial
+    [SerializeField] float initialTimeWait = 10f;
     
     // Variaveis de controle de sessão, bloco e tentativa
     public int currentSession = 1;
@@ -87,15 +90,24 @@ public class GameManager : MonoBehaviour
         spawnDistance = SetDistance();
         
         // Inicia a primeira sessão, bloco e tentativa
+        if (currentSession == 1 && currentBlock == 1 && currentAttempt == 1) {
+            StartCoroutine (WaitForStart());
+        } else {
         StartSession(currentSession);
         StartBlock(currentBlock);
         StartAttempt(currentAttempt);
-
-        
+        }  
     }  
 
     void Update() {
         spawnDistance = SetDistance();
+    }
+
+     IEnumerator WaitForStart () {
+        yield return new WaitForSeconds(initialTimeWait);
+        StartSession(currentSession);
+        StartBlock(currentBlock);
+        StartAttempt(currentAttempt);
     }
 
     // Funções para spawn
@@ -123,30 +135,6 @@ public class GameManager : MonoBehaviour
            Enemy.SetActive(false);
         }
     }
-
-/*
-    IEnumerator SpawnEnemyREF (float distance) {     
-        // Função que spawna usando corroutine (só referência)
-
-        if (Enemy.activeSelf == false) {
-            Vector3 playerPos = Player.transform.position;
-            Vector3 playerDirection = Player.transform.forward;
-            Quaternion playerRotation = Player.transform.rotation;
-
-            Vector3 spawnPos = playerPos + playerDirection * distance;
-
-            spawnPos.y = -1; 
-            Enemy.transform.position = spawnPos;         
-          
-            if (spawnDistance != 0) {
-                yield return new WaitForSeconds(1); //tempo entre apresentações
-                Enemy.SetActive(true);
-                yield return new WaitForSeconds(10); //tempo que o inimigo aparece
-                Enemy.SetActive(false);
-            }
-        }
-   }
-*/
    
     public float SetDistance () {
         // determina a distância em que o inimigo aparecerá
@@ -196,7 +184,6 @@ public class GameManager : MonoBehaviour
                 imediateDamage = "90";
                 break;
         }
-
     }
 
     public void StartBlock(int block)
@@ -235,7 +222,7 @@ public class GameManager : MonoBehaviour
         // Chama a função 'ComputarEscolha' quando o resultado for finalizado
         Attempt.OnResultadoFinalizado += ComputarEscolha;
     }
-        
+
     public void ComputarEscolha()
     {   
         
