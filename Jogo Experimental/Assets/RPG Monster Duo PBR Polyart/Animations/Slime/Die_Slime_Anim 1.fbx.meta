@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f76b9b823f2fc9a469d0c2c780514380
+guid: 6ee520c28ef2c4240a3bc0fbd4cab35d
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
@@ -141,7 +141,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 1
+      - time: 0.68085104
         functionName: DeactivateEnemyOnAnimationEnd
         data: 
         objectReferenceParameter: {instanceID: 0}

@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     // Dependências
     Attempt attemptScript;
     AnimationScript animationScript;
+    private EnemyVFX enemyVFXScript;
     [SerializeField] GameObject InputManager;
     private InputHandler inputHandler;
     
@@ -82,6 +83,7 @@ public class GameManager : MonoBehaviour
         attemptScript = Player.GetComponent<Attempt>();
         animationScript = GetComponent<AnimationScript>();
         inputHandler = InputManager.GetComponent<InputHandler>();
+        enemyVFXScript = Enemy.GetComponent<EnemyVFX>();
 
         deltaT = deltaTInicial;
 
@@ -123,8 +125,12 @@ public class GameManager : MonoBehaviour
             spawnPos.y = -1; 
             Enemy.transform.position = spawnPos;
             
+            Vector3 VFXPos = spawnPos;
+            VFXPos.y = -0.85f;
+            
             if (spawnDistance != 0) {
-                Enemy.SetActive(true);                  
+                Enemy.SetActive(true); 
+                enemyVFXScript.ActivatEnemySpawnVFX(VFXPos);         
             }
         }
     }
@@ -198,10 +204,8 @@ public class GameManager : MonoBehaviour
         Enemy.transform.LookAt(Player.transform);
 
 
-        attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt       
+        attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt  
 
-        
-        
         attemptScript.activeChoice = true; // Permite fazer uma escolha         
         attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita             
         
@@ -463,7 +467,7 @@ public class GameManager : MonoBehaviour
     public void KillEnemy () {
         // Remove o inimigo de cena
         if (Enemy.activeSelf == true) {
-           Enemy.SetActive(false);
+            animationScript.Die();
         }
     }
 
@@ -474,7 +478,13 @@ public class GameManager : MonoBehaviour
         GameObject DamageTextInstance = Instantiate(damageTextPrefab, camera.transform);
         DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().SetText(textToDisplay);
 
-        KillEnemy(); // Tira o inimigo de cena
+        EscapeEnemy (); // Tira o inimigo de cena
+    }
+
+    public void EscapeEnemy () {
+        if (Enemy.activeSelf == true) {
+            animationScript.Escape();
+        }
     }
 
     /*
