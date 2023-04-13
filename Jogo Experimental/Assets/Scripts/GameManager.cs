@@ -112,7 +112,7 @@ public class GameManager : MonoBehaviour
 
     // Funções para spawn
     public void SpawnEnemy (float distance) {
-        // Spawn sem coroutine
+        // Coloca o inimigo em cena
         if (Enemy.activeSelf == false) {
             Vector3 playerPos = Player.transform.position;
             Vector3 playerDirection = Player.transform.forward;
@@ -126,13 +126,6 @@ public class GameManager : MonoBehaviour
             if (spawnDistance != 0) {
                 Enemy.SetActive(true);                  
             }
-        }
-    }
-
-    public void KillEnemy () {
-        // Remove o inimigo de cena
-        if (Enemy.activeSelf == true) {
-           Enemy.SetActive(false);
         }
     }
    
@@ -454,8 +447,6 @@ public class GameManager : MonoBehaviour
     }
 
     
-
-
     public void Atirar(string danoCausado) {
         // Atira e mostra o dano causado
         
@@ -466,21 +457,24 @@ public class GameManager : MonoBehaviour
         GameObject DamageTextInstance = Instantiate(damageTextPrefab, camera.transform);
         DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().SetText(textToDisplay);
         
-        
         KillEnemy(); // Tira o inimigo de cena
+    }
 
+    public void KillEnemy () {
+        // Remove o inimigo de cena
+        if (Enemy.activeSelf == true) {
+           Enemy.SetActive(false);
+        }
     }
 
     public void NaoAtirar () {
         // Retira o inimigo de cena, sem atirar e mostra mensagem de que a escolha não foi feita.
-
         textToDisplay = "Não escolheu"; 
 
         GameObject DamageTextInstance = Instantiate(damageTextPrefab, camera.transform);
         DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().SetText(textToDisplay);
 
         KillEnemy(); // Tira o inimigo de cena
-
     }
 
     /*
