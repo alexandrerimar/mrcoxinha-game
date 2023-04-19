@@ -10,7 +10,7 @@ Agora:
 -1. Organizar os tempos
 [feito] 1.1. Botões aparecem só quando inimigo está na mira.
 [feito] 2. Colocar identificador do player nos arquivos
-3. Organizar tempo de aparecimento do dano e do "não escolheu"
+3. Organizar tempo de aparecimento do dano e do "não escolheu" e a aparência das letras.
 [feito]4. Organizar animação de morte do inimigo
 
 Importante:
@@ -21,7 +21,7 @@ Depois
 [feito] 2. Fazer o tiro destruir o inimigo.
 [feito] 3. Fazer uma animação para o inimigo aparecer e desaparecer.
 [feito] 4. Fazer animação pra quando o inimigo desaparece sem tiro
-5. Sonorizar
+5. Sonorizar: colocar som ambiente. 
 
 6. Usar modelo para criar o outro jogo
 */
