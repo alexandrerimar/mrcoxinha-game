@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     private EnemyVFX enemyVFXScript;
     [SerializeField] GameObject InputManager;
     private InputHandler inputHandler;
+    [SerializeField] GameObject canvasUI;
     
     SoundManager soundManager;
     
@@ -87,6 +88,8 @@ public class GameManager : MonoBehaviour
 
 
     void Start() {
+        Screen.lockCursor = true; //esconde o cursor do mouse e não permite que saia da tela
+        
         attemptScript = Player.GetComponent<Attempt>();
         animationScript = GetComponent<AnimationScript>();
         inputHandler = InputManager.GetComponent<InputHandler>();
@@ -204,7 +207,8 @@ public class GameManager : MonoBehaviour
 
 
     public void StartAttempt(int attempt){
-        // Inicia a tentativa atual 
+        // Inicia a tentativa atual
+        Screen.lockCursor = false; 
         attemptScript.isChosen = false;
         currentAttempt = attempt;
         Debug.Log("Iniciando tentativa " + currentAttempt);
@@ -235,6 +239,7 @@ public class GameManager : MonoBehaviour
         // Atribui o valor da escolha para a variável selectedChoice
         // Computa escolha
         // Desativa o Evento OnResultadoFinalizado
+        Screen.lockCursor = true;
         
         selectedChoice = attemptScript.selecaoAtual;
 
@@ -467,9 +472,9 @@ public class GameManager : MonoBehaviour
         animationScript.Shoot(); // Chama a função que ativa a animação de "Atirar"
         
         // Mostra a animação do texto de dano
-        GameObject DamageTextInstance = Instantiate(damageTextPrefab, camera.transform);
-        DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().SetText(textToDisplay);
-        
+        GameObject DamageTextInstance = Instantiate(damageTextPrefab, canvasUI.transform);
+        DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(textToDisplay);
+
         KillEnemy(); // Tira o inimigo de cena
     }
 
@@ -483,10 +488,10 @@ public class GameManager : MonoBehaviour
 
     public void NaoAtirar () {
         // Retira o inimigo de cena, sem atirar e mostra mensagem de que a escolha não foi feita.
-        textToDisplay = "Não escolheu"; 
+        textToDisplay = "Inimigo escapou"; 
 
-        GameObject DamageTextInstance = Instantiate(damageTextPrefab, camera.transform);
-        DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshPro>().SetText(textToDisplay);
+        GameObject DamageTextInstance = Instantiate(damageTextPrefab, canvasUI.transform);
+        DamageTextInstance.transform.GetChild(0).GetComponent<TextMeshProUGUI>().SetText(textToDisplay);
 
         EscapeEnemy (); // Tira o inimigo de cena
     }
