@@ -11,17 +11,19 @@ Agora:
 [feito] 1.1. Botões aparecem só quando inimigo está na mira.
 [feito] 2. Colocar identificador do player nos arquivos
 3. Organizar tempo de aparecimento do dano e do "não escolheu"
-4. Organizar animação de morte do inimigo
+[feito]4. Organizar animação de morte do inimigo
 
 Importante:
 1. Função para inimigo aparecer só quando personagem anda? Pois o player pode ficar só parado.
 
 Depois
-1. Criar animação do tiro.
-2. Fazer o tiro destruir o inimigo.
-3. Fazer uma animação para o inimigo aparecer e desaparecer.
-4. Fazer animação pra quando o inimigo desaparece sem tiro
+[feito] 1. Criar animação do tiro.
+[feito] 2. Fazer o tiro destruir o inimigo.
+[feito] 3. Fazer uma animação para o inimigo aparecer e desaparecer.
+[feito] 4. Fazer animação pra quando o inimigo desaparece sem tiro
 5. Sonorizar
+
+6. Usar modelo para criar o outro jogo
 */
 
 public class GameManager : MonoBehaviour
@@ -33,11 +35,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject InputManager;
     private InputHandler inputHandler;
     
+    SoundManager soundManager;
+    
     // Variáveis de spawn do inimigo
     [SerializeField] GameObject Player;
     [SerializeField] float globalMaxDistance, globalMinDistance;
     public GameObject Enemy;
     private float spawnDistance;
+
+    Vector3 spawnPos;
+    Vector3 VFXPos;
 
     //Tempo de espera inicial
     [SerializeField] float initialTimeWait = 10f;
@@ -84,6 +91,8 @@ public class GameManager : MonoBehaviour
         animationScript = GetComponent<AnimationScript>();
         inputHandler = InputManager.GetComponent<InputHandler>();
         enemyVFXScript = Enemy.GetComponent<EnemyVFX>();
+        soundManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
+
 
         deltaT = deltaTInicial;
 
@@ -112,25 +121,26 @@ public class GameManager : MonoBehaviour
         StartAttempt(currentAttempt);
     }
 
-    // Funções para spawn
+
     public void SpawnEnemy (float distance) {
-        // Coloca o inimigo em cena
+        // Spawna o inimigo
         if (Enemy.activeSelf == false) {
             Vector3 playerPos = Player.transform.position;
             Vector3 playerDirection = Player.transform.forward;
             Quaternion playerRotation = Player.transform.rotation;
 
-            Vector3 spawnPos = playerPos + playerDirection * distance;
+            spawnPos = playerPos + playerDirection * distance;
 
             spawnPos.y = -1; 
             Enemy.transform.position = spawnPos;
             
-            Vector3 VFXPos = spawnPos;
+            VFXPos = spawnPos;
             VFXPos.y = -0.85f;
             
             if (spawnDistance != 0) {
                 Enemy.SetActive(true); 
-                enemyVFXScript.ActivatEnemySpawnVFX(VFXPos);         
+                enemyVFXScript.ActivatEnemySpawnVFX(VFXPos);
+                soundManager.PlaySFX(soundManager.enemySpawn);         
             }
         }
     }
@@ -222,7 +232,6 @@ public class GameManager : MonoBehaviour
 
     public void ComputarEscolha()
     {   
-        
         // Atribui o valor da escolha para a variável selectedChoice
         // Computa escolha
         // Desativa o Evento OnResultadoFinalizado
@@ -450,11 +459,11 @@ public class GameManager : MonoBehaviour
         }        
     }
 
-    
     public void Atirar(string danoCausado) {
         // Atira e mostra o dano causado
         
         textToDisplay = danoCausado; // Coleta a quantidade de dano
+        soundManager.PlaySFX(soundManager.shot); // Ativa som de tiro
         animationScript.Shoot(); // Chama a função que ativa a animação de "Atirar"
         
         // Mostra a animação do texto de dano
@@ -468,6 +477,7 @@ public class GameManager : MonoBehaviour
         // Remove o inimigo de cena
         if (Enemy.activeSelf == true) {
             animationScript.Die();
+            soundManager.PlaySFX(soundManager.enemyDie);
         }
     }
 
@@ -483,7 +493,9 @@ public class GameManager : MonoBehaviour
 
     public void EscapeEnemy () {
         if (Enemy.activeSelf == true) {
+            enemyVFXScript.ActivateEnemyDespawnVFX(VFXPos);
             animationScript.Escape();
+            soundManager.PlaySFX(soundManager.enemySpawn);
         }
     }
 
@@ -505,7 +517,7 @@ public class GameManager : MonoBehaviour
             
             IET = TTotalDaTentativa;
             
-            NaoAtirar (); // ajeitar as funções aqui
+            NaoAtirar(); // ajeitar as funções aqui
 
             Debug.Log("Sem Escolha: IET Iniciado");
             yield return new WaitForSeconds(IET);

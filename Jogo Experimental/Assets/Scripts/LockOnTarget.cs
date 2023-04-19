@@ -19,14 +19,24 @@ public class LockOnTarget : MonoBehaviour
     private float currentRotationTime;
     private float currentRotationTimeCamera;
 
+    // Avisa outros scripts para travar
+    public bool isLocked;
+
+    void Start () {
+        isLocked = false;
+    }
+
     void Update()
     {
         if (currentTarget != null && currentTarget.activeSelf == true && lockOn)
         {
             // Desativa o movimento do personagem
-            mainCamera.GetComponent<MouseLook>().enabled = false;
-            GetComponent<MouseLook>().enabled = false;
-            GetComponent<FPSInput>().enabled = false;
+            
+            isLocked = true;
+
+            //mainCamera.GetComponent<MouseLook>().enabled = false;
+            //GetComponent<MouseLook>().enabled = false;
+            //GetComponent<FPSInput>().enabled = false;
 
             // Verifica se o alvo está atrás do personagem e inverte a direção do vetor, se necessário
             if (Vector3.Dot(transform.forward, targetPosFromCamera) < 0)
@@ -70,9 +80,10 @@ public class LockOnTarget : MonoBehaviour
         else
         {
             // Ativa o movimento do personagem
-            mainCamera.GetComponent<MouseLook>().enabled = true;
-            GetComponent<MouseLook>().enabled = true;
-            GetComponent<FPSInput>().enabled = true;
+            isLocked = false;            
+            //mainCamera.GetComponent<MouseLook>().enabled = true;            
+            //GetComponent<MouseLook>().enabled = true;
+            //GetComponent<FPSInput>().enabled = true;
         }
     }
 
