@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 /*
 PRÓXIMOS PASSOS
@@ -28,6 +29,8 @@ Depois
 
 public class GameManager : MonoBehaviour
 {
+    public string sceneName;
+    
     // Dependências
     Attempt attemptScript;
     AnimationScript animationScript;
@@ -76,7 +79,7 @@ public class GameManager : MonoBehaviour
     public float deltaTInicial = 8.0f; // O primeiro deltaT de cada sessão
     public float IET; // Tempo de espera entre tentativas
     public float timeForChoice = 5.0f; //Tempo para fazer a escolha
-    [SerializeField] int TTotalDaTentativa = 30; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT)
+    [SerializeField] int TTotalDaTentativa = 30; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT), estou ignorando tempo para resposta. Devo?
     public Attempt.ChoiceSelector selectedChoice;
 
     // Outros
@@ -87,7 +90,10 @@ public class GameManager : MonoBehaviour
     public string textToDisplay; 
 
 
-    void Start() {
+    void Start() {         
+        sceneName = GetActiveSceneName();
+        Debug.Log("Cena: " + sceneName);
+
         Screen.lockCursor = true; //esconde o cursor do mouse e não permite que saia da tela
         
         attemptScript = Player.GetComponent<Attempt>();
@@ -107,9 +113,9 @@ public class GameManager : MonoBehaviour
         if (currentSession == 1 && currentBlock == 1 && currentAttempt == 1) {
             StartCoroutine (WaitForStart());
         } else {
-        StartSession(currentSession);
-        StartBlock(currentBlock);
-        StartAttempt(currentAttempt);
+            StartSession(currentSession);
+            StartBlock(currentBlock);
+            StartAttempt(currentAttempt);
         }  
     }  
 
@@ -117,7 +123,15 @@ public class GameManager : MonoBehaviour
         spawnDistance = SetDistance();
     }
 
-     IEnumerator WaitForStart () {
+    private string GetActiveSceneName () {
+        // Retorna o nome da Scene ativa atualmente;
+        Scene currentScene = SceneManager.GetActiveScene();          
+        string sceneName = currentScene.name;
+        return sceneName;
+    }
+
+    IEnumerator WaitForStart () {
+        // Espera um tempo antes de iniciar a primeira sessão
         yield return new WaitForSeconds(initialTimeWait);
         StartSession(currentSession);
         StartBlock(currentBlock);
@@ -217,17 +231,19 @@ public class GameManager : MonoBehaviour
         SpawnEnemy(spawnDistance);      
         Enemy.transform.LookAt(Player.transform);
 
-
         attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt  
 
         attemptScript.activeChoice = true; // Permite fazer uma escolha         
-        attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita             
+        attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita           
         
 
         // Verifica se a escolha foi feita antes do tempo especificado
-        if (!attemptScript.isChosen)
+        if (sceneName == "EscolhaImpulsivaDD")
         {
             tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutine(timeForChoice));
+        } else if (sceneName == "InibicaoRespostaDD")
+        {
+            tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutineIRDD(deltaT, timeForChoice));
         }
         
         // Chama a função 'ComputarEscolha' quando o resultado for finalizado
@@ -246,38 +262,18 @@ public class GameManager : MonoBehaviour
         switch (selectedChoice) 
         {
             case Attempt.ChoiceSelector.Imediata:
-                Debug.Log("A escolha foi " + selectedChoice);
-                
+                Debug.Log("A escolha foi " + selectedChoice);                
                 StopCoroutine(tempoDeEscolha);
                 StartCoroutine(ConsequenciarEscolha(1));
-                
-                /*
-                Atirar(imediateDamage); //Atira e mostra o dano
-                //AtivarIET(); //Faz esperar o IET (talvez Coroutine)
-                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
-                EndAttempt(false); //Vai para a próxima tentativa.
-                */
                 break;
             case Attempt.ChoiceSelector.Atrasada:
                 Debug.Log("A escolha foi " + selectedChoice);
-                
                 StopCoroutine(tempoDeEscolha);
                 StartCoroutine(ConsequenciarEscolha(2));
-                /*
-                StartCoroutine(EsperarIntervaloAtrasado()); //Espera o tempo especificado para a tentativa atrasad
-                //AtivarIET(); //Faz esperar o IET (talvez Coroutine)
-                */
                 break;
             case Attempt.ChoiceSelector.Nenhuma:
                 Debug.Log("A escolha foi " + selectedChoice + ". Repetindo.");
-                
                 StartCoroutine(ConsequenciarEscolha(0));
-                
-                /*
-                //AtivarIET(); //Faz esperar o IET (talvez Coroutine)
-                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
-                EndAttempt(true); // Repete a tentativa atual
-                */
                 break;
         }
         
@@ -504,71 +500,97 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /*
-    public IEnumerator EsperarIntervaloAtrasado() {
-        Debug.Log("DeltaT Iniciado");
-        yield return new WaitForSeconds(0.5f);
-        Atirar(delayedDamage);
-        Debug.Log("DeltaT Finalizado");
-        inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
-        EndAttempt(false);
-    }
-    */
-
-    public IEnumerator ConsequenciarEscolha(int escolha) {
+    public IEnumerator ConsequenciarEscolha(int escolha) 
+    {
         
-        if (escolha == 0) {
-            // Nenhum            
-            
-            IET = TTotalDaTentativa;
-            
-            NaoAtirar(); // ajeitar as funções aqui
+        if (sceneName == "EscolhaImpulsivaDD")
+        {
+            if (escolha == 0) {
+                // Nenhum        
+                IET = TTotalDaTentativa;
+                
+                NaoAtirar(); 
+                Debug.Log("Sem Escolha: IET Iniciado");
+                yield return new WaitForSeconds(IET);
+                Debug.Log("Sem Escolha: IET Finalizado");
+                
+                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
+                EndAttempt(true);
+            }
+            else if (escolha == 1) {
+                // Imediato
 
-            Debug.Log("Sem Escolha: IET Iniciado");
-            yield return new WaitForSeconds(IET);
-            Debug.Log("Sem Escolha: IET Finalizado");
-            
-            inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
-            EndAttempt(true);
+                IET = TTotalDaTentativa;
 
+                Atirar(imediateDamage);
+                Debug.Log("Escolha Imediata: IET Iniciado");
+                yield return new WaitForSeconds(IET);
+                Debug.Log("Escolha Imediata: IET Finalizado");
 
+                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
+                EndAttempt(false);
+
+            }
+            else if (escolha == 2) {
+                // Atrasado 
+
+                IET = TTotalDaTentativa - deltaT;
+
+                Debug.Log("Escolha Atrasada: deltaT Iniciado");
+                yield return new WaitForSeconds(deltaT);
+                Atirar(delayedDamage);
+                Debug.Log("Escolha Atrasada: deltaT Finalizado");
+                
+                Debug.Log("Escolha Atrasada: IET Iniciado");
+                yield return new WaitForSeconds(IET);
+                Debug.Log("Escolha Atrasada: IET Finalizado");
+
+                
+                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
+                EndAttempt(false);
+
+                
+            } 
+            else {
+                Debug.Log("Não foi passado argumento para a função AtivarIET()");
+            }
         }
-        else if (escolha == 1) {
-            // Imediato
+        else if (sceneName == "InibicaoRespostaDD")
+        {
+            if (escolha == 0) {
+                // Nenhum          
+                IET = TTotalDaTentativa - deltaT;  // Jogador já esperou e não escolheu, então removo deltaT, que já passou                
+                NaoAtirar(); 
+                Debug.Log("Sem Escolha: IET Iniciado");
+                yield return new WaitForSeconds(IET);
+                Debug.Log("Sem Escolha: IET Finalizado");                
+                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
+                EndAttempt(true);
+            }
+            else if (escolha == 1) {
+                // Imediato
+                IET = TTotalDaTentativa - deltaT;
+                Atirar(imediateDamage);
+                Debug.Log("Escolha Imediata: IET Iniciado");
+                yield return new WaitForSeconds(IET);
+                Debug.Log("Escolha Imediata: IET Finalizado");
+                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
+                EndAttempt(false);
 
-            IET = TTotalDaTentativa;
-
-            Atirar(imediateDamage);
-            Debug.Log("Escolha Imediata: IET Iniciado");
-            yield return new WaitForSeconds(IET);
-            Debug.Log("Escolha Imediata: IET Finalizado");
-
-            inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
-            EndAttempt(false);
-
-        }
-        else if (escolha == 2) {
-            // Atrasado 
-
-            IET = TTotalDaTentativa - deltaT;
-
-            Debug.Log("Escolha Atrasada: deltaT Iniciado");
-            yield return new WaitForSeconds(deltaT);
-            Atirar(delayedDamage);
-            Debug.Log("Escolha Atrasada: deltaT Finalizado");
-            
-            Debug.Log("Escolha Atrasada: IET Iniciado");
-            yield return new WaitForSeconds(IET);
-            Debug.Log("Escolha Atrasada: IET Finalizado");
-
-            
-            inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
-            EndAttempt(false);
-
-            
-        } 
-        else {
-            Debug.Log("Não foi passado argumento para a função AtivarIET()");
-        }
+            }
+            else if (escolha == 2) {
+                // Atrasado 
+                IET = TTotalDaTentativa - deltaT;
+                Atirar(delayedDamage);            
+                Debug.Log("Escolha Atrasada: IET Iniciado");
+                yield return new WaitForSeconds(IET);
+                Debug.Log("Escolha Atrasada: IET Finalizado");
+                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
+                EndAttempt(false);   
+            } 
+            else {
+                Debug.Log("Não foi passado argumento para a função AtivarIET()");
+            }
+        }        
     }
 }

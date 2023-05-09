@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class Attempt : MonoBehaviour
-{
+{   
     public bool isChosen; //verifica se uma escolha foi feita
     public bool activeChoice = false; //permitido escolher?
     public int attemptNumber = 0; // 0 -> outras, 1 -> escolha 1, 2 -> escolha 2
@@ -34,19 +34,24 @@ public class Attempt : MonoBehaviour
      [SerializeField] Button agoraBtn;
      [SerializeField] Button depoisBtn;
 
-     //Referência a Game Manager
+     //Referência a Enemy
      [SerializeField] GameObject enemy;
      private bool isEnemyActive;
 
+     //Referência a Game Manager
+     [SerializeField] GameObject controller;
+     GameManager gameManagerScript;
+
 
      void Start () {
+          gameManagerScript = controller.GetComponent<GameManager>();
 
           agoraBtn.gameObject.SetActive(false);
           depoisBtn.gameObject.SetActive(false);
      }
 
     void Update()          
-     {   
+     {    
           isEnemyActive = enemy.activeSelf;
 
           if (resultadoFinalizado == true)
@@ -56,37 +61,58 @@ public class Attempt : MonoBehaviour
                }
           }
 
+          
           if (activeChoice == false) {
                //desativa os botões
                agoraBtn.gameObject.SetActive(false);
                depoisBtn.gameObject.SetActive(false);
           }
-          else if (isEnemyActive == true) {
-               if (activeChoice == true && attemptNumber == 1) {
-                    // ativa só o botão imediato
-                    agoraBtn.gameObject.SetActive(true);
-                    depoisBtn.gameObject.SetActive(true);
+          else if (isEnemyActive == true) 
+          {
+               if (gameManagerScript.sceneName == "EscolhaImpulsivaDD")
+               {
+                    if (activeChoice == true && attemptNumber == 1) {
+                         // ativa só o botão imediato
+                         agoraBtn.gameObject.SetActive(true);
+                         depoisBtn.gameObject.SetActive(true);
 
-                    agoraBtn.interactable = true;
-                    depoisBtn.interactable = false;
-               }
-               else if (activeChoice == true && attemptNumber == 2) {
-                    // ativa só botão atrasado
-                    agoraBtn.gameObject.SetActive(true);
-                    depoisBtn.gameObject.SetActive(true);
+                         agoraBtn.interactable = true;
+                         depoisBtn.interactable = false;
+                    }
+                    else if (activeChoice == true && attemptNumber == 2) {
+                         // ativa só botão atrasado
+                         agoraBtn.gameObject.SetActive(true);
+                         depoisBtn.gameObject.SetActive(true);
 
-                    agoraBtn.interactable = false;
-                    depoisBtn.interactable = true;
-               }
-               else if (activeChoice == true && attemptNumber > 2) {
-                    //ativa ambos os botões
-                    agoraBtn.gameObject.SetActive(true);
-                    depoisBtn.gameObject.SetActive(true);
+                         agoraBtn.interactable = false;
+                         depoisBtn.interactable = true;
+                    }
+                    else if (activeChoice == true && attemptNumber > 2) {
+                         //ativa ambos os botões
+                         agoraBtn.gameObject.SetActive(true);
+                         depoisBtn.gameObject.SetActive(true);
 
-                    agoraBtn.interactable = true;
-                    depoisBtn.interactable = true;
+                         agoraBtn.interactable = true;
+                         depoisBtn.interactable = true;
+                    }
                }
-          }      
+               else if (gameManagerScript.sceneName == "InibicaoRespostaDD")
+               {
+                    if (activeChoice == true && attemptNumber == 1) {
+                         agoraBtn.interactable = true;
+                         depoisBtn.interactable = false;
+                    }
+                    else if (activeChoice == true && attemptNumber == 2) {
+                         agoraBtn.interactable = false;
+                         depoisBtn.interactable = true;
+                    }
+                    else if (activeChoice == true && attemptNumber > 2) {
+                         agoraBtn.interactable = true;
+                         depoisBtn.interactable = true;
+                    }
+               } 
+          }
+          
      }
 
      public void escolhaImediataBtn () {
@@ -110,15 +136,28 @@ public class Attempt : MonoBehaviour
 
     public IEnumerator TimeForChoiceCoroutine(float choiceTime)
     {
-          // Espera o tempo determinado por choiceTime
           yield return new WaitForSeconds(choiceTime);
 
           //Escolha não foi feita
           activeChoice = false; // desativa a permissão pra escolher
           selecaoAtual = ChoiceSelector.Nenhuma;
           resultadoFinalizado = true;
-          // Debug.Log("Tempo limite excedido, escolha não foi feita.");
+          Debug.Log("Tempo limite excedido, escolha não foi feita.");       
+    }
 
+    public IEnumerator TimeForChoiceCoroutineIRDD(float choiceTime, float timeForChoice){
+          // Espera o tempo determinado por choiceTime
           
+          agoraBtn.gameObject.SetActive(true);
+          depoisBtn.gameObject.SetActive(false);
+          yield return new WaitForSeconds(choiceTime);          
+          agoraBtn.gameObject.SetActive(false);
+          depoisBtn.gameObject.SetActive(true);
+          yield return new WaitForSeconds(timeForChoice);
+          //Escolha não foi feita
+          activeChoice = false; // desativa a permissão pra escolher
+          selecaoAtual = ChoiceSelector.Nenhuma;
+          resultadoFinalizado = true;
+          Debug.Log("Tempo limite excedido, escolha não foi feita.");  
     }
 }
