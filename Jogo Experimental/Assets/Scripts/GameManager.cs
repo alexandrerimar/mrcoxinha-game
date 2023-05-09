@@ -10,7 +10,7 @@ Agora:
 -1. Organizar os tempos
 [feito] 1.1. Botões aparecem só quando inimigo está na mira.
 [feito] 2. Colocar identificador do player nos arquivos
-[feito]3. Organizar tempo de aparecimento do dano e do "não escolheu" e a aparência das letras.
+3. Organizar tempo de aparecimento do dano e do "não escolheu" e a aparência das letras.
 [feito]4. Organizar animação de morte do inimigo
 
 Importante:
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] float globalMaxDistance, globalMinDistance;
     public GameObject Enemy;
     private float spawnDistance;
+
     Vector3 spawnPos;
     Vector3 VFXPos;
 
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour
     public int totalDaEscolha; //soma das ultimas 4 tentativas do bloco
     List<float> lastThreeBlocks = new List<float>();
   
+
     //Variáveis da "Sessão"
     private string imediateDamage = "10"; // Primeiro dano imediato, muda a cada sessão
     public string delayedDamage = "100"; // Dano atrasado, contante
@@ -74,13 +76,11 @@ public class GameManager : MonoBehaviour
     public float deltaTInicial = 8.0f; // O primeiro deltaT de cada sessão
     public float IET; // Tempo de espera entre tentativas
     public float timeForChoice = 5.0f; //Tempo para fazer a escolha
-    [SerializeField] int TTotalDaTentativa = 30; // Tempo total da tentativa menos o tempo de escolha maior (IET + deltaT)
+    [SerializeField] int TTotalDaTentativa = 30; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT)
     public Attempt.ChoiceSelector selectedChoice;
 
     // Outros
-    // public Coroutine tempoDeEscolha = null; //Define uma variável para colocar a coroutine
     public Coroutine tempoDeEscolha = null; //Define uma variável para colocar a coroutine
-
 
     // Variáveis de apresentação de dano
     public GameObject damageTextPrefab, camera;
@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour
         inputHandler = InputManager.GetComponent<InputHandler>();
         enemyVFXScript = Enemy.GetComponent<EnemyVFX>();
         soundManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
+
 
         deltaT = deltaTInicial;
 
@@ -116,8 +117,7 @@ public class GameManager : MonoBehaviour
         spawnDistance = SetDistance();
     }
 
-    IEnumerator WaitForStart () {
-        // Espera um tempo antes de começar a primeira tentativa de todas
+     IEnumerator WaitForStart () {
         yield return new WaitForSeconds(initialTimeWait);
         StartSession(currentSession);
         StartBlock(currentBlock);
@@ -217,21 +217,18 @@ public class GameManager : MonoBehaviour
         SpawnEnemy(spawnDistance);      
         Enemy.transform.LookAt(Player.transform);
 
-        attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt
+
+        attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt  
 
         attemptScript.activeChoice = true; // Permite fazer uma escolha         
-        attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita
+        attemptScript.resultadoFinalizado = false; // Informa que a escolha ainda não foi feita             
+        
 
-        tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutine(deltaT, timeForChoice));
-
-
-        /*
         // Verifica se a escolha foi feita antes do tempo especificado
         if (!attemptScript.isChosen)
         {
             tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutine(timeForChoice));
         }
-        */
         
         // Chama a função 'ComputarEscolha' quando o resultado for finalizado
         Attempt.OnResultadoFinalizado += ComputarEscolha;
@@ -249,18 +246,38 @@ public class GameManager : MonoBehaviour
         switch (selectedChoice) 
         {
             case Attempt.ChoiceSelector.Imediata:
-                Debug.Log("A escolha foi " + selectedChoice);                
+                Debug.Log("A escolha foi " + selectedChoice);
+                
                 StopCoroutine(tempoDeEscolha);
-                StartCoroutine(ConsequenciarEscolha(1));         
+                StartCoroutine(ConsequenciarEscolha(1));
+                
+                /*
+                Atirar(imediateDamage); //Atira e mostra o dano
+                //AtivarIET(); //Faz esperar o IET (talvez Coroutine)
+                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
+                EndAttempt(false); //Vai para a próxima tentativa.
+                */
                 break;
             case Attempt.ChoiceSelector.Atrasada:
                 Debug.Log("A escolha foi " + selectedChoice);
+                
                 StopCoroutine(tempoDeEscolha);
-                StartCoroutine(ConsequenciarEscolha(2));                
+                StartCoroutine(ConsequenciarEscolha(2));
+                /*
+                StartCoroutine(EsperarIntervaloAtrasado()); //Espera o tempo especificado para a tentativa atrasad
+                //AtivarIET(); //Faz esperar o IET (talvez Coroutine)
+                */
                 break;
             case Attempt.ChoiceSelector.Nenhuma:
                 Debug.Log("A escolha foi " + selectedChoice + ". Repetindo.");
-                StartCoroutine(ConsequenciarEscolha(0));              
+                
+                StartCoroutine(ConsequenciarEscolha(0));
+                
+                /*
+                //AtivarIET(); //Faz esperar o IET (talvez Coroutine)
+                inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
+                EndAttempt(true); // Repete a tentativa atual
+                */
                 break;
         }
         
@@ -503,9 +520,9 @@ public class GameManager : MonoBehaviour
         if (escolha == 0) {
             // Nenhum            
             
-            IET = TTotalDaTentativa; // vai mudar
+            IET = TTotalDaTentativa;
             
-            NaoAtirar(); 
+            NaoAtirar(); // ajeitar as funções aqui
 
             Debug.Log("Sem Escolha: IET Iniciado");
             yield return new WaitForSeconds(IET);
@@ -519,7 +536,7 @@ public class GameManager : MonoBehaviour
         else if (escolha == 1) {
             // Imediato
 
-            IET = TTotalDaTentativa - deltaT;
+            IET = TTotalDaTentativa;
 
             Atirar(imediateDamage);
             Debug.Log("Escolha Imediata: IET Iniciado");
@@ -535,7 +552,11 @@ public class GameManager : MonoBehaviour
 
             IET = TTotalDaTentativa - deltaT;
 
-            Atirar(delayedDamage);            
+            Debug.Log("Escolha Atrasada: deltaT Iniciado");
+            yield return new WaitForSeconds(deltaT);
+            Atirar(delayedDamage);
+            Debug.Log("Escolha Atrasada: deltaT Finalizado");
+            
             Debug.Log("Escolha Atrasada: IET Iniciado");
             yield return new WaitForSeconds(IET);
             Debug.Log("Escolha Atrasada: IET Finalizado");

@@ -64,24 +64,24 @@ public class Attempt : MonoBehaviour
           else if (isEnemyActive == true) {
                if (activeChoice == true && attemptNumber == 1) {
                     // ativa só o botão imediato
-                    //agoraBtn.gameObject.SetActive(true);
-                    //depoisBtn.gameObject.SetActive(true);
+                    agoraBtn.gameObject.SetActive(true);
+                    depoisBtn.gameObject.SetActive(true);
 
                     agoraBtn.interactable = true;
                     depoisBtn.interactable = false;
                }
                else if (activeChoice == true && attemptNumber == 2) {
                     // ativa só botão atrasado
-                    //agoraBtn.gameObject.SetActive(true);
-                    //depoisBtn.gameObject.SetActive(true);
+                    agoraBtn.gameObject.SetActive(true);
+                    depoisBtn.gameObject.SetActive(true);
 
                     agoraBtn.interactable = false;
                     depoisBtn.interactable = true;
                }
                else if (activeChoice == true && attemptNumber > 2) {
                     //ativa ambos os botões
-                    //agoraBtn.gameObject.SetActive(true);
-                    //depoisBtn.gameObject.SetActive(true);
+                    agoraBtn.gameObject.SetActive(true);
+                    depoisBtn.gameObject.SetActive(true);
 
                     agoraBtn.interactable = true;
                     depoisBtn.interactable = true;
@@ -107,29 +107,18 @@ public class Attempt : MonoBehaviour
           // Debug.Log("Opção atrasada foi escolhida. Causou " + delayedDamage + " de dano.");
      }
 
-    public IEnumerator TimeForChoiceCoroutine(float choiceTime, float timeForChoice){
+
+    public IEnumerator TimeForChoiceCoroutine(float choiceTime)
+    {
           // Espera o tempo determinado por choiceTime
-          
-          agoraBtn.gameObject.SetActive(true);
-          depoisBtn.gameObject.SetActive(false);
-          yield return new WaitForSeconds(choiceTime);          
-          agoraBtn.gameObject.SetActive(false);
-          depoisBtn.gameObject.SetActive(true);
-          yield return new WaitForSeconds(timeForChoice);
-          Debug.Log("Tempo limite excedido, escolha não foi feita.");  
-    }
-    
-    /*
-    public IEnumerator TimeForChoiceCoroutine(float choiceTime){
-          // Espera o tempo determinado por choiceTime
-          
           yield return new WaitForSeconds(choiceTime);
 
           //Escolha não foi feita
           activeChoice = false; // desativa a permissão pra escolher
           selecaoAtual = ChoiceSelector.Nenhuma;
           resultadoFinalizado = true;
-          Debug.Log("Tempo limite excedido, escolha não foi feita.");  
+          // Debug.Log("Tempo limite excedido, escolha não foi feita.");
+
+          
     }
-    */
 }
