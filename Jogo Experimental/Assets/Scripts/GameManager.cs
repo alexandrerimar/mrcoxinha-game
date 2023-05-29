@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 /*
 PRÓXIMOS PASSOS
 Importante:
-[ ] Organizar IET
+[X] Organizar IET
 [ ] Função para inimigo aparecer só quando personagem anda? Pois o player pode ficar só parado.
 
 Depois:
@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject InputManager;
     private InputHandler inputHandler;
     [SerializeField] GameObject canvasUI;
+    [SerializeField] GameObject sceneLoader;
+    SceneLoader sceneLoaderScript;
     
     SoundManager soundManager;
     
@@ -86,6 +88,8 @@ public class GameManager : MonoBehaviour
     void Start() {         
         sceneName = GetActiveSceneName();
         Debug.Log("Cena: " + sceneName);
+
+        sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();
 
         Screen.lockCursor = true; //esconde o cursor do mouse e não permite que saia da tela
         
@@ -421,7 +425,8 @@ public class GameManager : MonoBehaviour
         currentSession++;
 
         if (currentSession > totalSessions) {
-            Debug.Log("Todas as sessões foram concluídas");
+            Debug.Log("Todas as sessões foram finalizadas.");
+            sceneLoaderScript.LoadNextScene();    
         }
         else {
             currentBlock = 1;

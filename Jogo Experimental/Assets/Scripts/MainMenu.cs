@@ -2,25 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-   public string playerID;
+   [SerializeField] GameObject sceneLoader;
+   SceneLoader sceneLoaderScript;   
    [SerializeField] Button playButton;
+   
+   public string playerID;   
    public static string playerIDCrossScene;
 
    void Start() {
       playButton.interactable = false;
+      sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();
    }
    
-   private void ReadStringInput (string s) {
+   public void ReadStringInput (string s) {
       // Passa o valor do campo de imput para a variável playerID
       playerID = s;
       Debug.Log(playerID);
    }
    
-   private void activatePlayButton () {
+   public void activatePlayButton () {
       // Ativa interação do botão Play quando há pelo menos 9 caracteres no input
       if (!string.IsNullOrEmpty(playerID)) {
          if (playerID.Length >= 9) {
@@ -29,19 +32,13 @@ public class MainMenu : MonoBehaviour
       }
    }
 
-   private void PlayGame () {
+   public void PlayGame () {
       playerIDCrossScene = playerID;
-      int sceneIndex = EscolherCenaAleatória ();
-      SceneManager.LoadScene(sceneIndex);
+      sceneLoaderScript.LoadNextScene();
    }
 
    private void QuitGame() {
       Debug.Log("Quit!");
       Application.Quit();
-   }
-
-   private int EscolherCenaAleatória () {
-      int randomNumber = Random.Range(1, 3);
-      return randomNumber;
    }
 }
