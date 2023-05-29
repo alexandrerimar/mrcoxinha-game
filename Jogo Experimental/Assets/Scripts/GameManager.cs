@@ -1,30 +1,20 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+
 /*
 PRÓXIMOS PASSOS
-Agora:
--1. Organizar os tempos
-[feito] 1.1. Botões aparecem só quando inimigo está na mira.
-[feito] 2. Colocar identificador do player nos arquivos
-3. Organizar tempo de aparecimento do dano e do "não escolheu" e a aparência das letras.
-[feito]4. Organizar animação de morte do inimigo
-
 Importante:
-1. Função para inimigo aparecer só quando personagem anda? Pois o player pode ficar só parado.
+[ ] Organizar IET
+[ ] Função para inimigo aparecer só quando personagem anda? Pois o player pode ficar só parado.
 
-Depois
-[feito] 1. Criar animação do tiro.
-[feito] 2. Fazer o tiro destruir o inimigo.
-[feito] 3. Fazer uma animação para o inimigo aparecer e desaparecer.
-[feito] 4. Fazer animação pra quando o inimigo desaparece sem tiro
-5. Sonorizar: colocar som ambiente. 
-
-6. Usar modelo para criar o outro jogo
+Depois:
+1. Sonorizar: colocar som ambiente. 
 */
 
 public class GameManager : MonoBehaviour
@@ -62,7 +52,7 @@ public class GameManager : MonoBehaviour
     public int totalAttempts = 6;
 
     // Variáveis de "Bloco"
-    public float deltaT; // Tempo entre escolha e consequência
+    public float deltaT; // Tempo entre escolha e consequência (Esc.Imp). Te
     [SerializeField] float deltaTSuperior = 15.0f;
     [SerializeField] float deltaTInferior = 1.0f;
     public int totalDaEscolha; //soma das ultimas 4 tentativas do bloco
@@ -89,6 +79,9 @@ public class GameManager : MonoBehaviour
     public GameObject damageTextPrefab, camera;
     public string textToDisplay; 
 
+    // Variáveis de Elapsed Time
+    float tempoDaEscolhaIRDD;
+
 
     void Start() {         
         sceneName = GetActiveSceneName();
@@ -101,7 +94,6 @@ public class GameManager : MonoBehaviour
         inputHandler = InputManager.GetComponent<InputHandler>();
         enemyVFXScript = Enemy.GetComponent<EnemyVFX>();
         soundManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
-
 
         deltaT = deltaTInicial;
 
@@ -175,7 +167,7 @@ public class GameManager : MonoBehaviour
         float maxDistance = Hit.distance; 
         float minDistance = globalMinDistance;
         
-        float distance = Random.Range(minDistance, maxDistance);
+        float distance = UnityEngine.Random.Range(minDistance, maxDistance);
 
        if (distance <= globalMinDistance) {
             distance = -globalMinDistance;
@@ -242,7 +234,7 @@ public class GameManager : MonoBehaviour
         {
             tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutine(timeForChoice));
         } else if (sceneName == "InibicaoRespostaDD")
-        {
+        {            
             tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutineIRDD(deltaT, timeForChoice));
         }
         
@@ -544,12 +536,9 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Escolha Atrasada: IET Iniciado");
                 yield return new WaitForSeconds(IET);
                 Debug.Log("Escolha Atrasada: IET Finalizado");
-
                 
                 inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
-                EndAttempt(false);
-
-                
+                EndAttempt(false);                
             } 
             else {
                 Debug.Log("Não foi passado argumento para a função AtivarIET()");
@@ -569,7 +558,18 @@ public class GameManager : MonoBehaviour
             }
             else if (escolha == 1) {
                 // Imediato
-                IET = TTotalDaTentativa - deltaT;
+                tempoDaEscolhaIRDD = Convert.ToSingle(attemptScript.elapsedTime.TotalSeconds);
+                //tempoDaEscolhaIRDD = attemptScript.elapsedTime.TotalSeconds;
+                Debug.Log("Convertido " + tempoDaEscolhaIRDD);
+
+                if (tempoDaEscolhaIRDD < deltaT) 
+                {
+                    IET = TTotalDaTentativa - tempoDaEscolhaIRDD; 
+                }
+                else 
+                {
+                    IET = TTotalDaTentativa - deltaT;  
+                }                
                 Atirar(imediateDamage);
                 Debug.Log("Escolha Imediata: IET Iniciado");
                 yield return new WaitForSeconds(IET);
