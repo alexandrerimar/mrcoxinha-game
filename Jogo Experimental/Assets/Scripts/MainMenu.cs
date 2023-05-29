@@ -31,11 +31,17 @@ public class MainMenu : MonoBehaviour
 
    private void PlayGame () {
       playerIDCrossScene = playerID;
-      SceneManager.LoadScene("EscolhaImpulsivaDD"); //Posso fazer aleatório.
+      int sceneIndex = EscolherCenaAleatória ();
+      SceneManager.LoadScene(sceneIndex);
    }
 
    private void QuitGame() {
       Debug.Log("Quit!");
       Application.Quit();
+   }
+
+   private int EscolherCenaAleatória () {
+      int randomNumber = Random.Range(1, 3);
+      return randomNumber;
    }
 }
