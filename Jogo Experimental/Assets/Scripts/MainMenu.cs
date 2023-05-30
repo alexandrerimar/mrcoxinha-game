@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,9 +13,12 @@ public class MainMenu : MonoBehaviour
    public string playerID;   
    public static string playerIDCrossScene;
 
+   int activeSceneIndex;
+
    void Start() {
       playButton.interactable = false;
       sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();
+      activeSceneIndex = SceneManager.GetActiveScene().buildIndex;
    }
    
    public void ReadStringInput (string s) {
@@ -34,7 +38,7 @@ public class MainMenu : MonoBehaviour
 
    public void PlayGame () {
       playerIDCrossScene = playerID;
-      sceneLoaderScript.LoadNextScene();
+      sceneLoaderScript.LoadSceneByPositionOnList(activeSceneIndex);
    }
 
    private void QuitGame() {

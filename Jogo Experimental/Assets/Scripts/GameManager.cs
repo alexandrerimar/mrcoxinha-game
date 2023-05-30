@@ -20,6 +20,7 @@ Depois:
 public class GameManager : MonoBehaviour
 {
     public string sceneName;
+    public int currentSceneIndex;
     
     // Dependências
     Attempt attemptScript;
@@ -88,6 +89,7 @@ public class GameManager : MonoBehaviour
     void Start() {         
         sceneName = GetActiveSceneName();
         Debug.Log("Cena: " + sceneName);
+        currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();
 
@@ -426,7 +428,7 @@ public class GameManager : MonoBehaviour
 
         if (currentSession > totalSessions) {
             Debug.Log("Todas as sessões foram finalizadas.");
-            sceneLoaderScript.LoadNextScene();    
+            sceneLoaderScript.LoadSceneByPositionOnList(currentSceneIndex);    
         }
         else {
             currentBlock = 1;
