@@ -24,7 +24,6 @@ public class MainMenu : MonoBehaviour
    public void ReadStringInput (string s) {
       // Passa o valor do campo de imput para a variável playerID
       playerID = s;
-      Debug.Log(playerID);
    }
    
    public void activatePlayButton () {
@@ -38,11 +37,12 @@ public class MainMenu : MonoBehaviour
 
    public void PlayGame () {
       playerIDCrossScene = playerID;
+      Logger.Instance.LogAction("PlayerID: " + playerIDCrossScene);
       sceneLoaderScript.LoadSceneByPositionOnList(activeSceneIndex);
    }
 
    private void QuitGame() {
-      Debug.Log("Quit!");
+      Logger.Instance.LogAction("Quit!");
       Application.Quit();
    }
 }

@@ -15,9 +15,8 @@ public class Attempt : MonoBehaviour
     
 
     // Variáveis de elapsed time
-    public TimeSpan elapsedTime;
-    private DateTime inicioDaCoroutine;
-    private DateTime fimDaCoroutine;
+    private ComputeElapsedTime elapsedTimeClass;
+    public float escolhaImediataElapsedTime;
 
     public enum ChoiceSelector
     {
@@ -51,6 +50,7 @@ public class Attempt : MonoBehaviour
 
      void Start () {
           gameManagerScript = controller.GetComponent<GameManager>();
+          elapsedTimeClass = new ComputeElapsedTime();
 
           agoraBtn.gameObject.SetActive(false);
           depoisBtn.gameObject.SetActive(false);
@@ -124,7 +124,7 @@ public class Attempt : MonoBehaviour
      public void escolhaImediataBtn () {
           // Escolha imediata
           selecaoAtual = ChoiceSelector.Imediata;
-          ElapsedTime(false);
+          escolhaImediataElapsedTime = elapsedTimeClass.ElapsedTime(inicio: false);
           isChosen = true; // informa que foi escolhido                    
           activeChoice = false; // desativa a permissão pra escolher
           resultadoFinalizado = true;
@@ -158,7 +158,7 @@ public class Attempt : MonoBehaviour
           
           agoraBtn.gameObject.SetActive(true);
           depoisBtn.gameObject.SetActive(false);
-          ElapsedTime(true);
+          escolhaImediataElapsedTime = elapsedTimeClass.ElapsedTime(inicio: true);
           yield return new WaitForSeconds(choiceTime);        
           agoraBtn.gameObject.SetActive(false);
           depoisBtn.gameObject.SetActive(true);
@@ -171,22 +171,4 @@ public class Attempt : MonoBehaviour
           Debug.Log("Tempo limite excedido, escolha não foi feita.");  
     }
 
-    public TimeSpan ElapsedTime (bool inicio = true) {
-          if (inicio == true) 
-          {
-               inicioDaCoroutine = DateTime.Now;
-               Debug.Log("Elapsed Time " + elapsedTime);
-               return elapsedTime;
-          }       
-        
-          else if (inicio == false)
-          {
-               fimDaCoroutine = DateTime.Now;
-               elapsedTime = fimDaCoroutine - inicioDaCoroutine;
-               Debug.Log("Elapsed Time " + elapsedTime);
-               return elapsedTime;
-          }
-
-        return elapsedTime;
-    }
 }

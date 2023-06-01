@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using UnityEngine;
 
 public class Logger
 {
@@ -41,6 +42,7 @@ public class Logger
 
     public void LogAction(string action)
     {
+        Debug.Log(DateTime.Now + ": " + action);
         writer.WriteLine(DateTime.Now + ": " + action);
         writer.Flush();
     }

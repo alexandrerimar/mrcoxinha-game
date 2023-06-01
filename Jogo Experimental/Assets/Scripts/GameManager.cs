@@ -12,9 +12,6 @@ PRÓXIMOS PASSOS
 Importante:
 [X] Organizar IET
 [ ] Função para inimigo aparecer só quando personagem anda? Pois o player pode ficar só parado.
-
-Depois:
-1. Sonorizar: colocar som ambiente. 
 */
 
 public class GameManager : MonoBehaviour
@@ -88,7 +85,20 @@ public class GameManager : MonoBehaviour
 
     void Start() {         
         sceneName = GetActiveSceneName();
-        Debug.Log("Cena: " + sceneName);
+
+        // *** Logs ****
+        Logger.Instance.LogAction("Cena: " + sceneName);
+        Logger.Instance.LogAction("Total Sessions: " + totalSessions);
+        Logger.Instance.LogAction("Total Blocks: " + totalBlocks);
+        Logger.Instance.LogAction("Total Attempts: " + totalAttempts);
+        Logger.Instance.LogAction("DeltaT Inicial: " + deltaTInicial);
+        Logger.Instance.LogAction("DeltaT Inferior: " + deltaTInferior);
+        Logger.Instance.LogAction("DeltaT Superior: " + deltaTSuperior);
+        Logger.Instance.LogAction("Tempo total da tentativa: " + TTotalDaTentativa);
+        Logger.Instance.LogAction("Tempo de Escolha: " + timeForChoice);
+        Logger.Instance.LogAction("Dano maior: " + delayedDamage);
+
+
         currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();
@@ -187,7 +197,8 @@ public class GameManager : MonoBehaviour
     public void StartSession(int session)
     {
         currentSession = session;
-        Debug.Log("Iniciando sessão " + currentSession);
+        
+        // *** Logs ****
         Logger.Instance.LogAction("Iniciando sessão " + currentSession);
 
         switch (currentSession)
@@ -213,7 +224,10 @@ public class GameManager : MonoBehaviour
     public void StartBlock(int block)
     {
         currentBlock = block;
-        Debug.Log("Iniciando bloco " + currentBlock);
+
+        // *** Logs ****
+        Logger.Instance.LogAction("Iniciando bloco " + currentBlock);
+        
     }
 
 
@@ -223,11 +237,16 @@ public class GameManager : MonoBehaviour
         Screen.lockCursor = false; 
         attemptScript.isChosen = false;
         currentAttempt = attempt;
-        Debug.Log("Iniciando tentativa " + currentAttempt);
+
+        // *** Logs ****
+        Logger.Instance.LogAction("Iniciando tentativa " + currentAttempt);
 
         // Spawna o inimigo no início da tentativa
         SpawnEnemy(spawnDistance);      
         Enemy.transform.LookAt(Player.transform);
+
+        // *** Logs ****
+        Logger.Instance.LogAction("Spawn do Inimigo. Distância: " + spawnDistance);
 
         attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt  
 
@@ -260,17 +279,17 @@ public class GameManager : MonoBehaviour
         switch (selectedChoice) 
         {
             case Attempt.ChoiceSelector.Imediata:
-                Debug.Log("A escolha foi " + selectedChoice);                
+                Logger.Instance.LogAction("A escolha foi " + selectedChoice);                
                 StopCoroutine(tempoDeEscolha);
                 StartCoroutine(ConsequenciarEscolha(1));
                 break;
             case Attempt.ChoiceSelector.Atrasada:
-                Debug.Log("A escolha foi " + selectedChoice);
+                Logger.Instance.LogAction("A escolha foi " + selectedChoice);
                 StopCoroutine(tempoDeEscolha);
                 StartCoroutine(ConsequenciarEscolha(2));
                 break;
             case Attempt.ChoiceSelector.Nenhuma:
-                Debug.Log("A escolha foi " + selectedChoice + ". Repetindo.");
+                Logger.Instance.LogAction("A escolha foi " + selectedChoice + ". Repetindo tentativa.");
                 StartCoroutine(ConsequenciarEscolha(0));
                 break;
         }
@@ -318,7 +337,7 @@ public class GameManager : MonoBehaviour
                 
                 pontoDeIndiferenca = ComputarPontoDeIndiferenca(); 
 
-                Debug.Log("Resultado da Sessão: Manteve no limite inferior");
+                Logger.Instance.LogAction("Resultado da Sessão: Manteve no limite inferior");
                 EndSession();
             }
             else if (lastThreeBlocks[0] == deltaTSuperior &&
@@ -327,7 +346,7 @@ public class GameManager : MonoBehaviour
 
                 pontoDeIndiferenca = ComputarPontoDeIndiferenca(); 
 
-                Debug.Log("Resultado da Sessão: Manteve no limite superior");
+                Logger.Instance.LogAction("Resultado da Sessão: Manteve no limite superior");
                 EndSession();
             }
             else if (lastThreeBlocks[0] == lastThreeBlocks[1] &&
@@ -336,14 +355,14 @@ public class GameManager : MonoBehaviour
 
                 pontoDeIndiferenca = ComputarPontoDeIndiferenca(); 
 
-                Debug.Log("Resultado da Sessão: Houve 3 blocos iguais. Manteve estabilidade.");
+                Logger.Instance.LogAction("Resultado da Sessão: 3 blocos iguais. Manteve estabilidade.");
                 EndSession();
             }    
             else if (currentBlock > totalBlocks) {
                 
                 pontoDeIndiferenca = ComputarPontoDeIndiferenca(true); 
 
-                Debug.Log("Resultado da Sessão: Alcançou o máximo de blocos da sessão");
+                Logger.Instance.LogAction("Resultado da Sessão: Alcançou o máximo de blocos da sessão (" + totalBlocks + ")");
                 EndSession();
             }
             else {
@@ -376,31 +395,28 @@ public class GameManager : MonoBehaviour
             codigoDaTentativa.RemoveAt(2);
         }  
         int total = escolhasNoBloco.Sum();
-        //Debug.Log("total " + total);
+        Logger.Instance.LogAction("Soma das escolhas no bloco: " + total);
         totalDaEscolha = total;
-        //return total;
     }
 
 
     private void AjustarIntervaloDeEspera() { 
         // Ajusta o deltaT de acordo com as escolhas dos jogadores nos 4 últimos blocos
-        //totalDaEscolha = ComputarBloco();
-        //ComputarBloco();
 
         if (totalDaEscolha == 2) {
             // Mantém
             deltaT = deltaT;
-            Debug.Log("Computando bloco como MANTÉM. totalDaEscolha = " + totalDaEscolha + " E deltaT é " + deltaT);
+            Logger.Instance.LogAction("DeltaT no bloco: mantido. Total das Escolhas = " + totalDaEscolha + ". E deltaT = " + deltaT);
         }
         else if (totalDaEscolha >=3 && totalDaEscolha < 5) {
             // Imediato
             if (deltaT == deltaTInferior) {
                 deltaT = deltaT;
-                Debug.Log("Alcançou o limite inferior " + totalDaEscolha + " E deltaT é " + deltaT);
+                Logger.Instance.LogAction("DeltaT no bloco: limite inferior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
             else {
             deltaT--;
-            Debug.Log("Computando bloco como Imediato. totalDaEscolha = " + totalDaEscolha + " E deltaT é " + deltaT);
+            Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Imediato'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
             
         }
@@ -408,15 +424,15 @@ public class GameManager : MonoBehaviour
             // Atrasado
             if (deltaT == deltaTSuperior){
                 deltaT = deltaT;
-                Debug.Log("Alcançou o limite superior " + totalDaEscolha + " E deltaT é " + deltaT);
+                Logger.Instance.LogAction("DeltaT no bloco: limite superior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
             else{
                 deltaT++;
-                Debug.Log("Computando bloco como Atrasado. totalDaEscolha = " + totalDaEscolha + " E deltaT é " + deltaT);
+                Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Atrasado'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
         }
         else {
-            Debug.Log("Erro na função AjustarIntervalodeEspera " + totalDaEscolha);
+            Logger.Instance.LogAction("Erro na função AjustarIntervalodeEspera " + totalDaEscolha);
         }
     }
     
@@ -427,7 +443,7 @@ public class GameManager : MonoBehaviour
         currentSession++;
 
         if (currentSession > totalSessions) {
-            Debug.Log("Todas as sessões foram finalizadas.");
+            Logger.Instance.LogAction("Todas as sessões foram finalizadas.");
             sceneLoaderScript.LoadSceneByPositionOnList(currentSceneIndex);    
         }
         else {
@@ -509,9 +525,9 @@ public class GameManager : MonoBehaviour
                 IET = TTotalDaTentativa;
                 
                 NaoAtirar(); 
-                Debug.Log("Sem Escolha: IET Iniciado");
+                Logger.Instance.LogAction("Jogador não escolheu: IET iniciado = " + IET);
                 yield return new WaitForSeconds(IET);
-                Debug.Log("Sem Escolha: IET Finalizado");
+                Logger.Instance.LogAction("Jogador não escolheu: IET finalizado = " + IET);
                 
                 inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
                 EndAttempt(true);
@@ -522,9 +538,9 @@ public class GameManager : MonoBehaviour
                 IET = TTotalDaTentativa;
 
                 Atirar(imediateDamage);
-                Debug.Log("Escolha Imediata: IET Iniciado");
+                Logger.Instance.LogAction("Jogador escolheu 'Imediato': IET iniciado = " + IET);
                 yield return new WaitForSeconds(IET);
-                Debug.Log("Escolha Imediata: IET Finalizado");
+                Logger.Instance.LogAction("Jogador escolheu 'Imediato': IET finalizado = " + IET);
 
                 inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
                 EndAttempt(false);
@@ -535,20 +551,20 @@ public class GameManager : MonoBehaviour
 
                 IET = TTotalDaTentativa - deltaT;
 
-                Debug.Log("Escolha Atrasada: deltaT Iniciado");
+                Logger.Instance.LogAction("Jogador  escolheu 'Atrasado': deltaT iniciado = " + deltaT);
                 yield return new WaitForSeconds(deltaT);
                 Atirar(delayedDamage);
-                Debug.Log("Escolha Atrasada: deltaT Finalizado");
+                Logger.Instance.LogAction("Jogador  escolheu 'Atrasado': deltaT finalizado = " + deltaT);
                 
-                Debug.Log("Escolha Atrasada: IET Iniciado");
+                Logger.Instance.LogAction("Jogador  escolheu 'Atrasado': IET Iniciado = " + IET);
                 yield return new WaitForSeconds(IET);
-                Debug.Log("Escolha Atrasada: IET Finalizado");
+                Logger.Instance.LogAction("Jogador  escolheu 'Atrasado': IET finalizado = " + IET);
                 
                 inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
                 EndAttempt(false);                
             } 
             else {
-                Debug.Log("Não foi passado argumento para a função AtivarIET()");
+                Logger.Instance.LogAction("Não foi passado argumento para a função AtivarIET()");
             }
         }
         else if (sceneName == "InibicaoRespostaDD")
@@ -557,17 +573,16 @@ public class GameManager : MonoBehaviour
                 // Nenhum          
                 IET = TTotalDaTentativa - deltaT;  // Jogador já esperou e não escolheu, então removo deltaT, que já passou                
                 NaoAtirar(); 
-                Debug.Log("Sem Escolha: IET Iniciado");
+                Logger.Instance.LogAction("Jogador não escolheu: IET iniciado = " + IET);
                 yield return new WaitForSeconds(IET);
-                Debug.Log("Sem Escolha: IET Finalizado");                
+                Logger.Instance.LogAction("Jogador não escolheu: IET finalizado = " + IET);               
                 inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
                 EndAttempt(true);
             }
             else if (escolha == 1) {
                 // Imediato
-                tempoDaEscolhaIRDD = Convert.ToSingle(attemptScript.elapsedTime.TotalSeconds);
-                //tempoDaEscolhaIRDD = attemptScript.elapsedTime.TotalSeconds;
-                Debug.Log("Convertido " + tempoDaEscolhaIRDD);
+                tempoDaEscolhaIRDD = attemptScript.escolhaImediataElapsedTime;
+                Debug.Log("Convertido " + tempoDaEscolhaIRDD); //Verificar essa conversão direito.
 
                 if (tempoDaEscolhaIRDD < deltaT) 
                 {
@@ -578,9 +593,9 @@ public class GameManager : MonoBehaviour
                     IET = TTotalDaTentativa - deltaT;  
                 }                
                 Atirar(imediateDamage);
-                Debug.Log("Escolha Imediata: IET Iniciado");
+                Logger.Instance.LogAction("Jogador escolheu 'Imediato': IET iniciado = " + IET);
                 yield return new WaitForSeconds(IET);
-                Debug.Log("Escolha Imediata: IET Finalizado");
+                Logger.Instance.LogAction("Jogador escolheu 'Imediato': IET finalizado = " + IET);
                 inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
                 EndAttempt(false);
 
@@ -589,14 +604,14 @@ public class GameManager : MonoBehaviour
                 // Atrasado 
                 IET = TTotalDaTentativa - deltaT;
                 Atirar(delayedDamage);            
-                Debug.Log("Escolha Atrasada: IET Iniciado");
+                Logger.Instance.LogAction("Jogador  escolheu 'Atrasado': IET Iniciado = " + IET);
                 yield return new WaitForSeconds(IET);
-                Debug.Log("Escolha Atrasada: IET Finalizado");
+                Logger.Instance.LogAction("Jogador  escolheu 'Atrasado': IET finalizado = " + IET);
                 inputHandler.AddDataToList(); // Salva as escolhas do jogador no arquivo JSON
                 EndAttempt(false);   
             } 
             else {
-                Debug.Log("Não foi passado argumento para a função AtivarIET()");
+                Logger.Instance.LogAction("Não foi passado argumento para a função AtivarIET()");
             }
         }        
     }
