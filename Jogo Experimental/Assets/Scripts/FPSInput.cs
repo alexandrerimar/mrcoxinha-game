@@ -17,23 +17,29 @@ public class FPSInput : MonoBehaviour
 
     private LockOnTarget lockOnTargetScript;
 
+    [SerializeField] GameObject controller;
+    private GameManager gameManagerScript;
+
     void Start() 
     {
       charController = GetComponent<CharacterController>();
       lockOnTargetScript = GetComponent<LockOnTarget>();
+      gameManagerScript = controller.GetComponent<GameManager>();
     }
 
     void Update()
     {
-      if (lockOnTargetScript.isLocked == false) {
-        deltaX = Input.GetAxis("Horizontal") * speed;
-        deltaZ = Input.GetAxis("Vertical") * speed;
+      if (gameManagerScript.gameStarted == true)
+      {
+        if (lockOnTargetScript.isLocked == false) {
+          deltaX = Input.GetAxis("Horizontal") * speed;
+          deltaZ = Input.GetAxis("Vertical") * speed;
+        }
+        else {
+          deltaX = 0;
+          deltaZ = 0;
+        }
       }
-      else {
-        deltaX = 0;
-        deltaZ = 0;
-      }
-
       Vector3 movement = new Vector3(deltaX, 0, deltaZ);
       movement = Vector3.ClampMagnitude(movement, speed);
       movement.y = gravity;

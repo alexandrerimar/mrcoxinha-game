@@ -20,7 +20,13 @@ public class MouseLook : MonoBehaviour
     private float verticalRot;
 
     [SerializeField] GameObject lockOnTarget;
+    [SerializeField] GameObject controller;
     private LockOnTarget lockOnTargetScript;
+    private GameManager gameManagerScript;
+
+    void Awake(){
+        gameManagerScript = controller.GetComponent<GameManager>();
+    }
 
     void Start()
     {
@@ -33,32 +39,34 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
-        if (lockOnTargetScript.isLocked == false) {
-            if (axes == RotationAxes.MouseX) {
-                //Controla a rotacao horizontal
-                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
-            }
-            else if (axes == RotationAxes.MouseY) {
-                //Controla a rotacao vertical
-                verticalRot -= Input.GetAxis("Mouse Y") * sensitivityVert;
-                verticalRot = Mathf.Clamp(verticalRot, minimumVert, maximumVert);
-                //Limita a rotacao vertical em - 45º e +45º
+        if (gameManagerScript.gameStarted == true){
+            if (lockOnTargetScript.isLocked == false) {
+                if (axes == RotationAxes.MouseX) {
+                    //Controla a rotacao horizontal
+                    transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityHor, 0);
+                }
+                else if (axes == RotationAxes.MouseY) {
+                    //Controla a rotacao vertical
+                    verticalRot -= Input.GetAxis("Mouse Y") * sensitivityVert;
+                    verticalRot = Mathf.Clamp(verticalRot, minimumVert, maximumVert);
+                    //Limita a rotacao vertical em - 45º e +45º
 
-                float horizontalRot = transform.localEulerAngles.y;
+                    float horizontalRot = transform.localEulerAngles.y;
 
-                transform.localEulerAngles = new Vector3 (verticalRot, horizontalRot, 0);
-                //Cria um Vector3, porque não dá pra alterar os valores de transform, aí copia pra uma nova variável.
-                //Usa EulerAngles, para não precisa usar Quartenios
-            }
-            else {
-                //Rotação vertical e horizontal
-                verticalRot -= Input.GetAxis("Mouse Y") * sensitivityVert;
-                verticalRot = Mathf.Clamp(verticalRot, minimumVert, maximumVert);
+                    transform.localEulerAngles = new Vector3 (verticalRot, horizontalRot, 0);
+                    //Cria um Vector3, porque não dá pra alterar os valores de transform, aí copia pra uma nova variável.
+                    //Usa EulerAngles, para não precisa usar Quartenios
+                }
+                else {
+                    //Rotação vertical e horizontal
+                    verticalRot -= Input.GetAxis("Mouse Y") * sensitivityVert;
+                    verticalRot = Mathf.Clamp(verticalRot, minimumVert, maximumVert);
 
-                float delta = Input.GetAxis("Mouse X") * sensitivityHor;
-                float horizontalRot = transform.localEulerAngles.y + delta;
+                    float delta = Input.GetAxis("Mouse X") * sensitivityHor;
+                    float horizontalRot = transform.localEulerAngles.y + delta;
 
-                transform.localEulerAngles = new Vector3 (verticalRot, horizontalRot, 0);
+                    transform.localEulerAngles = new Vector3 (verticalRot, horizontalRot, 0);
+                }
             }
         }
     }

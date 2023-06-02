@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 /*
@@ -82,11 +83,14 @@ public class GameManager : MonoBehaviour
     // Variáveis de Elapsed Time
     float tempoDaEscolhaIRDD;
 
+    //Inicio de jogo
+     [SerializeField] Button iniciarBtn;
+     public bool gameStarted;
+
 
     void Start() {         
         sceneName = GetActiveSceneName();
 
-        // *** Logs ****
         Logger.Instance.LogAction("Cena: " + sceneName);
         Logger.Instance.LogAction("Total Sessions: " + totalSessions);
         Logger.Instance.LogAction("Total Blocks: " + totalBlocks);
@@ -98,12 +102,11 @@ public class GameManager : MonoBehaviour
         Logger.Instance.LogAction("Tempo de Escolha: " + timeForChoice);
         Logger.Instance.LogAction("Dano maior: " + delayedDamage);
 
-
         currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();
 
-        Screen.lockCursor = true; //esconde o cursor do mouse e não permite que saia da tela
+        Cursor.lockState = CursorLockMode.Confined; //esconde o cursor do mouse e não permite que saia da tela
         
         attemptScript = Player.GetComponent<Attempt>();
         animationScript = GetComponent<AnimationScript>();
@@ -115,8 +118,13 @@ public class GameManager : MonoBehaviour
 
         // Desativa o inimigo no início da sessão
         Enemy.SetActive(false);
-        spawnDistance = SetDistance();
-        
+        spawnDistance = SetDistance();    
+
+        gameStarted = false;
+        iniciarBtn.gameObject.SetActive(true);
+        //Time.timeScale = 0;    
+
+        /*
         // Inicia a primeira sessão, bloco e tentativa
         if (currentSession == 1 && currentBlock == 1 && currentAttempt == 1) {
             StartCoroutine (WaitForStart());
@@ -125,7 +133,18 @@ public class GameManager : MonoBehaviour
             StartBlock(currentBlock);
             StartAttempt(currentAttempt);
         }  
+        */
     }  
+
+    public void StartGame()
+        {   
+            gameStarted = true;
+            iniciarBtn.gameObject.SetActive(false);
+            Debug.Log ("Jogo Iniciado");
+            //Time.timeScale = 1; 
+            Cursor.lockState = CursorLockMode.Locked;
+            StartCoroutine (WaitForStart());
+        }
 
     void Update() {
         spawnDistance = SetDistance();

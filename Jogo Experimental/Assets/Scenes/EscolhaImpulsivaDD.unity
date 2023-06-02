@@ -2588,6 +2588,7 @@ MonoBehaviour:
   minimumVert: -25
   maximumVert: 25
   lockOnTarget: {fileID: 1041392802}
+  controller: {fileID: 1687261662}
 --- !u!1001 &573141863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5552,6 +5553,7 @@ MonoBehaviour:
   minimumVert: -45
   maximumVert: 45
   lockOnTarget: {fileID: 1041392802}
+  controller: {fileID: 1687261662}
 --- !u!143 &1041392808
 CharacterController:
   m_ObjectHideFlags: 0
@@ -5585,6 +5587,7 @@ MonoBehaviour:
   speed: 6
   gravity: -9.3
   isWalking: 0
+  controller: {fileID: 1687261662}
 --- !u!114 &1041392811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9438,6 +9441,8 @@ MonoBehaviour:
   damageTextPrefab: {fileID: 6783427813726553564, guid: 4eb1cb56b9da66647a2ea70836870e0c, type: 3}
   camera: {fileID: 548996590}
   textToDisplay: 25
+  iniciarBtn: {fileID: 0}
+  gameStarted: 0
 --- !u!114 &1687261666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11046,7 +11051,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -72, y: 40}
+  m_AnchoredPosition: {x: -82, y: 40}
   m_SizeDelta: {x: 150, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2106156924
@@ -11370,7 +11375,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 95, y: 40}
+  m_AnchoredPosition: {x: 85, y: 40}
   m_SizeDelta: {x: 150, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2124592132
