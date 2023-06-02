@@ -845,3 +845,37 @@
 01/06/2023 17:27:09: Spawn do Inimigo. Distância: 6,844148
 01/06/2023 17:27:12: A escolha foi Imediata
 01/06/2023 17:27:12: Jogador escolheu 'Imediato': IET iniciado = 7,551726
+02/06/2023 15:59:50: PlayerID: 123456789
+02/06/2023 15:59:50: Cena: EscolhaImpulsivaDD
+02/06/2023 15:59:50: Total Sessions: 1
+02/06/2023 15:59:50: Total Blocks: 1
+02/06/2023 15:59:50: Total Attempts: 6
+02/06/2023 15:59:50: DeltaT Inicial: 7
+02/06/2023 15:59:50: DeltaT Inferior: 1
+02/06/2023 15:59:50: DeltaT Superior: 15
+02/06/2023 15:59:50: Tempo total da tentativa: 10
+02/06/2023 15:59:50: Tempo de Escolha: 2
+02/06/2023 15:59:50: Dano maior: 100
+02/06/2023 15:59:51: Iniciando sessão 1
+02/06/2023 15:59:51: Iniciando bloco 1
+02/06/2023 15:59:51: Iniciando tentativa 1
+02/06/2023 15:59:51: Spawn do Inimigo. Distância: 7,726363
+02/06/2023 15:59:53: A escolha foi Nenhuma. Repetindo tentativa.
+02/06/2023 15:59:53: Jogador não escolheu: IET iniciado = 10
+02/06/2023 16:00:14: PlayerID: 123456789
+02/06/2023 16:00:16: Cena: EscolhaImpulsivaDD
+02/06/2023 16:00:16: Total Sessions: 1
+02/06/2023 16:00:16: Total Blocks: 1
+02/06/2023 16:00:16: Total Attempts: 6
+02/06/2023 16:00:16: DeltaT Inicial: 7
+02/06/2023 16:00:16: DeltaT Inferior: 1
+02/06/2023 16:00:16: DeltaT Superior: 15
+02/06/2023 16:00:16: Tempo total da tentativa: 10
+02/06/2023 16:00:16: Tempo de Escolha: 2
+02/06/2023 16:00:16: Dano maior: 100
+02/06/2023 16:00:17: Iniciando sessão 1
+02/06/2023 16:00:17: Iniciando bloco 1
+02/06/2023 16:00:17: Iniciando tentativa 1
+02/06/2023 16:00:17: Spawn do Inimigo. Distância: 7,22819
+02/06/2023 16:00:19: A escolha foi Imediata
+02/06/2023 16:00:19: Jogador escolheu 'Imediato': IET iniciado = 10
