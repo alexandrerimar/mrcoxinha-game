@@ -59,14 +59,16 @@ public class FPSInput : MonoBehaviour
 
     if (isWalking && !wasWalking) {
       // Player started walking
+      Logger.Instance.LogAction(MainMenu.nomeDoLogDeMovimento,"Player started walking. Horizontal Axis = " + deltaX + ". Vertical Axis = " + deltaZ);
       Logger.Instance.LogAction("Player started walking. Horizontal Axis = " + deltaX + ". Vertical Axis = " + deltaZ);
     } else if (!isWalking && wasWalking) {
       // Player finished walking
-      Logger.Instance.LogAction("Player finished walking.");
+      Logger.Instance.LogAction(MainMenu.nomeDoLogDeMovimento,"Player finished walking. Horizontal Axis = " + deltaX + ". Vertical Axis = " + deltaZ);
+      Logger.Instance.LogAction("Player finished walking. Horizontal Axis = " + deltaX + ". Vertical Axis = " + deltaZ);
     }
 
     // Log player's position
-    Logger.Instance.LogAction("Player position: " + transform.position);
+    Logger.Instance.LogAction(MainMenu.nomeDoLogDeMovimento, "Player position: " + transform.position);
 
   }
 }
