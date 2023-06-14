@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     Vector3 VFXPos;
 
     //Tempo de espera inicial
-    [SerializeField] float initialTimeWait = 10f;
+    [SerializeField] public float initialTimeWait = 10f;
     
     // Variaveis de controle de sessão, bloco e tentativa
     public int currentSession = 1;
@@ -52,16 +52,23 @@ public class GameManager : MonoBehaviour
     public int totalBlocks = 20; // pode variar de 03 a 20, precisa de script
     public int totalAttempts = 6;
 
+    // Valoes de dano para cada sessão
+    public string DanoSessao1 = "10";
+    public string DanoSessao2 = "30";
+    public string DanoSessao3 = "50";
+    public string DanoSessao4 = "70";
+    public string DanoSessao5 = "90";
+
     // Variáveis de "Bloco"
     public float deltaT; // Tempo entre escolha e consequência (Esc.Imp). Te
-    [SerializeField] float deltaTSuperior = 15.0f;
-    [SerializeField] float deltaTInferior = 1.0f;
+    public float deltaTSuperior = 15.0f;
+    public float deltaTInferior = 1.0f;
     public int totalDaEscolha; //soma das ultimas 4 tentativas do bloco
     List<float> lastThreeBlocks = new List<float>();
   
 
     //Variáveis da "Sessão"
-    private string imediateDamage = "10"; // Primeiro dano imediato, muda a cada sessão
+    private string imediateDamage; // Primeiro dano imediato, muda a cada sessão
     public string delayedDamage = "100"; // Dano atrasado, contante
     public float pontoDeIndiferenca; // Guarda o ponto de indiferença
     //public int totalDeBlocos;
@@ -70,7 +77,7 @@ public class GameManager : MonoBehaviour
     public float deltaTInicial = 8.0f; // O primeiro deltaT de cada sessão
     public float IET; // Tempo de espera entre tentativas
     public float timeForChoice = 5.0f; //Tempo para fazer a escolha
-    [SerializeField] int TTotalDaTentativa = 30; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT), estou ignorando tempo para resposta. Devo?
+    public float TTotalDaTentativa = 30; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT), estou ignorando tempo para resposta. Devo?
     public Attempt.ChoiceSelector selectedChoice;
 
     // Outros
@@ -87,6 +94,13 @@ public class GameManager : MonoBehaviour
      [SerializeField] Button iniciarBtn;
      public bool gameStarted;
 
+    private ConfigManager configManager;
+
+    void Awake() 
+   {
+      configManager = GetComponent<ConfigManager>();
+      configManager.LoadConfigurations("config.conf");
+   }
 
     void Start() {         
         sceneName = GetActiveSceneName();
@@ -223,19 +237,19 @@ public class GameManager : MonoBehaviour
         switch (currentSession)
         {
             case 1:
-                imediateDamage = "10";
+                imediateDamage = DanoSessao1;
                 break;
             case 2:
-                imediateDamage = "30";
+                imediateDamage = DanoSessao2;
                 break;
             case 3:
-                imediateDamage = "50";
+                imediateDamage = DanoSessao3;
                 break;
             case 4:
-                imediateDamage = "70";
+                imediateDamage = DanoSessao4;
                 break;
             case 5:
-                imediateDamage = "90";
+                imediateDamage = DanoSessao5;
                 break;
         }
     }

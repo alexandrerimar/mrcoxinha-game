@@ -9630,6 +9630,7 @@ GameObject:
   - component: {fileID: 1687261664}
   - component: {fileID: 1687261665}
   - component: {fileID: 1687261666}
+  - component: {fileID: 1687261667}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -9727,6 +9728,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shootAnim: {fileID: 787498460}
   enemyAnim: {fileID: 958186316}
+--- !u!114 &1687261667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687261662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d7d13095ec966e44895de6f4e516fb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1690691043
 PrefabInstance:
   m_ObjectHideFlags: 0

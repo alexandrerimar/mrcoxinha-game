@@ -16,12 +16,6 @@ public class MainMenu : MonoBehaviour
 
    int activeSceneIndex;
 
-   void Awake() 
-   {
-      ConfigManager configManager = new ConfigManager();
-      configManager.LoadConfigurations("config.conf");
-   }
-
    void Start() {
       playButton.interactable = false;
       sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();
