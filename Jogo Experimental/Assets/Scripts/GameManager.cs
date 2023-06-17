@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     
     // Variáveis de spawn do inimigo
     [SerializeField] GameObject Player;
-    [SerializeField] float globalMaxDistance, globalMinDistance;
+    public float globalMaxDistance, globalMinDistance;
     public GameObject Enemy;
     private float spawnDistance;
 

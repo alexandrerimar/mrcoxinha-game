@@ -292,6 +292,66 @@ public class ConfigManager : MonoBehaviour
                     Debug.LogError("Invalid DanoSessao5 value: " + danoSessao5);
                 }
                 break;
+            
+            case "DistanciaMaxima":
+                float distanciaMaxima;
+                if (float.TryParse(value, out distanciaMaxima))
+                {   
+                    gameManager.globalMaxDistance = distanciaMaxima;
+                }
+                else
+                {
+                    Debug.LogError("Invalid DistanciaMaxima value: " + distanciaMaxima);
+                }
+                break;
+
+            case "DistanciaMinima":
+                float distanciaMinima;
+                if (float.TryParse(value, out distanciaMinima))
+                {   
+                    gameManager.globalMinDistance = distanciaMinima;
+                }
+                else
+                {
+                    Debug.LogError("Invalid DistanciaMinima value: " + distanciaMinima);
+                }
+                break;
+            
+            case "MouseSensibilidadeHor":
+                float mouseSensibilidadeHor;
+                if (float.TryParse(value, out mouseSensibilidadeHor))
+                {   
+                    mouseLook.sensitivityHor = mouseSensibilidadeHor;
+                }
+                else
+                {
+                    Debug.LogError("Invalid MouseSensibilidadeHor value: " + mouseSensibilidadeHor);
+                }
+                break;
+            
+            case "MouseSensibilidadeVer":
+                float mouseSensibilidadeVer;
+                if (float.TryParse(value, out mouseSensibilidadeVer))
+                {   
+                    mouseLook.sensitivityVert = mouseSensibilidadeVer;
+                }
+                else
+                {
+                    Debug.LogError("Invalid MouseSensibilidadeVer value: " + mouseSensibilidadeVer);
+                }
+                break;
+            
+            case "VelocidadeDeCaminhada":
+                float velocidadeDeCaminhada;
+                if (float.TryParse(value, out velocidadeDeCaminhada))
+                {   
+                    fpsInput.speed = velocidadeDeCaminhada;
+                }
+                else
+                {
+                    Debug.LogError("Invalid VelocidadeDeCaminhada value: " + velocidadeDeCaminhada);
+                }
+                break;
 
             default:
                 Debug.LogWarning("Unsupported configuration setting: " + key);
