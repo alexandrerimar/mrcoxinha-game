@@ -5,13 +5,17 @@ using UnityEngine;
 public class ConfigManager : MonoBehaviour
 {
 
-    private GameManager gameManager;
-    private MouseLook mouseLook;
-    private FPSInput fpsInput;
+    //GameManager gameManager;
+    MouseLook mouseLook;
+    FPSInput fpsInput;
 
-    void Awake ()
+    [SerializeField] GameObject controller;
+    GameManager gameManagerScript;
+
+    void Start ()
     {
-        gameManager = this.GetComponent<GameManager>();
+        //gameManager = GetComponent<GameManager>();
+        gameManagerScript = controller.GetComponent<GameManager>();
         mouseLook = FindObjectOfType<MouseLook>();
         fpsInput = FindObjectOfType<FPSInput>();
     }
@@ -106,7 +110,7 @@ public class ConfigManager : MonoBehaviour
                 float tempo;
                 if (float.TryParse(value, out tempo))
                 {
-                    gameManager.initialTimeWait = tempo;
+                    gameManagerScript.initialTimeWait = tempo;
                 }
                 else
                 {
@@ -118,7 +122,7 @@ public class ConfigManager : MonoBehaviour
                 float deltaTSuperior;
                 if (float.TryParse(value, out deltaTSuperior))
                 {
-                    gameManager.deltaTSuperior = deltaTSuperior;
+                    gameManagerScript.deltaTSuperior = deltaTSuperior;
                 }
                 else
                 {
@@ -130,7 +134,7 @@ public class ConfigManager : MonoBehaviour
                 float deltaTInferior;
                 if (float.TryParse(value, out deltaTInferior))
                 {
-                    gameManager.deltaTInferior = deltaTInferior;
+                    gameManagerScript.deltaTInferior = deltaTInferior;
                 }
                 else
                 {
@@ -142,7 +146,7 @@ public class ConfigManager : MonoBehaviour
                 float deltaTInicial;
                 if (float.TryParse(value, out deltaTInicial))
                 {
-                    gameManager.deltaTInicial = deltaTInicial;
+                    gameManagerScript.deltaTInicial = deltaTInicial;
                 }
                 else
                 {
@@ -154,7 +158,7 @@ public class ConfigManager : MonoBehaviour
                 float tempoParaEscolher;
                 if (float.TryParse(value, out tempoParaEscolher))
                 {
-                    gameManager.timeForChoice = tempoParaEscolher;
+                    gameManagerScript.timeForChoice = tempoParaEscolher;
                 }
                 else
                 {
@@ -166,7 +170,7 @@ public class ConfigManager : MonoBehaviour
                 float tempoTotalDaTentativa;
                 if (float.TryParse(value, out tempoTotalDaTentativa))
                 {
-                    gameManager.TTotalDaTentativa = tempoTotalDaTentativa;
+                    gameManagerScript.TTotalDaTentativa = tempoTotalDaTentativa;
                 }
                 else
                 {
@@ -178,7 +182,7 @@ public class ConfigManager : MonoBehaviour
                 int sessoesTotais;
                 if (int.TryParse(value, out sessoesTotais))
                 {
-                    gameManager.totalSessions = sessoesTotais;
+                    gameManagerScript.totalSessions = sessoesTotais;
                 }
                 else
                 {
@@ -190,7 +194,7 @@ public class ConfigManager : MonoBehaviour
                 int blocosTotais;
                 if (int.TryParse(value, out blocosTotais))
                 {
-                    gameManager.totalBlocks = blocosTotais;
+                    gameManagerScript.totalBlocks = blocosTotais;
                 }
                 else
                 {
@@ -202,7 +206,7 @@ public class ConfigManager : MonoBehaviour
                 int tentativasTotais;
                 if (int.TryParse(value, out tentativasTotais))
                 {
-                    gameManager.totalAttempts = tentativasTotais;
+                    gameManagerScript.totalAttempts = tentativasTotais;
                 }
                 else
                 {
@@ -216,7 +220,7 @@ public class ConfigManager : MonoBehaviour
                 if (int.TryParse(value, out danoMaximo))
                 {   
                     danoMaximoStr = danoMaximo.ToString();
-                    gameManager.delayedDamage = danoMaximoStr;
+                    gameManagerScript.delayedDamage = danoMaximoStr;
                 }
                 else
                 {
@@ -230,7 +234,7 @@ public class ConfigManager : MonoBehaviour
                 if (int.TryParse(value, out danoSessao))
                 {   
                     danoSessaoStr = danoSessao.ToString();
-                    gameManager.DanoSessao1 = danoSessaoStr;
+                    gameManagerScript.DanoSessao1 = danoSessaoStr;
                 }
                 else
                 {
@@ -244,7 +248,7 @@ public class ConfigManager : MonoBehaviour
                 if (int.TryParse(value, out danoSessao2))
                 {   
                     danoSessao2Str = danoSessao2.ToString();
-                    gameManager.DanoSessao2 = danoSessao2Str;
+                    gameManagerScript.DanoSessao2 = danoSessao2Str;
                 }
                 else
                 {
@@ -257,7 +261,7 @@ public class ConfigManager : MonoBehaviour
                 if (int.TryParse(value, out danoSessao3))
                 {   
                     danoSessao3Str = danoSessao3.ToString();
-                    gameManager.DanoSessao3 = danoSessao3Str;
+                    gameManagerScript.DanoSessao3 = danoSessao3Str;
                 }
                 else
                 {
@@ -271,7 +275,7 @@ public class ConfigManager : MonoBehaviour
                 if (int.TryParse(value, out danoSessao4))
                 {   
                     danoSessao4Str = danoSessao4.ToString();
-                    gameManager.DanoSessao4 = danoSessao4Str;
+                    gameManagerScript.DanoSessao4 = danoSessao4Str;
                 }
                 else
                 {
@@ -285,7 +289,7 @@ public class ConfigManager : MonoBehaviour
                 if (int.TryParse(value, out danoSessao5))
                 {   
                     danoSessao5Str = danoSessao5.ToString();
-                    gameManager.DanoSessao5 = danoSessao5Str;
+                    gameManagerScript.DanoSessao5 = danoSessao5Str;
                 }
                 else
                 {
@@ -297,7 +301,7 @@ public class ConfigManager : MonoBehaviour
                 float distanciaMaxima;
                 if (float.TryParse(value, out distanciaMaxima))
                 {   
-                    gameManager.globalMaxDistance = distanciaMaxima;
+                    gameManagerScript.globalMaxDistance = distanciaMaxima;
                 }
                 else
                 {
@@ -309,7 +313,7 @@ public class ConfigManager : MonoBehaviour
                 float distanciaMinima;
                 if (float.TryParse(value, out distanciaMinima))
                 {   
-                    gameManager.globalMinDistance = distanciaMinima;
+                    gameManagerScript.globalMinDistance = distanciaMinima;
                 }
                 else
                 {
@@ -329,7 +333,7 @@ public class ConfigManager : MonoBehaviour
                 }
                 break;
             
-            case "MouseSensibilidadeVer":
+            case "MouseSensibilidadeVert":
                 float mouseSensibilidadeVer;
                 if (float.TryParse(value, out mouseSensibilidadeVer))
                 {   
@@ -337,7 +341,7 @@ public class ConfigManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("Invalid MouseSensibilidadeVer value: " + mouseSensibilidadeVer);
+                    Debug.LogError("Invalid MouseSensibilidadeVert value: " + mouseSensibilidadeVer);
                 }
                 break;
             

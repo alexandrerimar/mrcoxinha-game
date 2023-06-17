@@ -16,7 +16,9 @@ public class Attempt : MonoBehaviour
 
     // Variáveis de elapsed time
     private ComputeElapsedTime elapsedTimeClass;
+    private ComputeElapsedTime elapsedTimeClassLatencia;
     public float escolhaImediataElapsedTime;
+    public float latencia;
 
     public enum ChoiceSelector
     {
@@ -51,6 +53,7 @@ public class Attempt : MonoBehaviour
      void Start () {
           gameManagerScript = controller.GetComponent<GameManager>();
           elapsedTimeClass = new ComputeElapsedTime();
+          elapsedTimeClassLatencia = new ComputeElapsedTime();
 
           agoraBtn.gameObject.SetActive(false);
           depoisBtn.gameObject.SetActive(false);
@@ -75,6 +78,7 @@ public class Attempt : MonoBehaviour
           }
           else if (isEnemyActive == true) 
           {
+
                if (gameManagerScript.sceneName == "EscolhaImpulsivaDD")
                {
                     if (activeChoice == true && attemptNumber == 1) {
@@ -125,6 +129,8 @@ public class Attempt : MonoBehaviour
           // Escolha imediata
           selecaoAtual = ChoiceSelector.Imediata;
           escolhaImediataElapsedTime = elapsedTimeClass.ElapsedTime(inicio: false);
+          latencia = elapsedTimeClassLatencia.ElapsedTime(inicio: false);
+          Logger.Instance.LogAction("Latencia: " + latencia);
           isChosen = true; // informa que foi escolhido                    
           activeChoice = false; // desativa a permissão pra escolher
           resultadoFinalizado = true;
@@ -134,6 +140,8 @@ public class Attempt : MonoBehaviour
      public void escolhaAtrasadaBtn () {
           // Escolha atrasada
           selecaoAtual = ChoiceSelector.Atrasada;
+          latencia = elapsedTimeClassLatencia.ElapsedTime(inicio: false);
+          Logger.Instance.LogAction("Latencia: " + latencia);
           isChosen = true;
           activeChoice = false; // desativa a permissão pra escolher
           resultadoFinalizado = true;
@@ -143,6 +151,8 @@ public class Attempt : MonoBehaviour
 
     public IEnumerator TimeForChoiceCoroutine(float choiceTime)
     {
+          latencia = elapsedTimeClassLatencia.ElapsedTime();
+          Logger.Instance.LogAction("Latencia 0: " + latencia);
           yield return new WaitForSeconds(choiceTime);
 
           //Escolha não foi feita
@@ -156,10 +166,16 @@ public class Attempt : MonoBehaviour
           // Espera o tempo determinado por choiceTime      
           // Choice time é deltaT: nesse caso, tempo para apresentação da opção atrasada.
           
+          latencia = elapsedTimeClassLatencia.ElapsedTime();
+          Logger.Instance.LogAction("Latencia 0: " + latencia);
+
           agoraBtn.gameObject.SetActive(true);
           depoisBtn.gameObject.SetActive(false);
           escolhaImediataElapsedTime = elapsedTimeClass.ElapsedTime(inicio: true);
-          yield return new WaitForSeconds(choiceTime);        
+          yield return new WaitForSeconds(choiceTime);
+
+          latencia = elapsedTimeClassLatencia.ElapsedTime();
+          Logger.Instance.LogAction("Latencia 0: " + latencia);        
           agoraBtn.gameObject.SetActive(false);
           depoisBtn.gameObject.SetActive(true);
           yield return new WaitForSeconds(timeForChoice);

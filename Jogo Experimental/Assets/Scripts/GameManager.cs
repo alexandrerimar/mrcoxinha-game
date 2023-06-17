@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
     Vector3 VFXPos;
 
     //Tempo de espera inicial
-    [SerializeField] public float initialTimeWait = 10f;
+    public float initialTimeWait;
     
     // Variaveis de controle de sessão, bloco e tentativa
     public int currentSession = 1;
@@ -94,15 +94,13 @@ public class GameManager : MonoBehaviour
      [SerializeField] Button iniciarBtn;
      public bool gameStarted;
 
-    private ConfigManager configManager;
+    ConfigManager configManager;
 
-    void Awake() 
-   {
-      configManager = GetComponent<ConfigManager>();
-      configManager.LoadConfigurations("config.conf");
-   }
 
-    void Start() {         
+    void Start () { 
+        configManager = GetComponent<ConfigManager>();        
+        configManager.LoadConfigurations("config.conf"); 
+
         sceneName = GetActiveSceneName();
 
         Logger.Instance.LogAction("Cena: " + sceneName);

@@ -5755,6 +5755,7 @@ MonoBehaviour:
   activeChoice: 0
   attemptNumber: 0
   escolhaImediataElapsedTime: 0
+  latencia: 0
   selecaoAtual: 2
   resultadoFinalizado: 0
   agoraBtn: {fileID: 2106156924}
@@ -9627,10 +9628,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1687261663}
-  - component: {fileID: 1687261664}
   - component: {fileID: 1687261665}
-  - component: {fileID: 1687261666}
   - component: {fileID: 1687261667}
+  - component: {fileID: 1687261666}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -9653,23 +9653,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1687261664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687261662}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce502cc6ebc191e4d9fe2f3669b8a540, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Player: {fileID: 1041392802}
-  globalMaxDistance: 10
-  globalMinDistance: 3
-  IET: 2
-  Enemy: {fileID: 958186312}
 --- !u!114 &1687261665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9698,6 +9681,11 @@ MonoBehaviour:
   totalSessions: 1
   totalBlocks: 1
   totalAttempts: 6
+  DanoSessao1: 10
+  DanoSessao2: 30
+  DanoSessao3: 50
+  DanoSessao4: 70
+  DanoSessao5: 90
   deltaT: 7
   deltaTSuperior: 15
   deltaTInferior: 1
@@ -9740,6 +9728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d7d13095ec966e44895de6f4e516fb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 1687261662}
 --- !u!1001 &1690691043
 PrefabInstance:
   m_ObjectHideFlags: 0
