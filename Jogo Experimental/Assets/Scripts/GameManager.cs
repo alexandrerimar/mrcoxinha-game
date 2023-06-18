@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
     public Coroutine tempoDeEscolha = null; //Define uma variável para colocar a coroutine
 
     // Variáveis de apresentação de dano
-    public GameObject damageTextPrefab, camera;
+    public GameObject damageTextPrefab;
     public string textToDisplay; 
 
     // Variáveis de Elapsed Time
@@ -134,18 +134,6 @@ public class GameManager : MonoBehaviour
 
         gameStarted = false;
         iniciarBtn.gameObject.SetActive(true);
-        //Time.timeScale = 0;    
-
-        /*
-        // Inicia a primeira sessão, bloco e tentativa
-        if (currentSession == 1 && currentBlock == 1 && currentAttempt == 1) {
-            StartCoroutine (WaitForStart());
-        } else {
-            StartSession(currentSession);
-            StartBlock(currentBlock);
-            StartAttempt(currentAttempt);
-        }  
-        */
     }  
 
     public void StartGame()
