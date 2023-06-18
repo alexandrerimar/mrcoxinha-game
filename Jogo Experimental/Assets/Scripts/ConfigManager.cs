@@ -23,6 +23,7 @@ public class ConfigManager : MonoBehaviour
 
     public void LoadConfigurations(string fileName)
     {
+        string assetFilePath = Path.Combine("Assets/Scripts", fileName);
         string filePath = Path.Combine(Application.persistentDataPath, fileName);
 
         if (File.Exists(filePath))
@@ -39,6 +40,17 @@ public class ConfigManager : MonoBehaviour
                 // Close the reader after reading the file
                 reader.Close();
             }
+        }
+        else if (File.Exists(assetFilePath))
+        {
+            // Configuration file exists in the Assets folder, but not in the persistent data path
+            Debug.LogWarning("Configuration file not found in the persistent data path. Copying from Assets: " + fileName);
+
+            // Copy the configuration file from Assets to the persistent data path
+            File.Copy(assetFilePath, filePath);
+
+            // Load the configuration from the persistent data path
+            LoadConfigurations(fileName);
         }
         else
         {
