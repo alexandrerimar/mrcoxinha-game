@@ -21,12 +21,13 @@ public class SceneLoader : MonoBehaviour
         {
             List<int> sceneBuildIndices = GetAllSceneBuildIndices();
             sceneBuildIndicesRandomized = ShuffleSceneIndices(sceneBuildIndices);
-        
+        /*
             Logger.Instance.LogAction("Scene Build Indices in the Project:");
             foreach (int buildIndex in sceneBuildIndicesRandomized)
             {
                 Logger.Instance.LogAction("- Build Index: " + buildIndex);
             } 
+        */
         }
               
     }

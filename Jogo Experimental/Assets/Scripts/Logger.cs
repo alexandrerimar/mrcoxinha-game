@@ -42,11 +42,16 @@ public class Logger
 
         if (string.IsNullOrEmpty(logFileName))
         {
-            if (defaultLogFile == null)
+            if (string.IsNullOrEmpty(defaultLogFileName))
+            {
+                Debug.LogError("Default log file name is not set. Please call SetDefaultLogFileName before logging actions.");
+            }
+            
+            
+            if(defaultLogFile == null)
             {
                 // Create the default log file when the first action log is made
-                string logName = defaultLogFileName + ".log";
-                string logFilePath = Path.Combine(Application.persistentDataPath, logName);
+                string logFilePath = Path.Combine(Application.persistentDataPath, defaultLogFileName + ".log");
                 defaultLogFile = File.AppendText(logFilePath);
                 //logFiles.Add(defaultLogFileName + ".log", defaultLogFile);
             }
