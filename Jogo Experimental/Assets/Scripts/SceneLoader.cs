@@ -28,8 +28,7 @@ public class SceneLoader : MonoBehaviour
                 Logger.Instance.LogAction("- Build Index: " + buildIndex);
             } 
         */
-        }
-              
+        }        
     }
 
     private List<int> GetAllSceneBuildIndices()
