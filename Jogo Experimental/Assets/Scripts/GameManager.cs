@@ -88,14 +88,9 @@ public class GameManager : MonoBehaviour
 
     ConfigManager configManager;
 
-    void Awake () {
+    void Start () { 
         configManager = GetComponent<ConfigManager>();        
         configManager.LoadConfigurations("config.conf"); 
-    }
-
-    void Start () { 
-        //configManager = GetComponent<ConfigManager>();        
-        //configManager.LoadConfigurations("config.conf"); 
 
         sceneName = GetActiveSceneName();
 

@@ -45,9 +45,10 @@ public class Logger
             if (defaultLogFile == null)
             {
                 // Create the default log file when the first action log is made
-                string logFilePath = Path.Combine(Application.persistentDataPath, defaultLogFileName + ".log");
+                string logName = defaultLogFileName + ".log";
+                string logFilePath = Path.Combine(Application.persistentDataPath, logName);
                 defaultLogFile = File.AppendText(logFilePath);
-                logFiles.Add(defaultLogFileName + ".log", defaultLogFile);
+                //logFiles.Add(defaultLogFileName + ".log", defaultLogFile);
             }
 
             Debug.Log(DateTime.Now + ": " + action);

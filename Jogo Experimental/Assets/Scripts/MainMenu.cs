@@ -37,9 +37,10 @@ public class MainMenu : MonoBehaviour
    }
 
    public void PlayGame () {
-      Logger.Instance.LogAction("Cena Atual: " + activeSceneIndex);
       playerIDCrossScene = playerID;
       Logger.Instance.SetDefaultLogFileName(playerIDCrossScene);
+      
+      Logger.Instance.LogAction("Cena Atual: " + activeSceneIndex);   
       Logger.Instance.LogAction("PlayerID: " + playerIDCrossScene);
 
       nomeDoLogDeMovimento = playerIDCrossScene + "_movimento.log";
@@ -51,7 +52,6 @@ public class MainMenu : MonoBehaviour
    private void QuitGame() {
       Logger.Instance.LogAction("Quit!");
       Logger.Instance.CloseLogFiles();
-
       Application.Quit();
    }
 }

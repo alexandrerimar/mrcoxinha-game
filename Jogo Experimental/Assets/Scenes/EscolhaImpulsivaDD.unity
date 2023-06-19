@@ -9671,34 +9671,33 @@ MonoBehaviour:
   canvasUI: {fileID: 1627925780}
   sceneLoader: {fileID: 1820072654}
   Player: {fileID: 1041392802}
-  globalMaxDistance: 10
-  globalMinDistance: 3
+  globalMaxDistance: 0
+  globalMinDistance: 0
   Enemy: {fileID: 958186312}
-  initialTimeWait: 10
-  currentSession: 1
-  currentBlock: 1
-  currentAttempt: 1
-  totalSessions: 1
-  totalBlocks: 1
-  totalAttempts: 6
-  DanoSessao1: 10
-  DanoSessao2: 30
-  DanoSessao3: 50
-  DanoSessao4: 70
-  DanoSessao5: 90
-  deltaT: 7
-  deltaTSuperior: 15
-  deltaTInferior: 1
+  initialTimeWait: 0
+  currentSession: 0
+  currentBlock: 0
+  currentAttempt: 0
+  totalSessions: 0
+  totalBlocks: 0
+  totalAttempts: 0
+  DanoSessao1: 
+  DanoSessao2: 
+  DanoSessao3: 
+  DanoSessao4: 
+  DanoSessao5: 
+  deltaT: 0
+  deltaTSuperior: 0
+  deltaTInferior: 0
   totalDaEscolha: 0
-  delayedDamage: 100
+  delayedDamage: 
   pontoDeIndiferenca: 0
-  deltaTInicial: 7
-  IET: 2
-  timeForChoice: 2
-  TTotalDaTentativa: 10
+  deltaTInicial: 0
+  IET: 0
+  timeForChoice: 0
+  TTotalDaTentativa: 0
   selectedChoice: 0
   damageTextPrefab: {fileID: 6783427813726553564, guid: 4eb1cb56b9da66647a2ea70836870e0c, type: 3}
-  camera: {fileID: 548996590}
   textToDisplay: 25
   iniciarBtn: {fileID: 49210710}
   gameStarted: 0

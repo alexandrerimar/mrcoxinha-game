@@ -84,6 +84,19 @@ public class ConfigManager : MonoBehaviour
 
                 writer.Close();
             }
+
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    // Parse and process each line of the configuration file
+                    ProcessConfigurationLine(line);
+                }
+
+                // Close the reader after reading the file
+                reader.Close();
+            }
         }
     }
 
