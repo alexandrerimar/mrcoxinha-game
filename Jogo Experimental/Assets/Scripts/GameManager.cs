@@ -7,14 +7,6 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-
-/*
-PRÓXIMOS PASSOS
-Importante:
-[X] Organizar IET
-[ ] Função para inimigo aparecer só quando personagem anda? Pois o player pode ficar só parado.
-*/
-
 public class GameManager : MonoBehaviour
 {
     public string sceneName;
@@ -96,10 +88,14 @@ public class GameManager : MonoBehaviour
 
     ConfigManager configManager;
 
-
-    void Start () { 
+    void Awake () {
         configManager = GetComponent<ConfigManager>();        
         configManager.LoadConfigurations("config.conf"); 
+    }
+
+    void Start () { 
+        //configManager = GetComponent<ConfigManager>();        
+        //configManager.LoadConfigurations("config.conf"); 
 
         sceneName = GetActiveSceneName();
 
@@ -140,7 +136,7 @@ public class GameManager : MonoBehaviour
         {   
             gameStarted = true;
             iniciarBtn.gameObject.SetActive(false);
-            Debug.Log ("Jogo Iniciado");
+            Logger.Instance.LogAction("Jogo Iniciado");
             //Time.timeScale = 1; 
             Cursor.lockState = CursorLockMode.Locked;
             StartCoroutine (WaitForStart());
@@ -601,8 +597,7 @@ public class GameManager : MonoBehaviour
             else if (escolha == 1) {
                 // Imediato
                 tempoDaEscolhaIRDD = attemptScript.escolhaImediataElapsedTime;
-                Debug.Log("Convertido " + tempoDaEscolhaIRDD); //Verificar essa conversão direito.
-
+                
                 if (tempoDaEscolhaIRDD < deltaT) 
                 {
                     IET = TTotalDaTentativa - tempoDaEscolhaIRDD; 

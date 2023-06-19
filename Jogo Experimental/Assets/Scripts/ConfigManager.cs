@@ -12,9 +12,8 @@ public class ConfigManager : MonoBehaviour
     [SerializeField] GameObject controller;
     GameManager gameManagerScript;
 
-    void Start ()
+    void Awake ()
     {
-        //gameManager = GetComponent<GameManager>();
         gameManagerScript = controller.GetComponent<GameManager>();
         mouseLook = FindObjectOfType<MouseLook>();
         fpsInput = FindObjectOfType<FPSInput>();
@@ -41,20 +40,50 @@ public class ConfigManager : MonoBehaviour
                 reader.Close();
             }
         }
-        else if (File.Exists(assetFilePath))
-        {
-            // Configuration file exists in the Assets folder, but not in the persistent data path
-            Debug.LogWarning("Configuration file not found in the persistent data path. Copying from Assets: " + fileName);
-
-            // Copy the configuration file from Assets to the persistent data path
-            File.Copy(assetFilePath, filePath);
-
-            // Load the configuration from the persistent data path
-            LoadConfigurations(fileName);
-        }
         else
         {
-            Debug.LogError("Configuration file not found: " + fileName);
+            Debug.LogWarning("Configuration file not found. Creating default file: " + fileName);
+
+            // Create a new configuration file
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                // Write initial configuration data to the file
+                writer.WriteLine("# ESPECIFICACOES DO JOGO");
+                writer.WriteLine("Resolution = 1920x1080");
+                writer.WriteLine("TextureQuality = High");
+
+                writer.WriteLine("# CONTROLE DE TEMPO");
+                writer.WriteLine("TempoAntesDeIniciarJogo = 2");
+                writer.WriteLine("DeltaTSuperior = 5");
+                writer.WriteLine("DeltaTInferior = 0,5");
+                writer.WriteLine("DeltaTInicial = 2,75");
+                writer.WriteLine("TempoParaEscolher = 5");
+                writer.WriteLine("TempoTotalDaTentativa = 6");
+
+                writer.WriteLine("# CONTROLE DE TEMPO");
+                writer.WriteLine("SessoesTotais = 5");
+                writer.WriteLine("BlocosTotais = 20");
+                writer.WriteLine("TentativasTotais = 6");
+
+                writer.WriteLine("# DANO");
+                writer.WriteLine("DanoMaximo = 100");
+                writer.WriteLine("DanoSessao1 = 10");
+                writer.WriteLine("DanoSessao2 = 30");
+                writer.WriteLine("DanoSessao3 = 50");
+                writer.WriteLine("DanoSessao4 = 70");
+                writer.WriteLine("DanoSessao5 = 90");
+
+                writer.WriteLine("# SPAWN DO INIMIGO");
+                writer.WriteLine("DistanciaMaxima = 10");
+                writer.WriteLine("DistanciaMinima = 3");
+
+                writer.WriteLine("# JOGADOR");
+                writer.WriteLine("MouseSensibilidadeHor = 1,5");
+                writer.WriteLine("MouseSensibilidadeVert = 1,5");
+                writer.WriteLine("VelocidadeDeCaminhada = 6");
+
+                writer.Close();
+            }
         }
     }
 

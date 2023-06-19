@@ -134,7 +134,6 @@ public class Attempt : MonoBehaviour
           isChosen = true; // informa que foi escolhido                    
           activeChoice = false; // desativa a permissão pra escolher
           resultadoFinalizado = true;
-          // Debug.Log("Opção imediata foi escolhida. Causou " + imediateDamage + " de dano.");
      }
 
      public void escolhaAtrasadaBtn () {
@@ -145,7 +144,6 @@ public class Attempt : MonoBehaviour
           isChosen = true;
           activeChoice = false; // desativa a permissão pra escolher
           resultadoFinalizado = true;
-          // Debug.Log("Opção atrasada foi escolhida. Causou " + delayedDamage + " de dano.");
      }
 
 
@@ -159,7 +157,7 @@ public class Attempt : MonoBehaviour
           activeChoice = false; // desativa a permissão pra escolher
           selecaoAtual = ChoiceSelector.Nenhuma;
           resultadoFinalizado = true;
-          Debug.Log("Tempo limite excedido, escolha não foi feita.");       
+          Logger.Instance.LogAction("Tempo limite excedido, escolha não foi feita.");       
     }
 
     public IEnumerator TimeForChoiceCoroutineIRDD(float choiceTime, float timeForChoice){
@@ -184,7 +182,7 @@ public class Attempt : MonoBehaviour
           activeChoice = false; // desativa a permissão pra escolher
           selecaoAtual = ChoiceSelector.Nenhuma;
           resultadoFinalizado = true;
-          Debug.Log("Tempo limite excedido, escolha não foi feita.");  
+          Logger.Instance.LogAction("Tempo limite excedido, escolha não foi feita.");  
     }
 
 }

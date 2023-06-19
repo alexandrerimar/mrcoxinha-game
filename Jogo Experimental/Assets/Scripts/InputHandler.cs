@@ -34,7 +34,7 @@ public class InputHandler : MonoBehaviour {
 
     void Awake() {
         playerIDInput = MainMenu.playerIDCrossScene; // Pega o ID do usuário no menu principal
-        Debug.Log("Player Input passou: " + playerIDInput);
+        //Debug.Log("Player Input passou: " + playerIDInput);
     }
     
     void Start () {
@@ -102,7 +102,7 @@ public class InputHandler : MonoBehaviour {
             lastThreeDeltaT.Add (input);    
         }
         foreach (float x in lastThreeDeltaT) {
-            Debug.Log("itens da list " + x);
+            //Debug.Log("itens da list " + x);
         }
 
         return lastThreeDeltaT; 

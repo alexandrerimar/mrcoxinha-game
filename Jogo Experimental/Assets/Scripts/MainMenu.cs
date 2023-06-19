@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour
 
    int activeSceneIndex;
 
-   void Start() {
+   void Awake() {
       playButton.interactable = false;
       sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();
       activeSceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -37,17 +37,21 @@ public class MainMenu : MonoBehaviour
    }
 
    public void PlayGame () {
+      Logger.Instance.LogAction("Cena Atual: " + activeSceneIndex);
       playerIDCrossScene = playerID;
-      Logger.Instance.SetDefaultLogFileName(playerIDCrossScene + ".log");
+      Logger.Instance.SetDefaultLogFileName(playerIDCrossScene);
       Logger.Instance.LogAction("PlayerID: " + playerIDCrossScene);
+
       nomeDoLogDeMovimento = playerIDCrossScene + "_movimento.log";
-      Logger.Instance.LogAction(nomeDoLogDeMovimento, "PlayerID: " + playerIDCrossScene);
+      Logger.Instance.LogAction("PlayerID: " + playerIDCrossScene, nomeDoLogDeMovimento);      
+      
       sceneLoaderScript.LoadSceneByPositionOnList(activeSceneIndex);
    }
 
    private void QuitGame() {
-      Logger.Instance.SetDefaultLogFileName(playerIDCrossScene + ".log");
       Logger.Instance.LogAction("Quit!");
+      Logger.Instance.CloseLogFiles();
+
       Application.Quit();
    }
 }

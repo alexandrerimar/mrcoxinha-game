@@ -22,9 +22,9 @@ public class ComputeElapsedTime
         {
             tempoFinal = DateTime.Now;
             elapsedTime = tempoFinal - tempoInicial;
-            Debug.Log("Elapsed Time: " + elapsedTime);
+            //Debug.Log("Elapsed Time: " + elapsedTime);
             elapsedTimeFloat = Convert.ToSingle(elapsedTime.TotalSeconds);
-            Debug.Log("Elapsed Time Converted: " + elapsedTimeFloat);
+            //Debug.Log("Elapsed Time Converted: " + elapsedTimeFloat);
 
             return elapsedTimeFloat;
         }

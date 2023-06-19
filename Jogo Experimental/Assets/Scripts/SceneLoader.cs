@@ -22,10 +22,10 @@ public class SceneLoader : MonoBehaviour
             List<int> sceneBuildIndices = GetAllSceneBuildIndices();
             sceneBuildIndicesRandomized = ShuffleSceneIndices(sceneBuildIndices);
         
-            Debug.Log("Scene Build Indices in the Project:");
+            Logger.Instance.LogAction("Scene Build Indices in the Project:");
             foreach (int buildIndex in sceneBuildIndicesRandomized)
             {
-                Debug.Log("- Build Index: " + buildIndex);
+                Logger.Instance.LogAction("- Build Index: " + buildIndex);
             } 
         }
               
@@ -75,17 +75,17 @@ public class SceneLoader : MonoBehaviour
         if (currentSceneIndex == 0)
         {
             LoadScene(sceneBuildIndicesRandomized[0]);
-            Debug.Log("Menu --> " + sceneBuildIndicesRandomized[0]);
+            Logger.Instance.LogAction("Menu --> " + sceneBuildIndicesRandomized[0]);
         }
         else if (n >= 0 && n < sceneBuildIndicesRandomized.Count - 1)
         {
             int nextSceneIndex = sceneBuildIndicesRandomized[n + 1];
             LoadScene(nextSceneIndex);
-            Debug.Log(sceneBuildIndicesRandomized[n] + " --> " + nextSceneIndex);
+            Logger.Instance.LogAction(sceneBuildIndicesRandomized[n] + " --> " + nextSceneIndex);
         }
         else if (n == sceneBuildIndicesRandomized.Count - 1)
         {
-            Debug.Log("Game Finalizado. Todas as Scenas foram jogadas.");
+            Logger.Instance.LogAction("Game Finalizado. Todas as Scenas foram jogadas.");
             LoadScene(0);
         }
     }
@@ -108,7 +108,6 @@ public class SceneLoader : MonoBehaviour
             float progress = Mathf.Clamp01(operation.progress / .9f);
             
             slider.value = progress;
-            Debug.Log("Loading: " + progress);
             yield return null;
         }
     }

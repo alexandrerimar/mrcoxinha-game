@@ -36,45 +36,42 @@ public class Logger
         defaultLogFileName = logFileName;
     }
 
-    public void LogAction(string action)
+    public void LogAction(string action, string logFileName = null)
     {
-        if (defaultLogFile == null)
-        {
-            if (string.IsNullOrEmpty(defaultLogFileName))
-            {
-                defaultLogFileName = "DefaultLogFile.log";
-            }
+        StreamWriter writer;
 
-            // Create the default log file when the first action log is made
-            string logFilePath = Path.Combine(Application.persistentDataPath, defaultLogFileName);
-            defaultLogFile = File.AppendText(logFilePath);
-        }
-
-        Debug.Log(DateTime.Now + ": " + action);
-        defaultLogFile.WriteLine(DateTime.Now + ": " + action);
-        defaultLogFile.Flush();
-    }
-
-    public void LogAction(string logFileName, string action)
-    {
         if (string.IsNullOrEmpty(logFileName))
         {
-            LogAction(action); // Use the default log file if no log file name is provided
-            return;
-        }
+            if (defaultLogFile == null)
+            {
+                // Create the default log file when the first action log is made
+                string logFilePath = Path.Combine(Application.persistentDataPath, defaultLogFileName + ".log");
+                defaultLogFile = File.AppendText(logFilePath);
+                logFiles.Add(defaultLogFileName + ".log", defaultLogFile);
+            }
 
-        StreamWriter writer;
-        if (!logFiles.TryGetValue(logFileName, out writer))
+            Debug.Log(DateTime.Now + ": " + action);
+            defaultLogFile.WriteLine(DateTime.Now + ": " + action);
+            defaultLogFile.Flush();
+        }
+        else if (logFiles.TryGetValue(logFileName, out writer))
         {
-            // Create a new log file if it doesn't exist
+            Debug.Log(DateTime.Now + ": " + action);
+            writer.WriteLine(DateTime.Now + ": " + action);
+            writer.Flush();
+        }
+        else
+        {
+            /// Use the persistent data path as the log directory            
             string logFilePath = Path.Combine(Application.persistentDataPath, logFileName);
+            
             writer = File.AppendText(logFilePath);
             logFiles.Add(logFileName, writer);
-        }
 
-        Debug.Log(DateTime.Now + ": " + action);
-        writer.WriteLine(DateTime.Now + ": " + action);
-        writer.Flush();
+            Debug.Log(DateTime.Now + ": " + action);
+            writer.WriteLine(DateTime.Now + ": " + action);
+            writer.Flush();
+        }
     }
 
     public void CloseLogFiles()
