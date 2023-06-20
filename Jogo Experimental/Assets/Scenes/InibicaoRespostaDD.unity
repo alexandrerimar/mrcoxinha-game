@@ -9751,11 +9751,11 @@ MonoBehaviour:
   globalMinDistance: 0
   Enemy: {fileID: 958186312}
   initialTimeWait: 0
-  currentSession: 0
-  currentBlock: 0
-  currentAttempt: 0
-  totalSessions: 0
-  totalBlocks: 0
+  currentSession: 1
+  currentBlock: 1
+  currentAttempt: 1
+  totalSessions: 5
+  totalBlocks: 10
   totalAttempts: 6
   DanoSessao1: 
   DanoSessao2: 
@@ -11012,7 +11012,7 @@ MonoBehaviour:
   etapaAtualInput: 
   danoEscolhidoInput: 5
   deltaTAtualInput: 7
-  filename: dadosDaSessao.json
+  filename: dadosDaTentativa.json
   etapaAtualDeBlocoInput: 
   filenameBloco: dadosDoBloco.json
   resultadoDoBlocoInput: 0

@@ -54,15 +54,15 @@ public class ConfigManager : MonoBehaviour
 
                 writer.WriteLine("# CONTROLE DE TEMPO");
                 writer.WriteLine("TempoAntesDeIniciarJogo = 2");
-                writer.WriteLine("DeltaTSuperior = 5");
-                writer.WriteLine("DeltaTInferior = 0,5");
-                writer.WriteLine("DeltaTInicial = 2,75");
+                writer.WriteLine("DeltaTSuperior = 10");
+                writer.WriteLine("DeltaTInferior = 1");
+                writer.WriteLine("DeltaTInicial = 5");
                 writer.WriteLine("TempoParaEscolher = 5");
-                writer.WriteLine("TempoTotalDaTentativa = 6");
+                writer.WriteLine("TempoTotalDaTentativa = 12");
 
                 writer.WriteLine("# CONTROLE DE TEMPO");
                 writer.WriteLine("SessoesTotais = 5");
-                writer.WriteLine("BlocosTotais = 20");
+                writer.WriteLine("BlocosTotais = 7");
                 writer.WriteLine("TentativasTotais = 6");
 
                 writer.WriteLine("# DANO");
@@ -74,13 +74,13 @@ public class ConfigManager : MonoBehaviour
                 writer.WriteLine("DanoSessao5 = 90");
 
                 writer.WriteLine("# SPAWN DO INIMIGO");
-                writer.WriteLine("DistanciaMaxima = 10");
+                writer.WriteLine("DistanciaMaxima = 15");
                 writer.WriteLine("DistanciaMinima = 3");
 
                 writer.WriteLine("# JOGADOR");
                 writer.WriteLine("MouseSensibilidadeHor = 1,5");
                 writer.WriteLine("MouseSensibilidadeVert = 1,5");
-                writer.WriteLine("VelocidadeDeCaminhada = 6");
+                writer.WriteLine("VelocidadeDeCaminhada = 4");
 
                 writer.Close();
             }

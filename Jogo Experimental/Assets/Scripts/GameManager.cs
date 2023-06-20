@@ -39,9 +39,9 @@ public class GameManager : MonoBehaviour
     // Variaveis de controle de sessão, bloco e tentativa
     public int currentSession = 1;
     public int currentBlock = 1;
-    public int currentAttempt = 0;
+    public int currentAttempt = 1;
     public int totalSessions = 5;
-    public int totalBlocks = 20; // pode variar de 03 a 20, precisa de script
+    public int totalBlocks = 10; // pode variar de 03 a 20, precisa de script
     public int totalAttempts = 6;
 
     // Valoes de dano para cada sessão
@@ -53,8 +53,8 @@ public class GameManager : MonoBehaviour
 
     // Variáveis de "Bloco"
     public float deltaT; // Tempo entre escolha e consequência (Esc.Imp). Te
-    public float deltaTSuperior = 15.0f;
-    public float deltaTInferior = 1.0f;
+    public float deltaTSuperior;
+    public float deltaTInferior;
     public int totalDaEscolha; //soma das ultimas 4 tentativas do bloco
     List<float> lastThreeBlocks = new List<float>();
   
@@ -66,10 +66,10 @@ public class GameManager : MonoBehaviour
     //public int totalDeBlocos;
 
     // Variáveis de "Tentativas"
-    public float deltaTInicial = 8.0f; // O primeiro deltaT de cada sessão
+    public float deltaTInicial; // O primeiro deltaT de cada sessão
     public float IET; // Tempo de espera entre tentativas
     public float timeForChoice = 5.0f; //Tempo para fazer a escolha
-    public float TTotalDaTentativa = 30; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT), estou ignorando tempo para resposta. Devo?
+    public float TTotalDaTentativa; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT), estou ignorando tempo para resposta. Devo?
     public Attempt.ChoiceSelector selectedChoice;
 
     // Outros
@@ -107,9 +107,7 @@ public class GameManager : MonoBehaviour
 
         currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();
-
-        Cursor.lockState = CursorLockMode.Confined; //esconde o cursor do mouse e não permite que saia da tela
+        sceneLoaderScript = sceneLoader.GetComponent<SceneLoader>();        
         
         attemptScript = Player.GetComponent<Attempt>();
         animationScript = GetComponent<AnimationScript>();
@@ -123,6 +121,7 @@ public class GameManager : MonoBehaviour
         Enemy.SetActive(false);
         spawnDistance = SetDistance();    
 
+        Cursor.lockState = CursorLockMode.Confined;
         gameStarted = false;
         iniciarBtn.gameObject.SetActive(true);
     }  
@@ -244,7 +243,8 @@ public class GameManager : MonoBehaviour
 
     public void StartAttempt(int attempt){
         // Inicia a tentativa atual
-        Screen.lockCursor = false; 
+        //Screen.lockCursor = false; 
+        Cursor.lockState = CursorLockMode.Confined;
         attemptScript.isChosen = false;
         currentAttempt = attempt;
 
@@ -282,7 +282,8 @@ public class GameManager : MonoBehaviour
         // Atribui o valor da escolha para a variável selectedChoice
         // Computa escolha
         // Desativa o Evento OnResultadoFinalizado
-        Screen.lockCursor = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        //Screen.lockCursor = true;
         
         selectedChoice = attemptScript.selecaoAtual;
 
