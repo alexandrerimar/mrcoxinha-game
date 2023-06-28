@@ -49,6 +49,9 @@ public class Attempt : MonoBehaviour
      [SerializeField] GameObject controller;
      GameManager gameManagerScript;
 
+     //Slider
+     [SerializeField] Slider slider;
+
 
      void Start () {
           gameManagerScript = controller.GetComponent<GameManager>();
@@ -57,6 +60,7 @@ public class Attempt : MonoBehaviour
 
           agoraBtn.gameObject.SetActive(false);
           depoisBtn.gameObject.SetActive(false);
+          slider.gameObject.SetActive(false);
      }
 
     void Update()          
@@ -108,18 +112,19 @@ public class Attempt : MonoBehaviour
                }
                else if (gameManagerScript.sceneName == "InibicaoRespostaDD")
                {
+                    agoraBtn.gameObject.SetActive(true);
+                    depoisBtn.gameObject.SetActive(true);                    
+                    
                     if (activeChoice == true && attemptNumber == 1) {
                          agoraBtn.interactable = true;
                          depoisBtn.interactable = false;
                     }
                     else if (activeChoice == true && attemptNumber == 2) {
+                         slider.gameObject.SetActive(true);
                          agoraBtn.interactable = false;
-                         depoisBtn.interactable = true;
+                         //depoisBtn.interactable = false;
                     }
-                    else if (activeChoice == true && attemptNumber > 2) {
-                         agoraBtn.interactable = true;
-                         depoisBtn.interactable = true;
-                    }
+                    
                } 
           }
           
@@ -160,6 +165,49 @@ public class Attempt : MonoBehaviour
           Logger.Instance.LogAction("Tempo limite excedido, escolha não foi feita.");       
     }
 
+     public IEnumerator TimeForChoiceCoroutineIRDD(float choiceTime, float timeForChoice)
+     {
+     latencia = elapsedTimeClassLatencia.ElapsedTime();
+     Logger.Instance.LogAction("Latencia 0: " + latencia);
+
+     agoraBtn.interactable = true;
+     depoisBtn.interactable = false;
+     escolhaImediataElapsedTime = elapsedTimeClass.ElapsedTime(inicio: true);
+     
+     // Move the slider for the duration of choiceTime
+     
+     float timer = 0f;
+     while (timer < choiceTime)
+     {
+          
+          // Calculate the progress based on the timer and choiceTime
+          float progress = timer / choiceTime;
+
+          // Set the slider value based on the progress
+          slider.value = progress;
+
+          // Update the timer
+          timer += Time.deltaTime;
+
+          yield return null;
+          
+     }     
+
+     latencia = elapsedTimeClassLatencia.ElapsedTime();
+     Logger.Instance.LogAction("Latencia 0: " + latencia);        
+     agoraBtn.interactable = false;
+     depoisBtn.interactable = true;
+
+     yield return new WaitForSeconds(timeForChoice - choiceTime);
+
+     // Handle the case when the time limit is exceeded
+     activeChoice = false; // disable the choice
+     selecaoAtual = ChoiceSelector.Nenhuma;
+     resultadoFinalizado = true;
+     Logger.Instance.LogAction("Tempo limite excedido, escolha não foi feita.");  
+     }
+
+/*
     public IEnumerator TimeForChoiceCoroutineIRDD(float choiceTime, float timeForChoice){
           // Espera o tempo determinado por choiceTime      
           // Choice time é deltaT: nesse caso, tempo para apresentação da opção atrasada.
@@ -167,15 +215,22 @@ public class Attempt : MonoBehaviour
           latencia = elapsedTimeClassLatencia.ElapsedTime();
           Logger.Instance.LogAction("Latencia 0: " + latencia);
 
-          agoraBtn.gameObject.SetActive(true);
-          depoisBtn.gameObject.SetActive(false);
+          //agoraBtn.gameObject.SetActive(true);
+          //depoisBtn.gameObject.SetActive(false);
+
+          agoraBtn.interactable = true;
+          depoisBtn.interactable = false;
           escolhaImediataElapsedTime = elapsedTimeClass.ElapsedTime(inicio: true);
+          
           yield return new WaitForSeconds(choiceTime);
 
           latencia = elapsedTimeClassLatencia.ElapsedTime();
           Logger.Instance.LogAction("Latencia 0: " + latencia);        
-          agoraBtn.gameObject.SetActive(false);
-          depoisBtn.gameObject.SetActive(true);
+          //agoraBtn.gameObject.SetActive(false);
+          //depoisBtn.gameObject.SetActive(true);
+
+          agoraBtn.interactable = false;
+          depoisBtn.interactable = true;
           yield return new WaitForSeconds(timeForChoice);
           
           //Escolha não foi feita
@@ -184,5 +239,6 @@ public class Attempt : MonoBehaviour
           resultadoFinalizado = true;
           Logger.Instance.LogAction("Tempo limite excedido, escolha não foi feita.");  
     }
+*/
 
 }

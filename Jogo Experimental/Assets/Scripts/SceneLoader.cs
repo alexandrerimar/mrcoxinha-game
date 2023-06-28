@@ -21,13 +21,6 @@ public class SceneLoader : MonoBehaviour
         {
             List<int> sceneBuildIndices = GetAllSceneBuildIndices();
             sceneBuildIndicesRandomized = ShuffleSceneIndices(sceneBuildIndices);
-        /*
-            Logger.Instance.LogAction("Scene Build Indices in the Project:");
-            foreach (int buildIndex in sceneBuildIndicesRandomized)
-            {
-                Logger.Instance.LogAction("- Build Index: " + buildIndex);
-            } 
-        */
         }        
     }
 
@@ -51,10 +44,10 @@ public class SceneLoader : MonoBehaviour
 
     private static List<int> ShuffleSceneIndices(List<int> sceneIndices)
     {
-        // Fisher-Yates shuffle algorithm.
+        // Fisher-Yates shuffle algorithm
 
         int n = sceneIndices.Count;
-        while (n > 1)
+        while (n > 1 && n < 3)
         {
             n--;
             int k = Random.Range(0, n + 1);
@@ -65,8 +58,7 @@ public class SceneLoader : MonoBehaviour
 
         return sceneIndices;
     }
-    
-    
+
     public void LoadSceneByPositionOnList(int currentSceneIndex)
     {
         int n = sceneBuildIndicesRandomized.IndexOf(currentSceneIndex);
@@ -85,8 +77,9 @@ public class SceneLoader : MonoBehaviour
         }
         else if (n == sceneBuildIndicesRandomized.Count - 1)
         {
-            Logger.Instance.LogAction("Game Finalizado. Todas as Scenas foram jogadas.");
-            LoadScene(0);
+            Logger.Instance.LogAction("Game Finalizado. Todas as cenas foram jogadas.");
+            LoadScene(3); //Encerramento
+            //LoadScene(0);
         }
     }
     

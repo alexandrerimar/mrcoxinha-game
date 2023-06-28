@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     public int totalSessions = 5;
     public int totalBlocks = 10; // pode variar de 03 a 20, precisa de script
     public int totalAttempts = 6;
+    public float passos = 0.5f;
 
     // Valoes de dano para cada sessão
     public string DanoSessao1 = "10";
@@ -426,7 +427,16 @@ public class GameManager : MonoBehaviour
                 Logger.Instance.LogAction("DeltaT no bloco: limite inferior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
             else {
-            deltaT--;
+            //deltaT--;
+            deltaT = deltaT - passos;
+            if (deltaT < deltaTInferior)
+                {
+                    deltaT = deltaTInferior;
+                }
+                else
+                {
+                    deltaT = deltaT;
+                }
             Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Imediato'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
             
@@ -438,7 +448,16 @@ public class GameManager : MonoBehaviour
                 Logger.Instance.LogAction("DeltaT no bloco: limite superior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
             else{
-                deltaT++;
+                //deltaT++;
+                deltaT = deltaT + passos;
+                if (deltaT > deltaTSuperior)
+                {
+                    deltaT = deltaTSuperior;
+                }
+                else
+                {
+                    deltaT = deltaT;
+                }
                 Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Atrasado'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
         }

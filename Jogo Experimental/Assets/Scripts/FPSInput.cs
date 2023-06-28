@@ -68,6 +68,6 @@ public class FPSInput : MonoBehaviour
     }
 
     // Log player's position
-    Logger.Instance.LogAction("Player position: " + transform.position, MainMenu.nomeDoLogDeMovimento);
+    //Logger.Instance.LogAction("Player position: " + transform.position, MainMenu.nomeDoLogDeMovimento);
   }
 }
