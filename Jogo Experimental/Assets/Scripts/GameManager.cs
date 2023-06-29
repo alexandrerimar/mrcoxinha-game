@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject canvasUI;
     [SerializeField] GameObject sceneLoader;
     SceneLoader sceneLoaderScript;
+    [SerializeField] GameObject painelPontos;
+    private Score scoreScript;
     
     SoundManager soundManager;
     
@@ -61,7 +63,7 @@ public class GameManager : MonoBehaviour
   
 
     //Variáveis da "Sessão"
-    private string imediateDamage; // Primeiro dano imediato, muda a cada sessão
+    public string imediateDamage; // Primeiro dano imediato, muda a cada sessão
     public string delayedDamage = "100"; // Dano atrasado, contante
     public float pontoDeIndiferenca; // Guarda o ponto de indiferença
     //public int totalDeBlocos;
@@ -87,6 +89,7 @@ public class GameManager : MonoBehaviour
      [SerializeField] Button iniciarBtn;
      public bool gameStarted;
 
+    public bool isScoreActivated;
     ConfigManager configManager;
 
     void Start () { 
@@ -115,6 +118,7 @@ public class GameManager : MonoBehaviour
         inputHandler = InputManager.GetComponent<InputHandler>();
         enemyVFXScript = Enemy.GetComponent<EnemyVFX>();
         soundManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
+        scoreScript = painelPontos.GetComponent<Score>(); 
 
         deltaT = deltaTInicial;
 
@@ -139,6 +143,15 @@ public class GameManager : MonoBehaviour
 
     void Update() {
         spawnDistance = SetDistance();
+
+        if (isScoreActivated == true)
+        {
+            painelPontos.SetActive(true);
+        }
+        else if (isScoreActivated == false)
+        {
+            painelPontos.SetActive(false);
+        }
     }
 
     private string GetActiveSceneName () {
@@ -294,11 +307,13 @@ public class GameManager : MonoBehaviour
                 Logger.Instance.LogAction("A escolha foi " + selectedChoice);                
                 StopCoroutine(tempoDeEscolha);
                 StartCoroutine(ConsequenciarEscolha(1));
+                scoreScript.GetLastScore();
                 break;
             case Attempt.ChoiceSelector.Atrasada:
                 Logger.Instance.LogAction("A escolha foi " + selectedChoice);
                 StopCoroutine(tempoDeEscolha);
                 StartCoroutine(ConsequenciarEscolha(2));
+                scoreScript.GetLastScore(false);
                 break;
             case Attempt.ChoiceSelector.Nenhuma:
                 Logger.Instance.LogAction("A escolha foi " + selectedChoice + ". Repetindo tentativa.");

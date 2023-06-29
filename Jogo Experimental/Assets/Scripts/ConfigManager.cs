@@ -64,8 +64,10 @@ public class ConfigManager : MonoBehaviour
                 writer.WriteLine("SessoesTotais = 5");
                 writer.WriteLine("BlocosTotais = 7");
                 writer.WriteLine("TentativasTotais = 6");
+                writer.WriteLine("Passos = 0,5");
 
                 writer.WriteLine("# DANO");
+                writer.WriteLine("ScoreAtivo = true");
                 writer.WriteLine("DanoMaximo = 100");
                 writer.WriteLine("DanoSessao1 = 10");
                 writer.WriteLine("DanoSessao2 = 30");
@@ -265,6 +267,36 @@ public class ConfigManager : MonoBehaviour
                 else
                 {
                     Debug.LogError("Invalid TentativasTotais value: " + tentativasTotais);
+                }
+                break;
+            
+            case "Passos":
+                float passos;
+                if (float.TryParse(value, out tempo))
+                {
+                    gameManagerScript.passos = tempo;
+                }
+                else
+                {
+                    Debug.LogError("Invalid TempoAntesDeIniciarJogo value: " + tempo);
+                }
+                break;
+
+            case "ScoreAtivo":
+                if (value == "true" || value == "false")
+                {
+                    if (value == "true")
+                    {
+                        gameManagerScript.isScoreActivated = true;
+                    }
+                    else
+                    {
+                        gameManagerScript.isScoreActivated = false;
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Invalid TentativasTotais value: " + value);
                 }
                 break;
             
