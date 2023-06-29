@@ -120,9 +120,7 @@ public class Attempt : MonoBehaviour
                          depoisBtn.interactable = false;
                     }
                     else if (activeChoice == true && attemptNumber == 2) {
-                         slider.gameObject.SetActive(true);
                          agoraBtn.interactable = false;
-                         //depoisBtn.interactable = false;
                     }
                     
                } 
@@ -172,9 +170,12 @@ public class Attempt : MonoBehaviour
 
      agoraBtn.interactable = true;
      depoisBtn.interactable = false;
+     if (attemptNumber > 1)
+     {
+          slider.gameObject.SetActive(true);
+     }
+
      escolhaImediataElapsedTime = elapsedTimeClass.ElapsedTime(inicio: true);
-     
-     // Move the slider for the duration of choiceTime
      
      float timer = 0f;
      while (timer < choiceTime)
@@ -189,8 +190,7 @@ public class Attempt : MonoBehaviour
           // Update the timer
           timer += Time.deltaTime;
 
-          yield return null;
-          
+          yield return null;          
      }     
 
      latencia = elapsedTimeClassLatencia.ElapsedTime();
@@ -198,9 +198,10 @@ public class Attempt : MonoBehaviour
      agoraBtn.interactable = false;
      depoisBtn.interactable = true;
 
-     yield return new WaitForSeconds(timeForChoice - choiceTime);
+     slider.gameObject.SetActive(false);
 
-     // Handle the case when the time limit is exceeded
+     yield return new WaitForSeconds(timeForChoice);
+
      activeChoice = false; // disable the choice
      selecaoAtual = ChoiceSelector.Nenhuma;
      resultadoFinalizado = true;
