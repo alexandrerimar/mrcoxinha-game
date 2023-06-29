@@ -165,47 +165,43 @@ public class Attempt : MonoBehaviour
 
      public IEnumerator TimeForChoiceCoroutineIRDD(float choiceTime, float timeForChoice)
      {
-     latencia = elapsedTimeClassLatencia.ElapsedTime();
-     Logger.Instance.LogAction("Latencia 0: " + latencia);
+          latencia = elapsedTimeClassLatencia.ElapsedTime();
+          Logger.Instance.LogAction("Latencia 0: " + latencia);
 
-     agoraBtn.interactable = true;
-     depoisBtn.interactable = false;
-     if (attemptNumber > 1)
-     {
-          slider.gameObject.SetActive(true);
-     }
-
-     escolhaImediataElapsedTime = elapsedTimeClass.ElapsedTime(inicio: true);
-     
-     float timer = 0f;
-     while (timer < choiceTime)
-     {
+          agoraBtn.interactable = true;
+          depoisBtn.interactable = false;
+          if (attemptNumber > 1)
+          {
+               slider.gameObject.SetActive(true);
+          }
           
-          // Calculate the progress based on the timer and choiceTime
-          float progress = timer / choiceTime;
+          escolhaImediataElapsedTime = elapsedTimeClass.ElapsedTime(inicio: true);
+          
+          float timer = 0f;
+          while (timer < choiceTime)
+          {         
+               // Calculate the progress based on the timer and choiceTime
+               float progress = timer / choiceTime;
+               // Set the slider value based on the progress
+               slider.value = progress;
+               // Update the timer
+               timer += Time.deltaTime;
+               yield return null;          
+          }     
 
-          // Set the slider value based on the progress
-          slider.value = progress;
+          latencia = elapsedTimeClassLatencia.ElapsedTime();
+          Logger.Instance.LogAction("Latencia 0: " + latencia);        
+          agoraBtn.interactable = false;
+          depoisBtn.interactable = true;
 
-          // Update the timer
-          timer += Time.deltaTime;
+          slider.gameObject.SetActive(false);
 
-          yield return null;          
-     }     
+          yield return new WaitForSeconds(timeForChoice);
 
-     latencia = elapsedTimeClassLatencia.ElapsedTime();
-     Logger.Instance.LogAction("Latencia 0: " + latencia);        
-     agoraBtn.interactable = false;
-     depoisBtn.interactable = true;
-
-     slider.gameObject.SetActive(false);
-
-     yield return new WaitForSeconds(timeForChoice);
-
-     activeChoice = false; // disable the choice
-     selecaoAtual = ChoiceSelector.Nenhuma;
-     resultadoFinalizado = true;
-     Logger.Instance.LogAction("Tempo limite excedido, escolha não foi feita.");  
+          activeChoice = false; // disable the choice
+          selecaoAtual = ChoiceSelector.Nenhuma;
+          resultadoFinalizado = true;
+          Logger.Instance.LogAction("Tempo limite excedido, escolha não foi feita.");  
      }
 
 /*
