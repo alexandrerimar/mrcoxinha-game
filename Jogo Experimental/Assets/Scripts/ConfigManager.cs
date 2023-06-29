@@ -54,11 +54,11 @@ public class ConfigManager : MonoBehaviour
 
                 writer.WriteLine("# CONTROLE DE TEMPO");
                 writer.WriteLine("TempoAntesDeIniciarJogo = 2");
-                writer.WriteLine("DeltaTSuperior = 8");
+                writer.WriteLine("DeltaTSuperior = 5");
                 writer.WriteLine("DeltaTInferior = 2");
-                writer.WriteLine("DeltaTInicial = 5");
-                writer.WriteLine("TempoParaEscolher = 3");
-                writer.WriteLine("TempoTotalDaTentativa = 10");
+                writer.WriteLine("DeltaTInicial = 3,5");
+                writer.WriteLine("TempoParaEscolher = 2");
+                writer.WriteLine("TempoTotalDaTentativa = 5,5");
 
                 writer.WriteLine("# CONTROLE DE TEMPO");
                 writer.WriteLine("SessoesTotais = 5");
