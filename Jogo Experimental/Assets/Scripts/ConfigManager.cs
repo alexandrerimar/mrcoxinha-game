@@ -56,9 +56,9 @@ public class ConfigManager : MonoBehaviour
                 writer.WriteLine("TempoAntesDeIniciarJogo = 2");
                 writer.WriteLine("DeltaTSuperior = 5");
                 writer.WriteLine("DeltaTInferior = 2");
-                writer.WriteLine("DeltaTInicial = 3,5");
+                writer.WriteLine("DeltaTInicial = 5");
                 writer.WriteLine("TempoParaEscolher = 2");
-                writer.WriteLine("TempoTotalDaTentativa = 5,5");
+                writer.WriteLine("TempoTotalDaTentativa = 6,5"); //somar ao menos 1,5 segundos ao tempo total
 
                 writer.WriteLine("# CONTROLE DE TEMPO");
                 writer.WriteLine("SessoesTotais = 5");
