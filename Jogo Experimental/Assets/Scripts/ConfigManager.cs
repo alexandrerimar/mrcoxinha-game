@@ -56,7 +56,7 @@ public class ConfigManager : MonoBehaviour
                 writer.WriteLine("TempoAntesDeIniciarJogo = 2");
                 writer.WriteLine("DeltaTSuperior = 5");
                 writer.WriteLine("DeltaTInferior = 2");
-                writer.WriteLine("DeltaTInicial = 5");
+                writer.WriteLine("DeltaTInicial = 3,5");
                 writer.WriteLine("TempoParaEscolher = 2");
                 writer.WriteLine("TempoTotalDaTentativa = 6,5"); //somar ao menos 1,5 segundos ao tempo total
 
@@ -68,6 +68,7 @@ public class ConfigManager : MonoBehaviour
 
                 writer.WriteLine("# DANO");
                 writer.WriteLine("ScoreAtivo = true");
+                writer.WriteLine("ScorePorFase = true");
                 writer.WriteLine("DanoMaximo = 100");
                 writer.WriteLine("DanoSessao1 = 10");
                 writer.WriteLine("DanoSessao2 = 30");
@@ -76,7 +77,7 @@ public class ConfigManager : MonoBehaviour
                 writer.WriteLine("DanoSessao5 = 90");
 
                 writer.WriteLine("# SPAWN DO INIMIGO");
-                writer.WriteLine("DistanciaMaxima = 20");
+                writer.WriteLine("DistanciaMaxima = 12");
                 writer.WriteLine("DistanciaMinima = 1,5");
 
                 writer.WriteLine("# JOGADOR");
@@ -282,7 +283,7 @@ public class ConfigManager : MonoBehaviour
                 }
                 break;
 
-            case "ScoreAtivo":
+            case "ScoreAtivo": 
                 if (value == "true" || value == "false")
                 {
                     if (value == "true")
@@ -296,7 +297,25 @@ public class ConfigManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError("Invalid TentativasTotais value: " + value);
+                    Debug.LogError("Invalid ScoreAtivo value: " + value);
+                }
+                break;
+            
+            case "ScorePorFase": 
+                if (value == "true" || value == "false")
+                {
+                    if (value == "true")
+                    {
+                        gameManagerScript.isScoreByFase = true;
+                    }
+                    else
+                    {
+                        gameManagerScript.isScoreByFase = false;
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Invalid ScorePorFase value: " + value);
                 }
                 break;
             

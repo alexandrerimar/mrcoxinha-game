@@ -1,3 +1,3 @@
 [x] Barra de tempo do IRDD permanece ativa quando escolhe imediato
 [x] Botão imediato do IRDD permanece ativo quando acaba o tempo
-- Intervalo fixo entre tentativas muito curto (botões aparecem antes do inimigo "fugir")
+[x] Intervalo fixo entre tentativas muito curto (botões aparecem antes do inimigo "fugir")

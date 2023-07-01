@@ -13,6 +13,7 @@ public class Score : MonoBehaviour
 
     List<int> scoreList = new List<int>();
     public int lastScore;
+    public int pontuacaoTotal;
 
     void Start()
     
@@ -37,13 +38,20 @@ public class Score : MonoBehaviour
     
     public void SetScore ()
     {
-        int pontuacaoTotal;
-
         scoreList.Add(lastScore);
         pontuacaoTotal = scoreList.Sum();   
         pontosText.text = pontuacaoTotal.ToString();
            
         Logger.Instance.LogAction("Pontos ganhos: " + lastScore); 
         Logger.Instance.LogAction("Pontuação Total: " + pontuacaoTotal); 
+    }
+
+    public void ZerarScore()
+    {
+        if(gameManagerScript.isScoreByFase == true)
+        { 
+            scoreList.Clear();
+            pontuacaoTotal = 0; 
+        }
     }
 }

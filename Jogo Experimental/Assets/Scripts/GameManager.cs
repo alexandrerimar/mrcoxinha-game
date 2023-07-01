@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
      public bool gameStarted;
 
     public bool isScoreActivated;
+    public bool isScoreByFase;
     ConfigManager configManager;
 
     void Start () { 
@@ -221,9 +222,12 @@ public class GameManager : MonoBehaviour
     public void StartSession(int session)
     {
         currentSession = session;
-        
-        // *** Logs ****
         Logger.Instance.LogAction("Iniciando sessão " + currentSession);
+
+        if (isScoreByFase == true)
+        {
+            scoreScript.ZerarScore();
+        }
 
         switch (currentSession)
         {
