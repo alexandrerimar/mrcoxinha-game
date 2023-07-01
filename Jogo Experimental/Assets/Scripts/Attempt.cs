@@ -58,8 +58,8 @@ public class Attempt : MonoBehaviour
           elapsedTimeClass = new ComputeElapsedTime();
           elapsedTimeClassLatencia = new ComputeElapsedTime();
 
-          agoraBtn.gameObject.SetActive(false);
-          depoisBtn.gameObject.SetActive(false);
+          //agoraBtn.gameObject.SetActive(false);
+          //depoisBtn.gameObject.SetActive(false);
           slider.gameObject.SetActive(false);
      }
 
@@ -104,20 +104,6 @@ public class Attempt : MonoBehaviour
                          depoisBtn.interactable = true;
                     }
                }
-               else if (gameManagerScript.sceneName == "InibicaoRespostaDD")
-               {
-                    agoraBtn.gameObject.SetActive(true);
-                    depoisBtn.gameObject.SetActive(true);                    
-                    
-                    if (activeChoice == true && attemptNumber == 1) {
-                         agoraBtn.interactable = true;
-                         depoisBtn.interactable = false;
-                    }
-                    else if (activeChoice == true && attemptNumber == 2) {
-                         agoraBtn.interactable = false;
-                    }
-                    
-               } 
           }
           
      }
@@ -164,10 +150,22 @@ public class Attempt : MonoBehaviour
           latencia = elapsedTimeClassLatencia.ElapsedTime();
           Logger.Instance.LogAction("Latencia 0: " + latencia);
 
-          agoraBtn.interactable = true;
-          depoisBtn.interactable = false;
-          if (attemptNumber > 1)
+          agoraBtn.gameObject.SetActive(true);
+          depoisBtn.gameObject.SetActive(true);                   
+          
+          if (activeChoice == true && attemptNumber == 1) {
+               agoraBtn.interactable = true;
+               depoisBtn.interactable = false;
+          }
+          else if (activeChoice == true && attemptNumber == 2) {
+               agoraBtn.interactable = false;
+               depoisBtn.interactable = false;
+               slider.gameObject.SetActive(true);
+          }
+          else
           {
+               agoraBtn.interactable = true;
+               depoisBtn.interactable = false;
                slider.gameObject.SetActive(true);
           }
           
@@ -176,24 +174,24 @@ public class Attempt : MonoBehaviour
           float timer = 0f;
           while (timer < choiceTime)
           {         
-               // Calculate the progress based on the timer and choiceTime
                float progress = timer / choiceTime;
-               // Set the slider value based on the progress
                slider.value = progress;
-               // Update the timer
                timer += Time.deltaTime;
                yield return null;          
           }     
 
           latencia = elapsedTimeClassLatencia.ElapsedTime();
           Logger.Instance.LogAction("Latencia 0: " + latencia);        
+          
           agoraBtn.interactable = false;
-          depoisBtn.interactable = true;
-
-          //slider.gameObject.SetActive(false);
+          if (attemptNumber != 1)
+          {
+               depoisBtn.interactable = true;
+          }        
 
           yield return new WaitForSeconds(timeForChoice);
 
+          slider.gameObject.SetActive(false);
           activeChoice = false; // disable the choice
           selecaoAtual = ChoiceSelector.Nenhuma;
           resultadoFinalizado = true;
