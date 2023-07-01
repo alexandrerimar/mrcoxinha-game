@@ -85,27 +85,21 @@ public class Attempt : MonoBehaviour
 
                if (gameManagerScript.sceneName == "EscolhaImpulsivaDD")
                {
-                    if (activeChoice == true && attemptNumber == 1) {
-                         // ativa só o botão imediato
-                         agoraBtn.gameObject.SetActive(true);
-                         depoisBtn.gameObject.SetActive(true);
+                    agoraBtn.gameObject.SetActive(true);
+                    depoisBtn.gameObject.SetActive(true);
 
+                    if (activeChoice == true && attemptNumber == 1) {
+                         // ativa só o botão imediato                        
                          agoraBtn.interactable = true;
                          depoisBtn.interactable = false;
                     }
                     else if (activeChoice == true && attemptNumber == 2) {
                          // ativa só botão atrasado
-                         agoraBtn.gameObject.SetActive(true);
-                         depoisBtn.gameObject.SetActive(true);
-
                          agoraBtn.interactable = false;
                          depoisBtn.interactable = true;
                     }
                     else if (activeChoice == true && attemptNumber > 2) {
                          //ativa ambos os botões
-                         agoraBtn.gameObject.SetActive(true);
-                         depoisBtn.gameObject.SetActive(true);
-
                          agoraBtn.interactable = true;
                          depoisBtn.interactable = true;
                     }
@@ -137,6 +131,7 @@ public class Attempt : MonoBehaviour
           isChosen = true; // informa que foi escolhido                    
           activeChoice = false; // desativa a permissão pra escolher
           resultadoFinalizado = true;
+          slider.gameObject.SetActive(false);
      }
 
      public void escolhaAtrasadaBtn () {
@@ -147,6 +142,7 @@ public class Attempt : MonoBehaviour
           isChosen = true;
           activeChoice = false; // desativa a permissão pra escolher
           resultadoFinalizado = true;
+          slider.gameObject.SetActive(false);
      }
 
 
@@ -194,7 +190,7 @@ public class Attempt : MonoBehaviour
           agoraBtn.interactable = false;
           depoisBtn.interactable = true;
 
-          slider.gameObject.SetActive(false);
+          //slider.gameObject.SetActive(false);
 
           yield return new WaitForSeconds(timeForChoice);
 

@@ -102,6 +102,7 @@ public class GameManager : MonoBehaviour
         Logger.Instance.LogAction("Total Sessions: " + totalSessions);
         Logger.Instance.LogAction("Total Blocks: " + totalBlocks);
         Logger.Instance.LogAction("Total Attempts: " + totalAttempts);
+        Logger.Instance.LogAction("Passos: " + passos);
         Logger.Instance.LogAction("DeltaT Inicial: " + deltaTInicial);
         Logger.Instance.LogAction("DeltaT Inferior: " + deltaTInferior);
         Logger.Instance.LogAction("DeltaT Superior: " + deltaTSuperior);
@@ -247,29 +248,22 @@ public class GameManager : MonoBehaviour
     public void StartBlock(int block)
     {
         currentBlock = block;
-
-        // *** Logs ****
-        Logger.Instance.LogAction("Iniciando bloco " + currentBlock);
-        
+        Logger.Instance.LogAction("Iniciando bloco " + currentBlock);        
     }
 
 
 
     public void StartAttempt(int attempt){
-        // Inicia a tentativa atual
-        //Screen.lockCursor = false; 
+        // Inicia a tentativa atual 
         Cursor.lockState = CursorLockMode.Confined;
         attemptScript.isChosen = false;
         currentAttempt = attempt;
 
-        // *** Logs ****
         Logger.Instance.LogAction("Iniciando tentativa " + currentAttempt);
 
         // Spawna o inimigo no início da tentativa
         SpawnEnemy(spawnDistance);      
         Enemy.transform.LookAt(Player.transform);
-
-        // *** Logs ****
         Logger.Instance.LogAction("Spawn do Inimigo. Distância: " + spawnDistance);
 
         attemptScript.attemptNumber = currentAttempt; // Informa a sessão atual para o script Attempt  
@@ -282,7 +276,8 @@ public class GameManager : MonoBehaviour
         if (sceneName == "EscolhaImpulsivaDD")
         {
             tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutine(timeForChoice));
-        } else if (sceneName == "InibicaoRespostaDD")
+        } 
+        else if (sceneName == "InibicaoRespostaDD")
         {            
             tempoDeEscolha = StartCoroutine(attemptScript.TimeForChoiceCoroutineIRDD(deltaT, timeForChoice));
         }
@@ -319,11 +314,8 @@ public class GameManager : MonoBehaviour
                 Logger.Instance.LogAction("A escolha foi " + selectedChoice + ". Repetindo tentativa.");
                 StartCoroutine(ConsequenciarEscolha(0));
                 break;
-        }
-        
-        
+        }          
         Attempt.OnResultadoFinalizado -= ComputarEscolha; // Desativa a função ComputarEscolha
-        //selectedChoice = Attempt.ChoiceSelector.Waiting;
     }
   
 

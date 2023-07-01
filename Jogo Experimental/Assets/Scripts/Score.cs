@@ -31,7 +31,6 @@ public class Score : MonoBehaviour
         {
             scoreStr = gameManagerScript.delayedDamage;
         }
-
         lastScore = int.Parse(scoreStr); 
         SetScore();      
     }
@@ -41,12 +40,9 @@ public class Score : MonoBehaviour
         int pontuacaoTotal;
 
         scoreList.Add(lastScore);
-        pontuacaoTotal = scoreList.Sum();
-
-   
+        pontuacaoTotal = scoreList.Sum();   
         pontosText.text = pontuacaoTotal.ToString();
            
-
         Logger.Instance.LogAction("Pontos ganhos: " + lastScore); 
         Logger.Instance.LogAction("Pontuação Total: " + pontuacaoTotal); 
     }
