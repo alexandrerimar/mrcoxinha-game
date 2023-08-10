@@ -7,7 +7,7 @@ using System.Linq;
 
 public static class FileHandler {
     
-    public static void SaveToJSON<T> (List<T> toSave, string filename) {
+    public static void SaveToJSON<T> (List<T> toSave, string filename, string folderName = "") {
         // Salva a informação no arquivo JSON especificado
 
         Debug.Log (GetPath (filename));
@@ -15,7 +15,7 @@ public static class FileHandler {
         WriteFile(GetPath(filename), content);
     }
 
-    public static void SaveToJSON<T> (T toSave, string filename) {
+    public static void SaveToJSON<T> (T toSave, string filename, string folderName = "") {
         // Salva a informação no arquivo JSON especificado
 
         Debug.Log (GetPath (filename));
@@ -50,10 +50,34 @@ public static class FileHandler {
 
     }
 
-    private static string GetPath (string filename) {
+    private static string GetUniqueFolderPath(string baseFolderPath, string folderName)
+    {
+        string folderPath = Path.Combine(baseFolderPath, folderName);
+
+        int counter = 1;
+        while (Directory.Exists(folderPath))
+        {
+            folderPath = Path.Combine(baseFolderPath, $"{folderName}({counter})");
+            counter++;
+        }
+
+        return folderPath;
+    }
+
+    private static string GetPath(string filename, string folderName = "default")
+    {
+        string baseFolderPath = Application.persistentDataPath;
+        string uniqueFolderPath = GetUniqueFolderPath(baseFolderPath, folderName);
+
+        return Path.Combine(uniqueFolderPath, filename);
+    }
+
+
+    /*
+    private static string GetPath (string filename, string folderName = "default") {
         // Retorna o caminho para salvar o arquivo JSON
 
-        return Application.persistentDataPath + "/" + filename;
+        return Application.persistentDataPath + "/" + folderName + "/" + filename;
     }
 
     private static void WriteFile (string path, string content) {
@@ -65,6 +89,34 @@ public static class FileHandler {
             writer.Write(content);
         }
     }
+    */
+    private static void WriteFile(string path, string content)
+    {
+        try
+        {
+            string directoryPath = Path.GetDirectoryName(path);
+
+            // Create the directory if it doesn't exist
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+            // Open the file stream and write the content
+            using (FileStream fileStream = new FileStream(path, FileMode.Create))
+            {
+                using (StreamWriter writer = new StreamWriter(fileStream))
+                {
+                    writer.Write(content);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error writing file: " + ex.Message);
+        }
+    }
+
 
     private static string ReadFile (string path) {
         if (File.Exists(path)) {
