@@ -39,9 +39,9 @@ public class InputHandler : MonoBehaviour {
     
     void Start () {
         gameManager = controller.GetComponent<GameManager>();
-        entries = FileHandler.ReadListFromJSON<InputEntry> (filename);
-        blocoEntries = FileHandler.ReadListFromJSON<BlocoEntry> (filenameBloco);
-        sessionEntries = FileHandler.ReadListFromJSON<SessionEntry>(filenameSession);
+        entries = FileHandler.ReadListFromJSON<InputEntry> (filename, playerIDInput);
+        blocoEntries = FileHandler.ReadListFromJSON<BlocoEntry> (filenameBloco, playerIDInput);
+        sessionEntries = FileHandler.ReadListFromJSON<SessionEntry>(filenameSession, playerIDInput);
     }   
 
     private void GetData () {
@@ -71,7 +71,7 @@ public class InputHandler : MonoBehaviour {
         string time;        
         time = System.DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
         entries.Add (new InputEntry (etapaAtualInput, danoEscolhidoInput, deltaTAtualInput, time, playerIDInput));
-        FileHandler.SaveToJSON<InputEntry>(entries, filename);        
+        FileHandler.SaveToJSON<InputEntry>(entries, filename, playerIDInput);        
     }
 
     public void AddDataDoBlocoToList () {
@@ -80,7 +80,7 @@ public class InputHandler : MonoBehaviour {
         string time;
         time = System.DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
         blocoEntries.Add (new BlocoEntry (etapaAtualDeBlocoInput[0], etapaAtualDeBlocoInput[1], resultadoDoBlocoInput, deltaTDoBlocoInput, time, playerIDInput));
-        FileHandler.SaveToJSON<BlocoEntry>(blocoEntries, filenameBloco);
+        FileHandler.SaveToJSON<BlocoEntry>(blocoEntries, filenameBloco, playerIDInput);
     }
 
     public void AddDataDaSessaoToList () {
@@ -89,7 +89,7 @@ public class InputHandler : MonoBehaviour {
         string time;
         time = System.DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
         sessionEntries.Add (new SessionEntry (etapaAtualDeSessaoInput, pontoDeIndiferencaInput, time, playerIDInput));
-        FileHandler.SaveToJSON<SessionEntry>(sessionEntries, filenameSession);
+        FileHandler.SaveToJSON<SessionEntry>(sessionEntries, filenameSession, playerIDInput);
     }
 
     public List<float> GetLastThreeBlocks () {

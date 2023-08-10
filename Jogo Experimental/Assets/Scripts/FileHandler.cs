@@ -7,25 +7,25 @@ using System.Linq;
 
 public static class FileHandler {
     
-    public static void SaveToJSON<T> (List<T> toSave, string filename, string folderName = "") {
+    public static void SaveToJSON<T> (List<T> toSave, string filename, string folderName) {
         // Salva a informação no arquivo JSON especificado
 
-        Debug.Log (GetPath (filename));
+        Debug.Log (GetPath (filename, folderName));
         string content = JsonHelper.ToJson<T>(toSave.ToArray());
-        WriteFile(GetPath(filename), content);
+        WriteFile(GetPath(filename, folderName), content);
     }
 
-    public static void SaveToJSON<T> (T toSave, string filename, string folderName = "") {
+    public static void SaveToJSON<T> (T toSave, string filename, string folderName) {
         // Salva a informação no arquivo JSON especificado
 
-        Debug.Log (GetPath (filename));
+        Debug.Log (GetPath (filename, folderName));
         string content = JsonUtility.ToJson (toSave);
-        WriteFile(GetPath(filename), content);
+        WriteFile(GetPath(filename, folderName), content);
     }
 
 
-    public static List<T> ReadListFromJSON<T> (string filename) {
-        string content = ReadFile(GetPath(filename));
+    public static List<T> ReadListFromJSON<T> (string filename, string folderName) {
+        string content = ReadFile(GetPath(filename, folderName));
         
         if (string.IsNullOrEmpty(content) || content == "{}") {
             return new List<T>();
@@ -37,8 +37,8 @@ public static class FileHandler {
 
     }
 
-    public static T ReadFromJSON<T> (string filename) {
-        string content = ReadFile(GetPath(filename));
+    public static T ReadFromJSON<T> (string filename, string folderName) {
+        string content = ReadFile(GetPath(filename, folderName));
         
         if (string.IsNullOrEmpty(content) || content == "{}") {
             return default(T);
@@ -64,7 +64,7 @@ public static class FileHandler {
         return folderPath;
     }
 
-    private static string GetPath(string filename, string folderName = "default")
+    private static string GetPath(string filename, string folderName)
     {
         string baseFolderPath = Application.persistentDataPath;
         string uniqueFolderPath = GetUniqueFolderPath(baseFolderPath, folderName);
