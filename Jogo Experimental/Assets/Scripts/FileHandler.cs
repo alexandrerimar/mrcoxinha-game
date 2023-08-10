@@ -49,7 +49,7 @@ public static class FileHandler {
         return res;
 
     }
-
+/*
     private static string GetUniqueFolderPath(string baseFolderPath, string folderName)
     {
         string folderPath = Path.Combine(baseFolderPath, folderName);
@@ -71,15 +71,16 @@ public static class FileHandler {
 
         return Path.Combine(uniqueFolderPath, filename);
     }
+*/
 
-
-    /*
+    
     private static string GetPath (string filename, string folderName = "default") {
         // Retorna o caminho para salvar o arquivo JSON
 
         return Application.persistentDataPath + "/" + folderName + "/" + filename;
     }
 
+    /*
     private static void WriteFile (string path, string content) {
         // Cria o arquivo JSON se ele não existe e escreve a informação passada
         
@@ -100,6 +101,7 @@ public static class FileHandler {
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
+                // POSSÍVEL SOLUÇÃO: CRIAR O DIRETÓRIO NO MENU, E LÁ VERIFICAR SE ELE JÁ EXISTE. AQUI, NÃO CRIAR NENHUM DIRETÓRIO, SÓ ARQUIVOS.
             }
 
             // Open the file stream and write the content
