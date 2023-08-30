@@ -67,8 +67,8 @@ public class ConfigManager : MonoBehaviour
                 writer.WriteLine("Passos = 0,5");
 
                 writer.WriteLine("# DANO");
-                writer.WriteLine("ScoreAtivo = true");
-                writer.WriteLine("ScorePorFase = true");
+                writer.WriteLine("ScoreAtivo = false");
+                writer.WriteLine("ScorePorFase = false");
                 writer.WriteLine("DanoMaximo = 100");
                 writer.WriteLine("DanoSessao1 = 10");
                 writer.WriteLine("DanoSessao2 = 30");
