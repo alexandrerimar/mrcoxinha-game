@@ -26,11 +26,11 @@ public class SceneLoader : MonoBehaviour
 
     private List<int> GetAllSceneBuildIndices()
     {
-        // Creates a List with scenes indices, except the menu
+        // Creates a List with scenes indices, except the menu and ending scene
         
         List<int> sceneBuildIndices = new List<int>();
 
-        for (int i = 1; i < SceneManager.sceneCountInBuildSettings; i++)
+        for (int i = 1; i < SceneManager.sceneCountInBuildSettings - 1; i++)
         {
             string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
             if (!string.IsNullOrEmpty(scenePath))
@@ -47,7 +47,7 @@ public class SceneLoader : MonoBehaviour
         // Fisher-Yates shuffle algorithm
 
         int n = sceneIndices.Count;
-        while (n > 1 && n < 3)
+        while (n >= 1 && n < 3)
         {
             n--;
             int k = Random.Range(0, n + 1);
