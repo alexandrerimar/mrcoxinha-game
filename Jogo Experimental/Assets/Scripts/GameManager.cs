@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     // Variáveis de "Tentativas"
     public float deltaTInicial; // O primeiro deltaT de cada sessão
     public float IET; // Tempo de espera entre tentativas
-    public float timeForChoice = 5.0f; //Tempo para fazer a escolha
+    public float timeForChoice; //Tempo para fazer a escolha
     public float TTotalDaTentativa; // Tempo total da tentativa menos o tempo de escolha (IET + deltaT), estou ignorando tempo para resposta. Devo?
     public Attempt.ChoiceSelector selectedChoice;
 

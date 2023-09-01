@@ -57,7 +57,7 @@ public class ConfigManager : MonoBehaviour
                 writer.WriteLine("DeltaTSuperior = 5");
                 writer.WriteLine("DeltaTInferior = 2");
                 writer.WriteLine("DeltaTInicial = 3,5");
-                writer.WriteLine("TempoParaEscolher = 2");
+                writer.WriteLine("TempoParaEscolher = 2"); //no irdd, se refere ao tempo de apresentação do btn atrasado
                 writer.WriteLine("TempoTotalDaTentativa = 6,5"); //somar ao menos 1,5 segundos ao tempo total
 
                 writer.WriteLine("# CONTROLE DE TEMPO");

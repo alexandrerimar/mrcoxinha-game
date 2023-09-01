@@ -190,6 +190,7 @@ public class Attempt : MonoBehaviour
           }        
 
           yield return new WaitForSeconds(timeForChoice);
+          // timeForChoice é o tempo padrão de escolha, será usado só no botão atrasado. No botão imediato, será usado o deltaT
 
           slider.gameObject.SetActive(false);
           activeChoice = false; // disable the choice
