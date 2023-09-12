@@ -54,9 +54,9 @@ public class ConfigManager : MonoBehaviour
 
                 writer.WriteLine("# CONTROLE DE TEMPO");
                 writer.WriteLine("TempoAntesDeIniciarJogo = 2");
-                writer.WriteLine("DeltaTSuperior = 5");
+                writer.WriteLine("DeltaTSuperior = 10");
                 writer.WriteLine("DeltaTInferior = 2");
-                writer.WriteLine("DeltaTInicial = 3,5");
+                writer.WriteLine("DeltaTInicial = 6");
                 writer.WriteLine("TempoParaEscolher = 2"); //no irdd, se refere ao tempo de apresentação do btn atrasado
                 writer.WriteLine("TempoTotalDaTentativa = 6,5"); //somar ao menos 1,5 segundos ao tempo total
 
@@ -64,7 +64,7 @@ public class ConfigManager : MonoBehaviour
                 writer.WriteLine("SessoesTotais = 5");
                 writer.WriteLine("BlocosTotais = 7");
                 writer.WriteLine("TentativasTotais = 6");
-                writer.WriteLine("Passos = 0,5");
+                writer.WriteLine("Passos = 1");
 
                 writer.WriteLine("# DANO");
                 writer.WriteLine("ScoreAtivo = false");
