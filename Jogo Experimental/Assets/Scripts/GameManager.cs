@@ -490,6 +490,7 @@ public class GameManager : MonoBehaviour
         else {
             currentBlock = 1;
             currentAttempt = 1;
+            deltaT = deltaTInicial;
             StartSession(currentSession);
             StartBlock(currentBlock);
             StartAttempt(currentAttempt);
