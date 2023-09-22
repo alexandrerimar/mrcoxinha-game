@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
     public float passosMinus;
     public float passosPrimer;
 
+    float deltaTTemporarioImediato;
+    float deltaTTemporarioAtrasado;
+
     // Valoes de dano para cada sessão
     public string DanoSessao1 = "10";
     public string DanoSessao2 = "30";
@@ -125,7 +128,7 @@ public class GameManager : MonoBehaviour
         soundManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<SoundManager>();
         scoreScript = painelPontos.GetComponent<Score>(); 
 
-        deltaT = deltaTInicial;
+        //deltaT = deltaTInicial;
 
         // Desativa o inimigo no início da sessão
         Enemy.SetActive(false);
@@ -224,6 +227,7 @@ public class GameManager : MonoBehaviour
     // Funções de controle das sessões, blocos e tentativas
     public void StartSession(int session)
     {
+        deltaT = deltaTInicial;
         currentSession = session;
         Logger.Instance.LogAction("Iniciando sessão " + currentSession);
 
@@ -354,7 +358,7 @@ public class GameManager : MonoBehaviour
         
         currentBlock++;      
 
-        if (currentBlock > 3) {
+        if (currentBlock >= 3) {
             lastThreeBlocks = inputHandler.GetLastThreeBlocks(); // Lista com os últimos 3 deltaT dos últimos 3 blocos
             
             if (lastThreeBlocks[0] == deltaTInferior &&
@@ -428,8 +432,6 @@ public class GameManager : MonoBehaviour
 
     private void AjustarIntervaloDeEspera() { 
         // Ajusta o deltaT de acordo com as escolhas dos jogadores nos 4 últimos blocos
-        float deltaTTemporarioImediato = 0f;
-        float deltaTTemporarioAtrasado = 0f;
 
         if (passosAjustaveis == false)
         {
@@ -480,24 +482,26 @@ public class GameManager : MonoBehaviour
                 deltaT = deltaT;
                 Logger.Instance.LogAction("DeltaT no bloco: mantido. Total das Escolhas = " + totalDaEscolha + ". E deltaT = " + deltaT);
             }
-            else if (totalDaEscolha >= 3 && totalDaEscolha < 5) 
+            else if (totalDaEscolha == 3 || totalDaEscolha == 4) 
             {
                 // Imediato
                 // Ajusta os passos de acordo com a "intensidade da preferência"
-                if (currentBlock > 1)
-                {   
+                if (currentBlock == 1)
+                {
+                    deltaTTemporarioImediato = deltaT - passosPrimer;
+                    Debug.Log("Diminuiu primer.");
+                }
+                else {   
                     if (totalDaEscolha == 4) {
                         deltaTTemporarioImediato = deltaT - passosPlus;
+                        Debug.Log("Imediato plus.");
                     }
                     else if (totalDaEscolha == 3)
                     {
                         deltaTTemporarioImediato = deltaT - passosMinus;
+                        Debug.Log("Imediato Minus.");
                     }                
-                }
-                else 
-                {
-                    deltaTTemporarioImediato = deltaT - passosPrimer;
-                }
+                }                
 
                 // Controla para não ultrapassar limite inferior
                 if (deltaTTemporarioImediato <= deltaTInferior) 
@@ -511,24 +515,24 @@ public class GameManager : MonoBehaviour
                     Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Imediato'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
                 }
             }
-            else if (totalDaEscolha >= 0 && totalDaEscolha < 2) 
+            else if (totalDaEscolha == 0 || totalDaEscolha == 1) 
             {
                 // Atrasado
 
                 // Ajusta os passos de acordo com a "intensidade da preferência"
-                if (currentBlock > 1)
+                if (currentBlock == 1)
                 {
+                    deltaTTemporarioAtrasado = deltaT + passosPrimer;
+                }
+                else {
                     if (totalDaEscolha == 0) {
-                        deltaTTemporarioImediato = deltaT + passosPlus;
+                        deltaTTemporarioAtrasado = deltaT + passosPlus;
                     }
                     else if (totalDaEscolha == 1)
                     {
-                        deltaTTemporarioImediato = deltaT + passosMinus;
+                        deltaTTemporarioAtrasado = deltaT + passosMinus;
+                        Debug.Log("Aumentou primer.");
                     }
-                }
-                else
-                {
-                    deltaTTemporarioImediato = deltaT + passosPrimer;
                 }
 
                 // Controla para não ultrapassar limite inferior
@@ -563,7 +567,7 @@ public class GameManager : MonoBehaviour
         else {
             currentBlock = 1;
             currentAttempt = 1;
-            deltaT = deltaTInicial;
+            //deltaT = deltaTInicial;
             StartSession(currentSession);
             StartBlock(currentBlock);
             StartAttempt(currentAttempt);

@@ -278,13 +278,67 @@ public class ConfigManager : MonoBehaviour
             
             case "Passos":
                 float passos;
-                if (float.TryParse(value, out tempo))
+                if (float.TryParse(value, out passos))
                 {
-                    gameManagerScript.passos = tempo;
+                    gameManagerScript.passos = passos;
                 }
                 else
                 {
-                    Debug.LogError("Invalid TempoAntesDeIniciarJogo value: " + tempo);
+                    Debug.LogError("Invalid Passos value: " + passos);
+                }
+                break;
+
+            case "PassosAjustaveis": 
+                if (value == "true" || value == "false")
+                {
+                    if (value == "true")
+                    {
+                        gameManagerScript.passosAjustaveis = true;
+                    }
+                    else
+                    {
+                        gameManagerScript.passosAjustaveis = false;
+                    }
+                }
+                else
+                {
+                    Debug.LogError("Invalid PassosAjustaveis value: " + value);
+                }
+                break;
+
+            case "PassosPlus":
+                float passosPlus;
+                if (float.TryParse(value, out passosPlus))
+                {
+                    gameManagerScript.passosPlus = passosPlus;
+                }
+                else
+                {
+                    Debug.LogError("Invalid passosPlus value: " + passosPlus);
+                }
+                break;
+            
+            case "PassosMinus":
+                float passosMinus;
+                if (float.TryParse(value, out passosMinus))
+                {
+                    gameManagerScript.passosMinus = passosMinus;
+                }
+                else
+                {
+                    Debug.LogError("Invalid passosMinus value: " + passosMinus);
+                }
+                break;
+
+            case "PassosPrimer":
+                float passosPrimer;
+                if (float.TryParse(value, out passosPrimer))
+                {
+                    gameManagerScript.passosPrimer = passosPrimer;
+                }
+                else
+                {
+                    Debug.LogError("Invalid passosPrimer value: " + passosPrimer);
                 }
                 break;
 
