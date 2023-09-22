@@ -39,13 +39,15 @@ public class GameManager : MonoBehaviour
     public float initialTimeWait;
     
     // Variaveis de controle de sessão, bloco e tentativa
-    public int currentSession = 1;
-    public int currentBlock = 1;
-    public int currentAttempt = 1;
-    public int totalSessions = 5;
-    public int totalBlocks = 10; // pode variar de 03 a 20, precisa de script
-    public int totalAttempts = 6;
-    public float passos = 0.5f;
+    public int currentSession;
+    public int currentBlock;
+    public int currentAttempt;
+    public int totalSessions;
+    public int totalBlocks; // pode variar de 03 a 20, precisa de script
+    public int totalAttempts;
+    public float passos;
+    public float passosPlus;
+    public float passosMinus;
 
     // Valoes de dano para cada sessão
     public string DanoSessao1 = "10";
@@ -86,9 +88,9 @@ public class GameManager : MonoBehaviour
     float tempoDaEscolhaIRDD;
 
     //Inicio de jogo
-     [SerializeField] Button iniciarBtn;
-     public bool gameStarted;
-
+    [SerializeField] Button iniciarBtn;
+    public bool gameStarted;
+    public bool passosAjustaveis = true;
     public bool isScoreActivated;
     public bool isScoreByFase;
     ConfigManager configManager;
@@ -425,48 +427,107 @@ public class GameManager : MonoBehaviour
 
     private void AjustarIntervaloDeEspera() { 
         // Ajusta o deltaT de acordo com as escolhas dos jogadores nos 4 últimos blocos
+        float deltaTTemporarioImediato = 0f;
+        float deltaTTemporarioAtrasado = 0f;
 
-        if (totalDaEscolha == 2) {
-            // Mantém
-            deltaT = deltaT;
-            Logger.Instance.LogAction("DeltaT no bloco: mantido. Total das Escolhas = " + totalDaEscolha + ". E deltaT = " + deltaT);
+        if (passosAjustaveis == false)
+        {
+            if (totalDaEscolha == 2) {
+                // Mantém
+                deltaT = deltaT;
+                Logger.Instance.LogAction("DeltaT no bloco: mantido. Total das Escolhas = " + totalDaEscolha + ". E deltaT = " + deltaT);
+            }
+            else if (totalDaEscolha >=3 && totalDaEscolha < 5) {
+                // Imediato
+                deltaTTemporarioImediato = deltaT - passos;
+
+                if (deltaTTemporarioImediato <= deltaTInferior) 
+                {
+                    deltaT = deltaTInferior;
+                    Logger.Instance.LogAction("DeltaT no bloco: limite inferior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                }
+                else 
+                { 
+                    deltaT = deltaTTemporarioImediato;
+                    Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Imediato'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                }
+                
+            }
+            else if (totalDaEscolha >= 0 && totalDaEscolha < 2) {
+                // Atrasado
+                deltaTTemporarioAtrasado = deltaT + passos;
+
+                if (deltaTTemporarioAtrasado >= deltaTSuperior)
+                {
+                    deltaT = deltaTSuperior;
+                    Logger.Instance.LogAction("DeltaT no bloco: limite superior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                }
+                else
+                {
+                    deltaT = deltaTTemporarioAtrasado;
+                    Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Atrasado'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                }
+            }
+            else {
+                Logger.Instance.LogAction("Erro na função AjustarIntervalodeEspera " + totalDaEscolha);
+            }
         }
-        else if (totalDaEscolha >=3 && totalDaEscolha < 5) {
-            // Imediato
-            float deltaTTemporarioImediato;
-            deltaTTemporarioImediato = deltaT - passos;
-
-            if (deltaTTemporarioImediato <= deltaTInferior) 
+        else if (passosAjustaveis == true)
+        {
+            if (totalDaEscolha == 2) {
+                // Mantém
+                deltaT = deltaT;
+                Logger.Instance.LogAction("DeltaT no bloco: mantido. Total das Escolhas = " + totalDaEscolha + ". E deltaT = " + deltaT);
+            }
+            else if (totalDaEscolha >= 3 && totalDaEscolha < 5) 
             {
-                deltaT = deltaTInferior;
-                Logger.Instance.LogAction("DeltaT no bloco: limite inferior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                // Imediato
+                if (totalDaEscolha == 4) {
+                    deltaTTemporarioImediato = deltaT - passosPlus;
+                }
+                else if (totalDaEscolha == 3)
+                {
+                    deltaTTemporarioImediato = deltaT - passosMinus;
+                }                
+
+                if (deltaTTemporarioImediato <= deltaTInferior) 
+                {
+                    deltaT = deltaTInferior;
+                    Logger.Instance.LogAction("DeltaT no bloco: limite inferior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                }
+                else 
+                { 
+                    deltaT = deltaTTemporarioImediato;
+                    Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Imediato'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                }
+            }
+            else if (totalDaEscolha >= 0 && totalDaEscolha < 2) 
+            {
+                // Atrasado
+                if (totalDaEscolha == 0) {
+                    deltaTTemporarioImediato = deltaT + passosPlus;
+                }
+                else if (totalDaEscolha == 1)
+                {
+                    deltaTTemporarioImediato = deltaT + passosMinus;
+                }
+
+                if (deltaTTemporarioAtrasado >= deltaTSuperior)
+                {
+                    deltaT = deltaTSuperior;
+                    Logger.Instance.LogAction("DeltaT no bloco: limite superior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                }
+                else
+                {
+                    deltaT = deltaTTemporarioAtrasado;
+                    Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Atrasado'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                }
             }
             else 
-            { 
-                deltaT = deltaTTemporarioImediato;
-                Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Imediato'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
-            }
-            
-        }
-        else if (totalDaEscolha >= 0 && totalDaEscolha < 2) {
-            // Atrasado
-            float deltaTTemporarioAtrasado;
-            deltaTTemporarioAtrasado = deltaT + passos;
-
-            if (deltaTTemporarioAtrasado >= deltaTSuperior)
             {
-                deltaT = deltaTSuperior;
-                Logger.Instance.LogAction("DeltaT no bloco: limite superior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+                Logger.Instance.LogAction("Erro na função AjustarIntervalodeEspera " + totalDaEscolha);
             }
-            else
-            {
-                deltaT = deltaTTemporarioAtrasado;
-                Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Atrasado'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
-            }
-        }
-        else {
-            Logger.Instance.LogAction("Erro na função AjustarIntervalodeEspera " + totalDaEscolha);
-        }
+        }       
     }
     
 
