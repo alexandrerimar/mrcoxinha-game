@@ -65,6 +65,11 @@ public class ConfigManager : MonoBehaviour
                 writer.WriteLine("BlocosTotais = 6"); //com o novo algoritmo é possível fazer 5 sessões
                 writer.WriteLine("TentativasTotais = 6");
                 writer.WriteLine("Passos = 1");
+                writer.WriteLine("PassosAjustaveis = false");                
+                writer.WriteLine("PassosPlus = 2");
+                writer.WriteLine("PassosMinus = 1");
+                writer.WriteLine("PassosPrimer = 3");
+
 
                 writer.WriteLine("# DANO");
                 writer.WriteLine("ScoreAtivo = false");

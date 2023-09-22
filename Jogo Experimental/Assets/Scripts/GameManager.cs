@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     public float passos;
     public float passosPlus;
     public float passosMinus;
+    public float passosPrimer;
 
     // Valoes de dano para cada sessão
     public string DanoSessao1 = "10";
@@ -90,7 +91,7 @@ public class GameManager : MonoBehaviour
     //Inicio de jogo
     [SerializeField] Button iniciarBtn;
     public bool gameStarted;
-    public bool passosAjustaveis = true;
+    public bool passosAjustaveis = false;
     public bool isScoreActivated;
     public bool isScoreByFase;
     ConfigManager configManager;
@@ -482,14 +483,23 @@ public class GameManager : MonoBehaviour
             else if (totalDaEscolha >= 3 && totalDaEscolha < 5) 
             {
                 // Imediato
-                if (totalDaEscolha == 4) {
-                    deltaTTemporarioImediato = deltaT - passosPlus;
+                // Ajusta os passos de acordo com a "intensidade da preferência"
+                if (currentBlock > 1)
+                {   
+                    if (totalDaEscolha == 4) {
+                        deltaTTemporarioImediato = deltaT - passosPlus;
+                    }
+                    else if (totalDaEscolha == 3)
+                    {
+                        deltaTTemporarioImediato = deltaT - passosMinus;
+                    }                
                 }
-                else if (totalDaEscolha == 3)
+                else 
                 {
-                    deltaTTemporarioImediato = deltaT - passosMinus;
-                }                
+                    deltaTTemporarioImediato = deltaT - passosPrimer;
+                }
 
+                // Controla para não ultrapassar limite inferior
                 if (deltaTTemporarioImediato <= deltaTInferior) 
                 {
                     deltaT = deltaTInferior;
@@ -504,14 +514,24 @@ public class GameManager : MonoBehaviour
             else if (totalDaEscolha >= 0 && totalDaEscolha < 2) 
             {
                 // Atrasado
-                if (totalDaEscolha == 0) {
-                    deltaTTemporarioImediato = deltaT + passosPlus;
-                }
-                else if (totalDaEscolha == 1)
+
+                // Ajusta os passos de acordo com a "intensidade da preferência"
+                if (currentBlock > 1)
                 {
-                    deltaTTemporarioImediato = deltaT + passosMinus;
+                    if (totalDaEscolha == 0) {
+                        deltaTTemporarioImediato = deltaT + passosPlus;
+                    }
+                    else if (totalDaEscolha == 1)
+                    {
+                        deltaTTemporarioImediato = deltaT + passosMinus;
+                    }
+                }
+                else
+                {
+                    deltaTTemporarioImediato = deltaT + passosPrimer;
                 }
 
+                // Controla para não ultrapassar limite inferior
                 if (deltaTTemporarioAtrasado >= deltaTSuperior)
                 {
                     deltaT = deltaTSuperior;
