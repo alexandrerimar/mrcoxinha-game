@@ -433,42 +433,34 @@ public class GameManager : MonoBehaviour
         }
         else if (totalDaEscolha >=3 && totalDaEscolha < 5) {
             // Imediato
-            if (deltaT == deltaTInferior) {
-                deltaT = deltaT;
+            float deltaTTemporarioImediato;
+            deltaTTemporarioImediato = deltaT - passos;
+
+            if (deltaTTemporarioImediato <= deltaTInferior) 
+            {
+                deltaT = deltaTInferior;
                 Logger.Instance.LogAction("DeltaT no bloco: limite inferior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
-            else {
-            //deltaT--;
-            deltaT = deltaT - passos;
-            if (deltaT < deltaTInferior)
-                {
-                    deltaT = deltaTInferior;
-                }
-                else
-                {
-                    deltaT = deltaT;
-                }
-            Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Imediato'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
+            else 
+            { 
+                deltaT = deltaTTemporarioImediato;
+                Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Imediato'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
             
         }
         else if (totalDaEscolha >= 0 && totalDaEscolha < 2) {
             // Atrasado
-            if (deltaT == deltaTSuperior){
-                deltaT = deltaT;
+            float deltaTTemporarioAtrasado;
+            deltaTTemporarioAtrasado = deltaT + passos;
+
+            if (deltaTTemporarioAtrasado >= deltaTSuperior)
+            {
+                deltaT = deltaTSuperior;
                 Logger.Instance.LogAction("DeltaT no bloco: limite superior. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
-            else{
-                //deltaT++;
-                deltaT = deltaT + passos;
-                if (deltaT > deltaTSuperior)
-                {
-                    deltaT = deltaTSuperior;
-                }
-                else
-                {
-                    deltaT = deltaT;
-                }
+            else
+            {
+                deltaT = deltaTTemporarioAtrasado;
                 Logger.Instance.LogAction("DeltaT no bloco: Computando bloco como 'Atrasado'. Total das Escolhas = " + totalDaEscolha + " E deltaT = " + deltaT);
             }
         }

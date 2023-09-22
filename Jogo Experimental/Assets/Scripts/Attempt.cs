@@ -136,7 +136,8 @@ public class Attempt : MonoBehaviour
     {
           latencia = elapsedTimeClassLatencia.ElapsedTime();
           Logger.Instance.LogAction("Latencia 0: " + latencia);
-          yield return new WaitForSeconds(choiceTime);
+          Debug.Log("Tempo do choiceTime = " + choiceTime);
+          yield return new WaitForSecondsRealtime(choiceTime);
 
           //Escolha não foi feita
           activeChoice = false; // desativa a permissão pra escolher
