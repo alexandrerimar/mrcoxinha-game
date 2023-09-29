@@ -39,11 +39,11 @@ public class GameManager : MonoBehaviour
     public float initialTimeWait;
     
     // Variaveis de controle de sessão, bloco e tentativa
-    public int currentSession;
-    public int currentBlock;
-    public int currentAttempt;
+    public int currentSession = 1;
+    public int currentBlock = 1;
+    public int currentAttempt = 1;
     public int totalSessions;
-    public int totalBlocks; // pode variar de 03 a 20, precisa de script
+    public int totalBlocks; 
     public int totalAttempts;
     public float passos;
     public float passosPlus;
@@ -358,7 +358,7 @@ public class GameManager : MonoBehaviour
         
         currentBlock++;      
 
-        if (currentBlock >= 3) {
+        if (currentBlock > 3) {
             lastThreeBlocks = inputHandler.GetLastThreeBlocks(); // Lista com os últimos 3 deltaT dos últimos 3 blocos
             
             if (lastThreeBlocks[0] == deltaTInferior &&

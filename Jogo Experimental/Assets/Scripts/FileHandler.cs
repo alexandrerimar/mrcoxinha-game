@@ -7,25 +7,25 @@ using System.Linq;
 
 public static class FileHandler {
     
-    public static void SaveToJSON<T> (List<T> toSave, string filename, string folderName) {
+    public static void SaveToJSON<T> (List<T> toSave, string filename) {
         // Salva a informação no arquivo JSON especificado
 
-        Debug.Log (GetPath (filename, folderName));
+        Debug.Log (GetPath (filename));
         string content = JsonHelper.ToJson<T>(toSave.ToArray());
-        WriteFile(GetPath(filename, folderName), content);
+        WriteFile(GetPath(filename), content);
     }
 
-    public static void SaveToJSON<T> (T toSave, string filename, string folderName) {
+    public static void SaveToJSON<T> (T toSave, string filename) {
         // Salva a informação no arquivo JSON especificado
 
-        Debug.Log (GetPath (filename, folderName));
+        Debug.Log (GetPath (filename));
         string content = JsonUtility.ToJson (toSave);
-        WriteFile(GetPath(filename, folderName), content);
+        WriteFile(GetPath(filename), content);
     }
 
 
-    public static List<T> ReadListFromJSON<T> (string filename, string folderName) {
-        string content = ReadFile(GetPath(filename, folderName));
+    public static List<T> ReadListFromJSON<T> (string filename) {
+        string content = ReadFile(GetPath(filename));
         
         if (string.IsNullOrEmpty(content) || content == "{}") {
             return new List<T>();
@@ -37,8 +37,8 @@ public static class FileHandler {
 
     }
 
-    public static T ReadFromJSON<T> (string filename, string folderName) {
-        string content = ReadFile(GetPath(filename, folderName));
+    public static T ReadFromJSON<T> (string filename) {
+        string content = ReadFile(GetPath(filename));
         
         if (string.IsNullOrEmpty(content) || content == "{}") {
             return default(T);
@@ -49,7 +49,8 @@ public static class FileHandler {
         return res;
 
     }
-/*
+
+    /*
     private static string GetUniqueFolderPath(string baseFolderPath, string folderName)
     {
         string folderPath = Path.Combine(baseFolderPath, folderName);
@@ -63,24 +64,28 @@ public static class FileHandler {
 
         return folderPath;
     }
+    */
 
-    private static string GetPath(string filename, string folderName)
+    /*
+    private static string GetPath(string filename)
     {
         string baseFolderPath = Application.persistentDataPath;
         string uniqueFolderPath = GetUniqueFolderPath(baseFolderPath, folderName);
 
         return Path.Combine(uniqueFolderPath, filename);
     }
-*/
+    */
 
     
-    private static string GetPath (string filename, string folderName = "default") {
+    
+    private static string GetPath (string filename) {
         // Retorna o caminho para salvar o arquivo JSON
 
-        return Application.persistentDataPath + "/" + folderName + "/" + filename;
+        return Application.persistentDataPath + "/" + filename;
     }
 
-    /*
+
+    
     private static void WriteFile (string path, string content) {
         // Cria o arquivo JSON se ele não existe e escreve a informação passada
         
@@ -90,7 +95,10 @@ public static class FileHandler {
             writer.Write(content);
         }
     }
-    */
+    
+    
+    /*
+    
     private static void WriteFile(string path, string content)
     {
         try
@@ -118,7 +126,7 @@ public static class FileHandler {
             Debug.LogError("Error writing file: " + ex.Message);
         }
     }
-
+*/
 
     private static string ReadFile (string path) {
         if (File.Exists(path)) {

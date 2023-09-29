@@ -71,7 +71,7 @@ public class InputHandler : MonoBehaviour {
         string time;        
         time = System.DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
         entries.Add (new InputEntry (etapaAtualInput, danoEscolhidoInput, deltaTAtualInput, time, playerIDInput));
-        FileHandler.SaveToJSON<InputEntry>(entries, filename, playerIDInput);        
+        FileHandler.SaveToJSON<InputEntry>(entries, filename);        
     }
 
     public void AddDataDoBlocoToList () {
@@ -80,7 +80,7 @@ public class InputHandler : MonoBehaviour {
         string time;
         time = System.DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
         blocoEntries.Add (new BlocoEntry (etapaAtualDeBlocoInput[0], etapaAtualDeBlocoInput[1], resultadoDoBlocoInput, deltaTDoBlocoInput, time, playerIDInput));
-        FileHandler.SaveToJSON<BlocoEntry>(blocoEntries, filenameBloco, playerIDInput);
+        FileHandler.SaveToJSON<BlocoEntry>(blocoEntries, filenameBloco);
     }
 
     public void AddDataDaSessaoToList () {
@@ -89,18 +89,18 @@ public class InputHandler : MonoBehaviour {
         string time;
         time = System.DateTime.Now.ToString("yyyy/MM/dd hh:mm:ss");
         sessionEntries.Add (new SessionEntry (etapaAtualDeSessaoInput, pontoDeIndiferencaInput, time, playerIDInput));
-        FileHandler.SaveToJSON<SessionEntry>(sessionEntries, filenameSession, playerIDInput);
+        FileHandler.SaveToJSON<SessionEntry>(sessionEntries, filenameSession);
     }
 
     public List<float> GetLastThreeBlocks () {
         // Retorna uma lista com os três ultimos valores de DeltaT
-        List<float> lastThreeDeltaT = new List<float>();
-        
+        List<float> lastThreeDeltaT = new List<float>();        
 
         for (int i = 1; i < 4; i++) {
             float input = blocoEntries[^i].deltaTDoBloco;
             lastThreeDeltaT.Add (input);    
         }
+        
         foreach (float x in lastThreeDeltaT) {
             Debug.Log("itens da list " + x);
         }
