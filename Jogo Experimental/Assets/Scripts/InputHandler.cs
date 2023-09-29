@@ -39,9 +39,9 @@ public class InputHandler : MonoBehaviour {
     
     void Start () {
         gameManager = controller.GetComponent<GameManager>();
-        entries = FileHandler.ReadListFromJSON<InputEntry> (filename, playerIDInput);
-        blocoEntries = FileHandler.ReadListFromJSON<BlocoEntry> (filenameBloco, playerIDInput);
-        sessionEntries = FileHandler.ReadListFromJSON<SessionEntry>(filenameSession, playerIDInput);
+        entries = FileHandler.ReadListFromJSON<InputEntry> (filename);
+        blocoEntries = FileHandler.ReadListFromJSON<BlocoEntry> (filenameBloco);
+        sessionEntries = FileHandler.ReadListFromJSON<SessionEntry>(filenameSession);
     }   
 
     private void GetData () {
@@ -102,7 +102,7 @@ public class InputHandler : MonoBehaviour {
             lastThreeDeltaT.Add (input);    
         }
         foreach (float x in lastThreeDeltaT) {
-            //Debug.Log("itens da list " + x);
+            Debug.Log("itens da list " + x);
         }
 
         return lastThreeDeltaT; 
